@@ -1,11 +1,33 @@
 #include "FileManager.h"
 
 #include <fstream>
-#include <filesystem>
+#define _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING 1
+#include <experimental/filesystem>
+
+
+bool FileManager::file_exists(std::string filename) {
+	return std::experimental::filesystem::exists(filename);
+}
+
+bool FileManager::directory_exists(std::string dirname) {
+	return file_exists(dirname);
+}
+
+void FileManager::read_directory(std::string dirname, std::vector<std::string>& files) {
+	std::experimental::filesystem::path top_dir{ dirname };
+
+	for (auto const& dir_entry : std::experimental::filesystem::recursive_directory_iterator{ top_dir }) {
+		files.push_back(dir_entry.path().string());
+	}
+}
 
 void FileManager::read_file(std::string filename, std::vector<std::string>& data) {
 	
-	std::ifstream ifile(filename);
+	if (!file_exists(filename)) {
+		std::cerr << "Ffile Does Not Exists!" << std::endl;
+	}
+
+	std::ifstream ifile{ filename };
 
 	if (!ifile) {
 		std::cerr << "Could not open file!\n";
