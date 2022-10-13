@@ -6,8 +6,10 @@
 #include "FileManager.h"
 #include "MapManager.h"
 
-#define TEST_FM 1
-#define TEST_MM 1
+// #define TEST_FM 1
+// #define TEST_MM 1
+// #define TEST_REDUCE 1
+// #define TEST_SORT 1
 
 int main()
 {
@@ -32,4 +34,11 @@ int main()
     mm.map("c:/Users/alexa/OneDrive/Desktop/test2.txt", "SOME EXTREMELTY LONG AND WILD LINE JKLJS KLJJJKL DJA SLDK JLKDJ  LKSA JDLSA JDASD");
 
 #endif // TEST_MM
+
+#ifdef  TEST_SORT
+    std::string filename{ "" };
+    std::vector<std::string> input {"a", "a", "is", "the", "is"};
+    std::unordered_map<std::string, std::vector<int>> output; // (( "a", [1,1,1,1] ... )
+
+#endif TEST_SORT
 }
