@@ -6,19 +6,17 @@
 
 
 bool FileManager::file_exists(std::string filename) {
-
 	return std::experimental::filesystem::exists(filename);
 }
 
 bool FileManager::directory_exists(std::string dirname) {
-
 	return file_exists(dirname);
 }
 
 void FileManager::read_directory(std::string dirname, std::vector<std::string>& files) {
 
 	if(!directory_exists(dirname)) {
-		std::cerr << "Directory does not exist!" << std::endl;
+		throw std::invalid_argument("Directory does not exist!");
 	}
 	std::experimental::filesystem::path top_dir{ dirname };
 
@@ -30,13 +28,13 @@ void FileManager::read_directory(std::string dirname, std::vector<std::string>& 
 void FileManager::read_file(std::string filename, std::vector<std::string>& data) {
 
 	if (!file_exists(filename)) {
-		std::cerr << "Ffile Does Not Exists!" << std::endl;
+		throw std::invalid_argument("File does not exist!");
 	}
 
 	std::ifstream ifile{ filename };
 
 	if (!ifile) {
-		std::cerr << "Could not open file!\n";
+		throw std::invalid_argument("Cannot Open File!");
 	}
 
 	std::string line;
@@ -66,11 +64,15 @@ int FileManager::write_file(std::string filename, std::vector<std::string> const
 
 }
 
-/*
-void FileManager::read_directory(std::string directory) {
+bool FileManager::mkdir(std::string dirname) {
+	bool success = std::experimental::filesystem::create_directory(dirname);
 
-	for (const auto& file : std::filesystem::directory_iterator(directory)) {
-		std::cout << file.path() << std::endl;
+	if (!success) {
+		std::cerr << "Unable to create directory" << std::endl;
 	}
+	else {
+		std::cout << "Ddirectory created!" << std::endl;
+	}
+
+	return success;
 }
-*/

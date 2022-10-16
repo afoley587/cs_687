@@ -49,5 +49,13 @@ public:
 	*	...
 	*/
 	int write_file(std::string filename, std::vector<std::string> const data);
-	void read_directory(std::string directory);
+
+	/* Makes a directory
+	* Args:
+	*	mkdir: Dirname to create
+	* Returns
+	*	true if successful, false otherwise
+	*	
+	*/
+	bool mkdir(std::string dirname);
 };
