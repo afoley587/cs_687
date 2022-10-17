@@ -50,6 +50,23 @@ public:
 	*/
 	int write_file(std::string filename, std::vector<std::string> const data);
 
+	/* Touches a file
+	* Args:
+	*	filename: Filename to write
+	* Returns
+	*	...
+	*/
+	int touch_file(std::string filename);
+
+	/* Writes a file from the data given in the buffer contents in append mode
+	* Args:
+	*	filename: Filename to write
+	*	data: data to write
+	* Returns
+	*	...
+	*/
+	int append_file(std::string filename, std::vector<std::string> const data);
+
 	/* Makes a directory
 	* Args:
 	*	mkdir: Dirname to create

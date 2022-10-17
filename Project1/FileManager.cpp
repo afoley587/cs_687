@@ -64,6 +64,34 @@ int FileManager::write_file(std::string filename, std::vector<std::string> const
 
 }
 
+int FileManager::touch_file(std::string filename) {
+
+	std::ofstream ofile(filename);
+
+	ofile.close();
+
+	return 1;
+
+}
+
+int FileManager::append_file(std::string filename, std::vector<std::string> const data) {
+
+	std::ofstream ofile(filename, std::ios::app);
+
+	if (!ofile) {
+		std::cerr << "Could not open file!\n";
+	}
+
+	for (auto s : data) {
+		ofile << s;
+	}
+
+	ofile.close();
+
+	return data.size();
+
+}
+
 bool FileManager::mkdir(std::string dirname) {
 	bool success = std::experimental::filesystem::create_directory(dirname);
 
