@@ -63,8 +63,12 @@ int FileManager::write_file(std::string filename, std::vector<std::string> const
 	ofile.close();
 
 	return data.size();
-
 }
+
+void FileManager::test_output(std::string textToOutput) {
+	std::cout << "\n" << "TestCallFrom WorkFlow Component" << "\n" << textToOutput;
+}
+
 
 /*
 void FileManager::read_directory(std::string directory) {

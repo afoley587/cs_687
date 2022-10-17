@@ -1,19 +1,19 @@
 #include "Reduce.h"
+#include "FileManager.h"
 
-/* ========== CONSTRUCTOR INITIALIZER ==========
-Reduce::Reduce(string k, vector<int>::iterator i)
-	:key{ k }, it{ i }{
-}
-*/
+#include <sstream>
 
-/* ========== reduce w/ ITERATOR ========== 
+ //========== CONSTRUCTOR INITIALIZER ==========
+
+
+ //========== reduce w/ ITERATOR ========== 
 void Reduce::reduce(string key, vector<int>::iterator it) {
 	for (int x = 0; x < 10; x++) {
 		cout << *it << "\n";
 		it++;
 	}
 }
-*/
+
 
 // ========== reduce w/ VECTOR ==========
 void Reduce::reduce(string key, vector<int> vec) {
@@ -22,7 +22,7 @@ void Reduce::reduce(string key, vector<int> vec) {
 	// loop iterates and sums through vector
 	for (it = vec.begin(); it < vec.end(); it++) {
 		sum = sum + *it;
-		cout << "it = " << *it << " || sum = " << sum << "\n";
+		//cout << "\n" << "it = " << key << " || sum = " << sum << "\n";
 	}
 
 	// calls output method
@@ -32,13 +32,19 @@ void Reduce::reduce(string key, vector<int> vec) {
 void Reduce::output(string key, int sum) {
 
 	// writes results in format "key, sum" to directory
-	ofstream writeresult;
-	writeresult.open("test.txt");
-	writeresult << key << ", " << sum << endl;
-	writeresult.close();
+
+	std::ostringstream formattedKvpElement;
+	formattedKvpElement << "\n" << key << ", " << sum << endl;
+
+	fileManager.test_output(formattedKvpElement.str());
+
+	//ofstream writeresult;
+	//writeresult.open("test.txt");
+	//writeresult << "\n" << key << ", " << sum << endl;
+	//writeresult.close();
 
 	// creates SUCCESS.txt file
-	ofstream successfile("SUCCESS.txt");
+	//ofstream successfile("SUCCESS.txt");
 }
 
 

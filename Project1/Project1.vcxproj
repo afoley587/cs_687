@@ -128,15 +128,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ExecutiveComponent.cpp" />
     <ClCompile Include="FileManager.cpp" />
     <ClCompile Include="MapManager.cpp" />
     <ClCompile Include="Project1.cpp" />
+    <ClCompile Include="Reduce.cpp" />
     <ClCompile Include="SortManager.cpp" />
+    <ClCompile Include="WorkFlowComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ExecutiveComponent.h" />
     <ClInclude Include="FileManager.h" />
     <ClInclude Include="MapManager.h" />
+    <ClInclude Include="Reduce.h" />
     <ClInclude Include="SortManager.h" />
+    <ClInclude Include="WorkFlowComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

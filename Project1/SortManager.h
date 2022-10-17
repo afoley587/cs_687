@@ -1,10 +1,14 @@
 #pragma once
-
-#include <string>
-#include <vector>
-#include <unordered_map>
+#include <algorithm>
+#include <iterator>
+#include <functional>
+#include <sstream>
+#include <iostream>
+#include <deque>
+#include <map>
+#include <stack>
 
 class SortManager {
 public:
-	void SortInput(void);
+	std::map<std::string, std::vector<int>> SortInput(std::vector<std::string> dataToBeSorted);
 };

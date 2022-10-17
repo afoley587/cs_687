@@ -1,6 +1,7 @@
 #ifndef Reduce_h
 #define Reduce_h
 
+#include "FileManager.h"
 #include <stdio.h>
 #include <iostream>
 #include <vector>
@@ -19,9 +20,10 @@ private:
 	int sum;
 	vector<int>::iterator it;
 	vector<int> vec;
+	FileManager fileManager;
 
 public:
-
+	Reduce(FileManager fileMgr) :fileManager{ fileMgr } {};
 	// constructor initializer, takes key and iterator
 	// Reduce(string key, vector<int>::iterator it);
 	

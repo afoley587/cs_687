@@ -9,14 +9,17 @@
 #include "FileManager.h"
 #include "MapManager.h"
 #include "SortManager.h"
+#include "Reduce.h"
+#include "WorkFlowComponent.h"
+#include "ExecutiveComponent.h"
 
 
 // #define TEST_FM 1
 // #define TEST_MM 1
 // #define TEST_REDUCE 1
- #define TEST_SORT 1
+ #define TEST_WRKFLOW 1
 
-int main()
+int main(int argc, char* argv[])
 {
 
 #ifdef TEST_FM
@@ -46,13 +49,9 @@ int main()
 
 #endif // TEST_MM
 
-#ifdef  TEST_SORT
-    //std::string filename{ "" };
-    //std::vector<std::string> input {"a", "a", "is", "the", "is"};
-    //std::unordered_map<std::string, std::vector<int>> output; // (( "a", [1,1,1,1] ... )
-    //std::cout << "Hello World!";
+#ifdef  TEST_WRKFLOW
 
-    SortManager sortManager;
-    sortManager.SortInput();
+    ExecutiveComponent executiveComponent = ExecutiveComponent(argc, argv);
+
 #endif TEST_SORT
 }
