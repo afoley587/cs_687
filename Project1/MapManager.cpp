@@ -27,11 +27,11 @@ void MapManager::mexport(std::string filename, std::vector<std::string> buffer) 
 
 void MapManager::tokenize(std::string in, std::vector<std::string>& out) {
 	std::string nopunc;
-	std::remove_copy_if(
-		in.begin(), in.end(),
-		std::back_inserter(nopunc),
-		std::ptr_fun<int, int>(&std::ispunct)
-	);
+	//std::remove_copy_if(
+	//	in.begin(), in.end(),
+	//	std::back_inserter(nopunc),
+	//	std::ptr_fun<int, int>(&std::ispunct)
+	//);
 
 	std::istringstream iss{ nopunc };
 

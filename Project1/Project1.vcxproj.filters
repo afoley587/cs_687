@@ -24,6 +24,9 @@
     <ClCompile Include="MapManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SortManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FileManager.h">
@@ -32,5 +35,11 @@
     <ClInclude Include="MapManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SortManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

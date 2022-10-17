@@ -8,12 +8,13 @@
 
 #include "FileManager.h"
 #include "MapManager.h"
+#include "SortManager.h"
 
 
-#define TEST_FM 1
+// #define TEST_FM 1
 // #define TEST_MM 1
 // #define TEST_REDUCE 1
-// #define TEST_SORT 1
+ #define TEST_SORT 1
 
 int main()
 {
@@ -46,9 +47,12 @@ int main()
 #endif // TEST_MM
 
 #ifdef  TEST_SORT
-    std::string filename{ "" };
-    std::vector<std::string> input {"a", "a", "is", "the", "is"};
-    std::unordered_map<std::string, std::vector<int>> output; // (( "a", [1,1,1,1] ... )
+    //std::string filename{ "" };
+    //std::vector<std::string> input {"a", "a", "is", "the", "is"};
+    //std::unordered_map<std::string, std::vector<int>> output; // (( "a", [1,1,1,1] ... )
+    //std::cout << "Hello World!";
 
+    SortManager sortManager;
+    sortManager.SortInput();
 #endif TEST_SORT
 }
