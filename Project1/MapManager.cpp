@@ -30,7 +30,7 @@ void MapManager::mexport(std::string filename, std::vector<std::string> buffer, 
 			toExport.push_back("(" + s + ", 1)\n");
 		}
 
-		toExport.push_back("\nEXPORT\n");
+		// toExport.push_back("\nEXPORT\n");
 
 		fm.append_file(filename, toExport);
 		filebuffer[filename].clear();
@@ -41,11 +41,27 @@ void MapManager::tokenize(std::string in, std::vector<std::string>& out) {
 	std::string nopunc;
 
 	// Remove all punct/special chars
+
+	
+	for (int i = 0; i < in.length(); i++) {
+		if (!std::iswpunct(in[i])) {
+			nopunc += in[i];
+		}
+		else {
+			// some places where word--another
+			if (in[i] == '-') {
+				nopunc += " ";
+			}
+		}
+	}
+	/*
 	std::remove_copy_if(
 		in.begin(), in.end(),
 		std::back_inserter(nopunc),
 		[](unsigned char c) {return std::iswpunct(c); }
 	);
+	*/
+	
 
 	transform(nopunc.begin(), nopunc.end(), nopunc.begin(), std::tolower);
 

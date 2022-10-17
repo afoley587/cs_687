@@ -37,7 +37,7 @@ int main(int argc, char* argv[])
     std::vector<std::string> test_fm_data;
     std::vector<std::string> test_fm_files;
     FileManager fm;
-    MapManager mm {1024, tmpdir};
+    MapManager mm {1024};
 
     if (!prompt_for_dir(fm, tmpdir) || !prompt_for_dir(fm, outdir)) {
         std::cerr << "Unable to create some directory. Please see above." << std::endl;
