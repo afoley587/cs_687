@@ -1,7 +1,7 @@
 #pragma once
 
-#include <iostream>
 #include <string>
+#include <iostream>
 #include <vector>
 #include <filesystem>
 
@@ -85,7 +85,7 @@ public:
 	*/
 	bool mkdir(std::string dirname);
 
-	void append_file(std::string filename, std::vector<std::string> const data);
+	//void append_file(std::string filename, std::vector<std::string> const data);
 
 
 	void read_directory(std::string directory);

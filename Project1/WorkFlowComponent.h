@@ -21,7 +21,7 @@ private:
 public:
 	WorkFlowComponent(ProgramSettings programSettings) :
 		fileManager{ FileManager(programSettings.WorkingDirectory)},
-		mapManager{ MapManager() },
+		mapManager{ MapManager(fileManager, 1024) },
 		sortManager{ SortManager(fileManager, programSettings.SortInputFile) },
 		reduceManager{ Reduce(fileManager, programSettings.ResultsFile, programSettings.FinalOutputFile)}
 	{};
