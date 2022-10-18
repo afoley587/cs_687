@@ -7,8 +7,8 @@
 
 class MapManager {
 public:
-	MapManager() :max_buffer_size{ 10 }, filebuffer{}, fm{} {};
-	MapManager(int b) : max_buffer_size{ b }, filebuffer{}, fm{} {};
+	MapManager(FileManager fileMgr) :max_buffer_size{ 10 }, filebuffer{}, fm{fileMgr} {};
+	MapManager(FileManager fileMgr, int b) : max_buffer_size{ b }, filebuffer{}, fm{fileMgr} {};
 
 	/* Reads a line of text, tokenizes it, and puts it into a readable format
 	* Args:

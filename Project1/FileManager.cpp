@@ -1,8 +1,11 @@
 #include "FileManager.h"
 
+
 #include <fstream>
 #define _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING 1
-#include <experimental/filesystem>
+#include <experimental/filesystem >
+#include <filesystem>
+#include <string>
 
 
 bool FileManager::file_exists(std::string filename) {
@@ -80,6 +83,7 @@ int FileManager::append_file(std::string filename, std::vector<std::string> cons
 
 	if (!ofile) {
 		std::cerr << "Could not open file!\n";
+		std::cerr << filename;
 	}
 
 	for (auto s : data) {
@@ -89,7 +93,40 @@ int FileManager::append_file(std::string filename, std::vector<std::string> cons
 	ofile.close();
 
 	return data.size();
+}
 
+//void FileManager::append_file(std::string filename, std::vector<std::string> const data) {
+//	std::fstream fileStream;
+//	
+//	fileStream.open(filename, std::ios::app);
+//
+//	if (fileStream.is_open()) {
+//		for (auto dataline : data) {
+//			fileStream << "\n" << dataline << std::endl;
+//		}
+//	}
+//
+//	fileStream.close();
+//}
+
+
+void FileManager::test_output(std::string textToOutput) {
+	std::cout << "\n" << textToOutput;
+}
+
+void FileManager::reset_output_files() {
+	for (const auto& entry : std::experimental::filesystem::directory_iterator(workingDirectory)) {
+		std::string pathString = entry.path().string();
+		bool isSortInputFile = pathString.find("TestSortInput") != std::string::npos;
+
+		if (!isSortInputFile) {
+			std::fstream fileStream;
+			fileStream.open(entry.path(), std::ofstream::trunc);
+			fileStream.close();
+		}
+	}
+	
+	std::string testString = "Test";
 }
 
 bool FileManager::mkdir(std::string dirname) {

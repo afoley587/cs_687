@@ -61,9 +61,13 @@ void MapManager::tokenize(std::string in, std::vector<std::string>& out) {
 		[](unsigned char c) {return std::iswpunct(c); }
 	);
 	*/
-	
+	//std::string transformOutput;
 
-	transform(nopunc.begin(), nopunc.end(), nopunc.begin(), std::tolower);
+	//transform(nopunc.begin(), nopunc.end(), transformOutput.begin(), std::tolower);
+
+	std::for_each(nopunc.begin(), nopunc.end(), [](char& c) {
+		c = ::tolower(c);
+	});
 
 	std::istringstream iss{ nopunc };
 

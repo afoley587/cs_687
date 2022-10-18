@@ -10,11 +10,16 @@
 
 #include "FileManager.h"
 #include "MapManager.h"
+#include "SortManager.h"
+#include "Reduce.h"
+#include "WorkFlowComponent.h"
+#include "ExecutiveComponent.h"
 
 
-#define TEST_MM
+// #define TEST_FM 1
+// #define TEST_MM 1
 // #define TEST_REDUCE 1
-// #define TEST_SORT 1
+ #define TEST_WRKFLOW 1
 
 bool prompt_for_dir(FileManager fm, std::string dirname);
 
@@ -60,11 +65,10 @@ int main(int argc, char* argv[])
     }
 #endif // TEST_MM
 
-#ifdef  TEST_SORT
-    std::string filename{ "" };
-    std::vector<std::string> input {"a", "a", "is", "the", "is"};
-    std::unordered_map<std::string, std::vector<int>> output; // (( "a", [1,1,1,1] ... )
+#ifdef  TEST_WRKFLOW
 
+    ExecutiveComponent executiveComponent = ExecutiveComponent(argc, argv);
+    executiveComponent.RunProgram();
 #endif TEST_SORT
 }
 

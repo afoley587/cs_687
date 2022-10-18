@@ -24,6 +24,18 @@
     <ClCompile Include="MapManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SortManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Reduce.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WorkFlowComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ExecutiveComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FileManager.h">
@@ -32,5 +44,23 @@
     <ClInclude Include="MapManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SortManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Reduce.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WorkFlowComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ExecutiveComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ProgramSettingsStruct.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>
