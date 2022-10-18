@@ -52,6 +52,6 @@ int main(int argc, char* argv[])
 #ifdef  TEST_WRKFLOW
 
     ExecutiveComponent executiveComponent = ExecutiveComponent(argc, argv);
-
+    executiveComponent.RunProgram();
 #endif TEST_SORT
 }

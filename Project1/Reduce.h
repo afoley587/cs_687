@@ -8,44 +8,41 @@
 #include <iterator>
 #include <fstream>
 
-using std::string;
-using std::vector;
-using std::cout;
-using std::endl;
-using std::ofstream;
 
 class Reduce {
 private:
-	string key;
-	int sum;
-	vector<int>::iterator it;
-	vector<int> vec;
 	FileManager fileManager;
-
+	std::string resultsFile;
+	std::string finalOutputFile;
 public:
-	Reduce(FileManager fileMgr) :fileManager{ fileMgr } {};
+	Reduce(FileManager fileMgr, std::string resultFile, std::string finalOutputFile) :
+		fileManager{ fileMgr }, 
+		resultsFile{ fileManager.workingDirectory + "\\" + resultFile },
+		finalOutputFile{ fileManager.workingDirectory + "\\" + finalOutputFile } {};
 	// constructor initializer, takes key and iterator
 	// Reduce(string key, vector<int>::iterator it);
 	
 	// takes a key and iterator of ints - sums iterators and calls export function
 	// ========== reduce w/ ITERATOR ==========
-	void reduce(string key, vector<int>::iterator it);
+	void reduce(std::string key, std::vector<int>::iterator it);
 	// ========== reduce w/ VECTOR ==========
-	void reduce(string key, vector<int> vec);
+	void reduce(std::string key, std::vector<int> vec);
 
 
 
 	// writes result to output directoy - creates empty txt file names SUCCESS upon success
-	void output(string key, int sum);
+	void output(std::string key, int sum);
 
 
 	// getter/setter for string key
-	string getkey();
-	void setkey(string k);
+	std::string getkey();
+	void setkey(std::string k);
 
 	// getter/setter for int sum
 	int getsum();
 	void setsum(int s);
+
+	void WriteFinalOutput();
 };
 
 #endif // Reduce_h

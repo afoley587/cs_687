@@ -1,4 +1,7 @@
 #pragma once
+
+#include "FileManager.h"
+
 #include <algorithm>
 #include <iterator>
 #include <functional>
@@ -10,5 +13,12 @@
 
 class SortManager {
 public:
-	std::map<std::string, std::vector<int>> SortInput(std::vector<std::string> dataToBeSorted);
+	SortManager(FileManager fileMgr, std::string sortInputFile) :
+		fileManager{ fileMgr }, sortInputFilePath{ fileManager.workingDirectory + "\\" + sortInputFile } {};
+	
+	std::map<std::string, std::vector<int>> SortInput();
+
+private:
+	FileManager fileManager;
+	std::string sortInputFilePath;
 };

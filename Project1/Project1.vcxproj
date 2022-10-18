@@ -140,6 +140,7 @@
     <ClInclude Include="ExecutiveComponent.h" />
     <ClInclude Include="FileManager.h" />
     <ClInclude Include="MapManager.h" />
+    <ClInclude Include="ProgramSettingsStruct.h" />
     <ClInclude Include="Reduce.h" />
     <ClInclude Include="SortManager.h" />
     <ClInclude Include="WorkFlowComponent.h" />

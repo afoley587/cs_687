@@ -54,6 +54,7 @@ int FileManager::write_file(std::string filename, std::vector<std::string> const
 
 	if (!ofile) {
 		std::cerr << "Could not open file!\n";
+		std::cerr << filename;
 	}
 
 	for (auto s : data) {
@@ -66,7 +67,7 @@ int FileManager::write_file(std::string filename, std::vector<std::string> const
 }
 
 void FileManager::test_output(std::string textToOutput) {
-	std::cout << "\n" << "TestCallFrom WorkFlow Component" << "\n" << textToOutput;
+	std::cout << "\n" << textToOutput;
 }
 
 

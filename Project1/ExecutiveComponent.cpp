@@ -7,35 +7,21 @@
 #include <string>
 #include <filesystem>
 
-std::string GetDefaultWorkingDirectory(std::string& currentExePath);
+std::string GetDefaultWorkingDirectory(char currentExePath[]);
 
-ExecutiveComponent::ExecutiveComponent(int argCount, char* args[]) : 
-	fileManager(fileManager), workFlowComponent(WorkFlowComponent(fileManager)) {
-	
-
+ExecutiveComponent::ExecutiveComponent(int argCount, char* args[]) 
+	: workFlowComponent{WorkFlowComponent(ParseArgs(argCount, args))} 
+{
 	if (!ValidateArgs(argCount, args)) {
 		std::cout << "\n" << "Invalid Args Provided. Supply Proper Arguements to Program.";
 		return;
 	}
 
-	//TODO Get working directory and input file from args and inject into FileManager
-	ParseArgs(argCount, args);
-	fileManager = FileManager("Test");
+}
 
-	std::string currentExePath = args[0];
-	workingDirectory = GetDefaultWorkingDirectory(currentExePath);
-	std::cout << "\n" << "Printing out Current Working Directory: ";
-	std::cout << "\n" << workingDirectory;
-
-	/*std::string currentExePath = args[0];
-	std::cout << "\n" << args[0];
-	std::string substringToRemoveFromPath = "\\x64\\Debug\\Project1.exe";
-	eraseSubStr(currentExePath, substringToRemoveFromPath);
-	std::cout << "\n" << currentExePath;*/
-	//std::string workingDirectory = std::filesystem::current_path();
-	//std::cout << "\n" << std::filesystem::current;
-	//Inject File Manager into WorkFlow Component
-
+void ExecutiveComponent::RunProgram() {
+	//This is where the program starts after validation and object creation
+	workFlowComponent.StartWorkFlow();
 }
 
 bool ExecutiveComponent::ValidateArgs(int argCount, char* args[]) {
@@ -45,20 +31,33 @@ bool ExecutiveComponent::ValidateArgs(int argCount, char* args[]) {
 	return true;
 }
 
-void ExecutiveComponent::ParseArgs(int argCount, char* args[]) {
+ProgramSettings ExecutiveComponent::ParseArgs(int argCount, char* args[]) {
+	//TODO Parse Args to extract Program Settings
+	workingDirectory = GetDefaultWorkingDirectory(args[0]);
 
+	ProgramSettings tempProgramSettings =
+	{
+		workingDirectory,
+		"TestSortInput.txt",
+		"resultsTextFile",
+		"FinalResultsFile.txt"
+	};
+
+	return tempProgramSettings;
 }
 
-std::string GetDefaultWorkingDirectory(std::string& currentExePath)
+std::string GetDefaultWorkingDirectory(char currentExePath[])
 {
+	std::string currentExePathString = currentExePath;
 	// Search for the substring in string
-	std:string toErase = "\\x64\\Debug\\Project1.exe";
-	size_t pos = currentExePath.find(toErase);
+	std::string toErase = "\\x64\\Debug\\Project1.exe";
+	size_t pos = currentExePathString.find(toErase);
 	if (pos != std::string::npos)
 	{
 		// If found then erase it from string
-		currentExePath.erase(pos, toErase.length());
+		&currentExePathString.erase(pos, toErase.length());
 	}
-	return currentExePath;
+
+	return currentExePathString;
 }
 

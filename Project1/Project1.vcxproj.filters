@@ -56,6 +56,9 @@
     <ClInclude Include="ExecutiveComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ProgramSettingsStruct.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

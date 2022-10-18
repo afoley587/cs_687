@@ -6,7 +6,9 @@
 
 class FileManager {
 public:
-	FileManager(std::string workingDir) :workingDirectory{ workingDir } {};
+	FileManager(std::string workingDir) :
+		workingDirectory{ workingDir }
+	{};
 
 	/* Checks if the filename given exists
 	* Args:
@@ -53,7 +55,7 @@ public:
 	void read_directory(std::string directory);
 
 	void test_output(std::string textToOutput);
-
-private:
+	
 	std::string workingDirectory;
+private:
 };
