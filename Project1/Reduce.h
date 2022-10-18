@@ -17,8 +17,8 @@ private:
 public:
 	Reduce(FileManager fileMgr, std::string resultFile, std::string finalOutputFile) :
 		fileManager{ fileMgr }, 
-		resultsFile{ fileManager.workingDirectory + "\\" + resultFile },
-		finalOutputFile{ fileManager.workingDirectory + "\\" + finalOutputFile } {};
+		resultsFile{ resultFile },
+		finalOutputFile{ finalOutputFile } {};
 	// constructor initializer, takes key and iterator
 	// Reduce(string key, vector<int>::iterator it);
 	

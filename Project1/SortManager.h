@@ -14,7 +14,7 @@
 class SortManager {
 public:
 	SortManager(FileManager fileMgr, std::string sortInputFile) :
-		fileManager{ fileMgr }, sortInputFilePath{ fileManager.workingDirectory + "\\" + sortInputFile } {};
+		fileManager{ fileMgr }, sortInputFilePath{ sortInputFile } {};
 	
 	std::map<std::string, std::vector<int>> SortInput();
 

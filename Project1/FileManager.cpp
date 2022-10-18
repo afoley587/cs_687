@@ -3,6 +3,8 @@
 #include <fstream>
 #define _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING 1
 #include <experimental/filesystem>
+#include <filesystem>
+#include <string>
 
 
 bool FileManager::file_exists(std::string filename) {
@@ -30,7 +32,7 @@ void FileManager::read_directory(std::string dirname, std::vector<std::string>& 
 void FileManager::read_file(std::string filename, std::vector<std::string>& data) {
 
 	if (!file_exists(filename)) {
-		std::cerr << "Ffile Does Not Exists!" << std::endl;
+		std::cerr << "File Does Not Exists!" << std::endl;
 	}
 
 	std::ifstream ifile{ filename };
@@ -66,10 +68,39 @@ int FileManager::write_file(std::string filename, std::vector<std::string> const
 	return data.size();
 }
 
+void FileManager::append_file(std::string filename, std::vector<std::string> const data) {
+	std::fstream fileStream;
+	
+	fileStream.open(filename, std::ios::app);
+
+	if (fileStream.is_open()) {
+		for (auto dataline : data) {
+			fileStream << "\n" << dataline << std::endl;
+		}
+	}
+
+	fileStream.close();
+}
+
+
 void FileManager::test_output(std::string textToOutput) {
 	std::cout << "\n" << textToOutput;
 }
 
+void FileManager::reset_output_files() {
+	for (const auto& entry : std::filesystem::directory_iterator(workingDirectory)) {
+		std::string pathString = entry.path().string();
+		bool isSortInputFile = pathString.find("TestSortInput") != std::string::npos;
+
+		if (!isSortInputFile) {
+			std::fstream fileStream;
+			fileStream.open(entry.path(), std::ofstream::trunc);
+			fileStream.close();
+		}
+	}
+	
+	std::string testString = "Test";
+}
 
 /*
 void FileManager::read_directory(std::string directory) {

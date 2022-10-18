@@ -39,7 +39,7 @@ ProgramSettings ExecutiveComponent::ParseArgs(int argCount, char* args[]) {
 	{
 		workingDirectory,
 		"TestSortInput.txt",
-		"resultsTextFile",
+		"resultsTextFile.txt",
 		"FinalResultsFile.txt"
 	};
 
@@ -58,6 +58,6 @@ std::string GetDefaultWorkingDirectory(char currentExePath[])
 		&currentExePathString.erase(pos, toErase.length());
 	}
 
-	return currentExePathString;
+	return currentExePathString + "\\" + "Program_Output";
 }
 

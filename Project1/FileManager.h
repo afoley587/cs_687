@@ -3,12 +3,18 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <filesystem>
 
 class FileManager {
 public:
 	FileManager(std::string workingDir) :
-		workingDirectory{ workingDir }
-	{};
+		workingDirectory{ workingDir } {
+		if (!directory_exists(workingDir)) {
+			std::filesystem::create_directory(workingDirectory);
+		}
+
+		reset_output_files();
+	};
 
 	/* Checks if the filename given exists
 	* Args:
@@ -52,10 +58,15 @@ public:
 	*	...
 	*/
 	int write_file(std::string filename, std::vector<std::string> const data);
+
+	void append_file(std::string filename, std::vector<std::string> const data);
+
+
 	void read_directory(std::string directory);
 
 	void test_output(std::string textToOutput);
 	
-	std::string workingDirectory;
 private:
+	std::string workingDirectory;
+	void reset_output_files();
 };
