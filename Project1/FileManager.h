@@ -66,7 +66,8 @@ public:
 
 	void test_output(std::string textToOutput);
 	
-private:
 	std::string workingDirectory;
+
+private:
 	void reset_output_files();
 };
