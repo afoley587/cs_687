@@ -7,15 +7,6 @@
 
 class FileManager {
 public:
-	FileManager(std::string workingDir) :
-		workingDirectory{ workingDir } {
-		if (!directory_exists(workingDir)) {
-			std::filesystem::create_directory(workingDirectory);
-		}
-
-		reset_output_files();
-	};
-
 	/* Checks if the filename given exists
 	* Args:
 	*	filename: Filename to check
@@ -95,5 +86,5 @@ public:
 	std::string workingDirectory;
 
 private:
-	void reset_output_files();
+	void reset_output_files(std::string output_directory);
 };

@@ -14,13 +14,11 @@
 class SortManager {
 public:
 	SortManager(FileManager fileMgr, std::string sortInputFile) :
-		fileManager{ fileMgr }, 
-		sortInputFilePath{ fileMgr.workingDirectory + "\\" +  sortInputFile } 
+		fileManager{ fileMgr }
 	{};
 	
-	std::map<std::string, std::vector<int>> SortInput();
+	std::map<std::string, std::vector<int>> SortInput(std::string tmpdir);
 
 private:
 	FileManager fileManager;
-	std::string sortInputFilePath;
 };

@@ -34,8 +34,3 @@ void Reduce::output(std::string key, int sum) {
 	fileManager.append_file(resultsFile, std::vector<std::string> { formattedKvpElement.str()});
 }
  
-
-void Reduce::WriteFinalOutput() 
-{
-	fileManager.write_file(finalOutputFile, std::vector<std::string> { "Success!"});
-}

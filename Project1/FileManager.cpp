@@ -114,8 +114,8 @@ void FileManager::test_output(std::string textToOutput) {
 	std::cout << "\n" << textToOutput;
 }
 
-void FileManager::reset_output_files() {
-	for (const auto& entry : std::experimental::filesystem::directory_iterator(workingDirectory)) {
+void FileManager::reset_output_files(std::string output_directory) {
+	for (const auto& entry : std::experimental::filesystem::directory_iterator(output_directory)) {
 		std::string pathString = entry.path().string();
 		bool isSortInputFile = pathString.find("TestSortInput") != std::string::npos;
 

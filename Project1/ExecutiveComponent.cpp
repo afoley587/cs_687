@@ -26,7 +26,7 @@ void ExecutiveComponent::RunProgram() {
 bool ExecutiveComponent::ValidateArgs(void) {
 	//TODO Add Validation to ensure Working Directory is set to default or one given is assigned
 
-	FileManager fm{ programSettings.WorkingDirectory }; // this will crash if worrking dir doesnt exist
+	FileManager fm{ programSettings.WorkingDirectory }; // this will crash if working dir doesnt exist
 
 	if (!fm.directory_exists(programSettings.WorkingDirectory)) {
 		std::cerr << "Input directory doesnt exist! Please provide it!" << std::endl;

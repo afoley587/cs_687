@@ -22,12 +22,12 @@ public:
 	
 	WorkFlowComponent(ProgramSettings programSettings) :
 		workingDirectory{programSettings.WorkingDirectory},
-		resultsFile{programSettings.ResultsFile},
-		finalOutputFile{programSettings.FinalOutputFile},
+		resultsFile{ programSettings.WorkingDirectory + "/" + programSettings.ResultsFile},
+		finalOutputFile{ programSettings.WorkingDirectory + "/" + programSettings.FinalOutputFile},
 		fileManager{ FileManager(programSettings.WorkingDirectory)},
 		mapManager{ MapManager(fileManager, 1024) },
 		sortManager{ SortManager(fileManager, programSettings.SortInputFile) },
-		reduceManager{ Reduce(fileManager, programSettings.ResultsFile, programSettings.FinalOutputFile)}
+		reduceManager{ Reduce(fileManager, programSettings.WorkingDirectory + "/" + programSettings.ResultsFile)}
 	{};
 
 	void StartWorkFlow();

@@ -14,13 +14,11 @@ void WorkFlowComponent::StartWorkFlow() {
 
     fileManager.read_directory(workingDirectory, input_files);
 
-	std::string tmpfile = resultsFile + "/intermediate.txt";
+	std::string tmpfile     = resultsFile + "/intermediate.txt";
+	std::string successfile = finalOutputFile + "/SUCCESS.txt";
+	std::string resultsfile = finalOutputFile + "/output.txt";
 
     for (auto f : input_files) {
-        // std::string tmpfile = f;
-        // tmpfile.replace(0, workingDirectory.length(), resultsFile);
-        // std::cout << "Processinng " << f << " into " << tmpfile << std::endl;
-
         fileManager.read_file(f, input_file_data);
         for (int i = 0; i < input_file_data.size(); i++) {
             bool isLast = (i == input_file_data.size() - 1);
@@ -30,7 +28,7 @@ void WorkFlowComponent::StartWorkFlow() {
     }
 
 	//Start Sort From Map Output File Read
-	std::map<std::string, std::vector<int>> sortedMapResults = sortManager.SortInput();
+	std::map<std::string, std::vector<int>> sortedMapResults = sortManager.SortInput(tmpfile);
 
 	//Start Reduce From Sort Results
 	// Call Reduce 
@@ -44,5 +42,5 @@ void WorkFlowComponent::StartWorkFlow() {
 	
 
 	//Write Final 'SUCCESS' to Final output file
-	reduceManager.WriteFinalOutput();
+	fileManager.touch_file(successfile);
 }

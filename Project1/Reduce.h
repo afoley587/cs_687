@@ -13,12 +13,10 @@ class Reduce {
 private:
 	FileManager fileManager;
 	std::string resultsFile;
-	std::string finalOutputFile;
 public:
-	Reduce(FileManager fileMgr, std::string resultFile, std::string finalOutputFile) :
+	Reduce(FileManager fileMgr, std::string resultFile) :
 		fileManager{ fileMgr }, 
-		resultsFile{ fileMgr.workingDirectory + "\\" + resultFile},
-		finalOutputFile{ fileMgr.workingDirectory + "\\" + finalOutputFile } {};
+		resultsFile{ resultFile } {};
 	// constructor initializer, takes key and iterator
 	// Reduce(string key, vector<int>::iterator it);
 	
@@ -41,8 +39,6 @@ public:
 	// getter/setter for int sum
 	int getsum();
 	void setsum(int s);
-
-	void WriteFinalOutput();
 };
 
 #endif // Reduce_h
