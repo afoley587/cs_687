@@ -2,7 +2,7 @@
 
 struct ProgramSettings {
 	std::string WorkingDirectory;
-	std::string SortInputFile;
-	std::string ResultsFile;
-	std::string FinalOutputFile;
+	std::string InputDirectory;
+	std::string OutputDirectory;
+	std::string TempDirectory;
 };

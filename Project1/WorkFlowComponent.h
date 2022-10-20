@@ -14,17 +14,16 @@ private:
 	Reduce reduceManager;
 	ProgramSettings programSettings;
 
-	std::string workingDirectory;
-	std::string resultsFile;
-	std::string finalOutputFile;
-
 public:
-	WorkFlowComponent(ProgramSettings programSettings) :
-		fileManager{ FileManager(programSettings.WorkingDirectory)},
-		mapManager{ MapManager(fileManager, 1024) },
-		sortManager{ SortManager(fileManager, programSettings.SortInputFile) },
-		reduceManager{ Reduce(fileManager, programSettings.ResultsFile, programSettings.FinalOutputFile)}
-	{};
+	WorkFlowComponent(ProgramSettings programSettings, FileManager fileMgr) :
+		fileManager{ fileMgr },
+		mapManager{ MapManager(fileManager, 1024, programSettings.InputDirectory) },
+		sortManager{ SortManager(fileManager, programSettings.TempDirectory) },
+		reduceManager{ Reduce(fileManager, programSettings.OutputDirectory)}
+	{
+	};
+
+	WorkFlowComponent();
 
 	void StartWorkFlow();
 };

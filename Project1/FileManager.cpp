@@ -7,7 +7,6 @@
 #include <filesystem>
 #include <string>
 
-
 bool FileManager::file_exists(std::string filename) {
 	return std::experimental::filesystem::exists(filename);
 }
@@ -87,7 +86,7 @@ int FileManager::append_file(std::string filename, std::vector<std::string> cons
 	}
 
 	for (auto s : data) {
-		ofile << s;
+		ofile << s << std::endl;
 	}
 
 	ofile.close();
@@ -113,6 +112,13 @@ int FileManager::append_file(std::string filename, std::vector<std::string> cons
 void FileManager::test_output(std::string textToOutput) {
 	std::cout << "\n" << textToOutput;
 }
+
+bool FileManager::validate_file_extension(std::string filePath, std::string extension) {
+	return filePath.size() >= extension.size() &&
+		filePath.compare(filePath.size() - extension.size(), extension.size(), extension) == 0;
+}
+
+
 
 void FileManager::reset_output_files() {
 	for (const auto& entry : std::experimental::filesystem::directory_iterator(workingDirectory)) {

@@ -4,6 +4,10 @@
 #include "SortManager.h"
 #include "Reduce.h"
 
+
+WorkFlowComponent::WorkFlowComponent() {
+}
+
 void WorkFlowComponent::StartWorkFlow() {
 	//Read Input Text From File
 

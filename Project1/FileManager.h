@@ -7,14 +7,16 @@
 
 class FileManager {
 public:
-	FileManager(std::string workingDir) :
-		workingDirectory{ workingDir } {
-		if (!directory_exists(workingDir)) {
-			std::filesystem::create_directory(workingDirectory);
-		}
+	//FileManager(std::string workingDir) :
+	//	workingDirectory{ workingDir } {
+	//	if (!directory_exists(workingDirectory)) {
+	//		std::filesystem::create_directory(workingDirectory);
+	//	}
 
-		reset_output_files();
-	};
+	//	reset_output_files();
+	//};
+
+
 
 	/* Checks if the filename given exists
 	* Args:
@@ -91,6 +93,8 @@ public:
 	void read_directory(std::string directory);
 
 	void test_output(std::string textToOutput);
+
+	bool validate_file_extension(std::string filePath, std::string extension);
 	
 	std::string workingDirectory;
 

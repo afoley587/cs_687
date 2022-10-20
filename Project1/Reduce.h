@@ -12,13 +12,17 @@
 class Reduce {
 private:
 	FileManager fileManager;
+	std::string resultsDirectory;
 	std::string resultsFile;
 	std::string finalOutputFile;
 public:
-	Reduce(FileManager fileMgr, std::string resultFile, std::string finalOutputFile) :
+	Reduce() {};
+	Reduce(FileManager fileMgr, std::string resultDir) :
 		fileManager{ fileMgr }, 
-		resultsFile{ fileMgr.workingDirectory + "\\" + resultFile},
-		finalOutputFile{ fileMgr.workingDirectory + "\\" + finalOutputFile } {};
+		resultsDirectory { resultDir },
+		resultsFile{ resultDir + "\\" + "resultsFile.txt" },
+		finalOutputFile{ resultDir + "\\" + "finalSuccessFile.txt" } {};
+
 	// constructor initializer, takes key and iterator
 	// Reduce(string key, vector<int>::iterator it);
 	
