@@ -130,7 +130,7 @@ void FileManager::reset_output_files(std::string output_directory) {
 }
 
 bool FileManager::mkdir(std::string dirname) {
-	bool success = std::experimental::filesystem::create_directory(dirname);
+	bool success = std::experimental::filesystem::create_directories(dirname);
 
 	if (!success) {
 		std::cerr << "Unable to create directory" << std::endl;

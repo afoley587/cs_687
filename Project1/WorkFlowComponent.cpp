@@ -12,7 +12,8 @@ void WorkFlowComponent::StartWorkFlow() {
     std::vector<std::string> input_files;
     std::vector<std::string> input_file_data;
 
-    fileManager.read_directory(workingDirectory, input_files);
+	std::string infile = "C:\\Users\\alexa\\Source\\Repos\\cs_687\\shakespeare";
+    fileManager.read_directory(infile, input_files);
 
 	std::string tmpfile     = resultsFile + "\\intermediate.txt";
 	std::string successfile = finalOutputFile + "\\SUCCESS.txt";
@@ -27,6 +28,7 @@ void WorkFlowComponent::StartWorkFlow() {
     }
 
 	//Start Sort From Map Output File Read
+	// fileManager.touch_file(tmpfile);
 	std::map<std::string, std::vector<int>> sortedMapResults = sortManager.SortInput(tmpfile);
 
 	//Start Reduce From Sort Results

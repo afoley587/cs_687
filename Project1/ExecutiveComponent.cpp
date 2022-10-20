@@ -28,12 +28,13 @@ bool ExecutiveComponent::ValidateArgs(void) {
 
 	FileManager fm{ programSettings.WorkingDirectory }; // this will crash if working dir doesnt exist
 
+	/*
 	if (!fm.directory_exists(programSettings.WorkingDirectory)) {
 		std::cerr << "Input directory doesnt exist! Please provide it!" << std::endl;
 		return false;
-	}
+	}*/
 
-	if (!prompt_for_dir(fm, programSettings.ResultsFile) || !prompt_for_dir(fm, programSettings.FinalOutputFile)) {
+	if (!prompt_for_dir(fm, programSettings.WorkingDirectory + "\\" + programSettings.ResultsFile) || !prompt_for_dir(fm, programSettings.WorkingDirectory + "\\" + programSettings.FinalOutputFile)) {
 		std::cerr << "Unable to create some directory. Please see above." << std::endl;
 		return false;
 	}
@@ -49,9 +50,9 @@ ProgramSettings ExecutiveComponent::ParseArgs(int argCount, char* args[]) {
 	ProgramSettings tempProgramSettings =
 	{
 		_workingDirectory,
-		"TestSortInput.txt",
-		"resultsTextFile.txt",
-		"FinalResultsFile.txt"
+		"TestSortInput",
+		"resultsTextFile",
+		"FinalResultsFile"
 	};
 
 	return tempProgramSettings;
