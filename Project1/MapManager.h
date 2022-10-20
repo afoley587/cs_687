@@ -7,8 +7,15 @@
 
 class MapManager {
 public:
+	MapManager();
 	MapManager(FileManager fileMgr) :max_buffer_size{ 10 }, filebuffer{}, fm{fileMgr} {};
-	MapManager(FileManager fileMgr, int b) : max_buffer_size{ b }, filebuffer{}, fm{fileMgr} {};
+	MapManager(FileManager fileMgr, int b, std::string outputFile) :
+		max_buffer_size{ b },
+		filebuffer{},
+		fm{ fileMgr },
+		mapOutputFile{ fileMgr.workingDirectory + "\\" + outputFile }
+	{};
+
 
 	/* Reads a line of text, tokenizes it, and puts it into a readable format
 	* Args:
@@ -18,7 +25,7 @@ public:
 	* Returns
 	*	...
 	*/
-	void map(std::string filename, std::string line, bool forceExport = false);
+	void map(std::string line, bool forceExport = false);
 
 	/* Exports a buffer to disk
 	* Args:
@@ -28,7 +35,7 @@ public:
 	* Returns
 	*	...
 	*/
-	void mexport(std::string key, std::vector<std::string> buffer, bool forceExport = false);
+	void mexport(std::vector<std::string> buffer, bool forceExport = false);
 
 	/*  Tokenizes a line from a strong to a vector
 	* Args:
@@ -40,6 +47,7 @@ public:
 	void tokenize(std::string in, std::vector<std::string>& out);
 
 private:
+	std::string mapOutputFile;
 	int max_buffer_size; /* Max Number Of Words In A Buffer Vector */
 	std::unordered_map<std::string, std::vector<std::string>> filebuffer;
 	FileManager fm;

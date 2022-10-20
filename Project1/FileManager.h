@@ -7,6 +7,7 @@
 
 class FileManager {
 public:
+
 	/* Checks if the filename given exists
 	* Args:
 	*	filename: Filename to check
@@ -82,6 +83,8 @@ public:
 	void read_directory(std::string directory);
 
 	void test_output(std::string textToOutput);
+
+	bool validate_file_extension(std::string filePath, std::string extension);
 	
 	std::string workingDirectory;
 

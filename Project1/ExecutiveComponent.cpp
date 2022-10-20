@@ -7,21 +7,36 @@
 #include <string>
 #include <filesystem>
 
-std::string GetDefaultWorkingDirectory(char currentExePath[]);
+std::vector<std::string> ConvertArgsToStringVector(char* a[], int size);
+std::string GetDefaultWorkingDirectory(std::string workDirectoryString);
 
-ExecutiveComponent::ExecutiveComponent(int argCount, char* args[])
-	: programSettings{ ProgramSettings(ParseArgs(argCount, args)) } {};
+ExecutiveComponent::ExecutiveComponent(int argCount, char* args[]) {
+	programSettings = ParseArgs(argCount, args);
+	fileManager = FileManager();
+	workFlowComponent = WorkFlowComponent(programSettings, fileManager);
+}
+
 
 void ExecutiveComponent::RunProgram() {
 	//This is where the program starts after validation and object creation
-	if (!ValidateArgs()) {
-		std::cout << "\n" << "Invalid Args Provided. Supply Proper Arguements to Program.";
-		return;
-	}
-
-	WorkFlowComponent workFlowComponent{ programSettings };
 	workFlowComponent.StartWorkFlow();
 }
+
+ProgramSettings ExecutiveComponent::ParseArgs(int argCount, char* args[]) {
+	//convert character array to string vector
+	std::vector<std::string> argVector = ConvertArgsToStringVector(args, argCount);
+	
+	//TODO Parse Args to extract Program Settings
+	ProgramSettings programSettings;
+
+	if (!ValidateArgs(argVector, programSettings)) {
+		std::cout << "\n" << "Invalid Args Provided. Supply Proper Arguements to Program.";
+		throw std::invalid_argument("Invalid Arguements Provided!");
+	}
+
+	return programSettings;
+}
+
 
 bool ExecutiveComponent::ValidateArgs(void) {
 	//TODO Add Validation to ensure Working Directory is set to default or one given is assigned
@@ -43,34 +58,42 @@ bool ExecutiveComponent::ValidateArgs(void) {
 	return true;
 }
 
-ProgramSettings ExecutiveComponent::ParseArgs(int argCount, char* args[]) {
-	//TODO Parse Args to extract Program Settings
-	std::string _workingDirectory = GetDefaultWorkingDirectory(args[0]);
+bool ExecutiveComponent::ValidateFile(std::string filePath) {
+	//Does File Exist
+	if (!fileManager.file_exists(filePath)) {
+		return false;
+	}
 
-	ProgramSettings tempProgramSettings =
-	{
-		_workingDirectory,
-		"TestSortInput",
-		"resultsTextFile",
-		"FinalResultsFile"
-	};
 
-	return tempProgramSettings;
+	//Does File Have the correct Extenstion
+	return fileManager.validate_file_extension(filePath, ".txt");
 }
 
-std::string GetDefaultWorkingDirectory(char currentExePath[])
+
+std::string GetDefaultWorkingDirectory(std::string workDirectoryString)
 {
-	std::string currentExePathString = currentExePath;
 	// Search for the substring in string
+	// TODO Remove this when we are done testing this using Visual Studio
 	std::string toErase = "\\x64\\Debug\\Project1.exe";
-	size_t pos = currentExePathString.find(toErase);
+	size_t pos = workDirectoryString.find(toErase);
 	if (pos != std::string::npos)
 	{
 		// If found then erase it from string
-		&currentExePathString.erase(pos, toErase.length());
+		&workDirectoryString.erase(pos, toErase.length());
 	}
 
-	return currentExePathString + "\\" + "Program_Output";
+	return workDirectoryString;
+}
+
+std::vector<std::string> ConvertArgsToStringVector(char* a[], int size)
+{
+	std::vector<std::string> argVector;
+
+	for (int i = 0; i < size; i++) {
+		argVector.push_back(a[i]);
+	}
+
+	return argVector;
 }
 
 
