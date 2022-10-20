@@ -15,15 +15,14 @@ private:
 	ProgramSettings programSettings;
 
 	std::string workingDirectory;
-	std::string resultsFile;
-	std::string finalOutputFile;
+	std::string resultsFile; // change to dir
+	std::string finalOutputFile; // chaange to dir
 	
 public:
 	
 	WorkFlowComponent(ProgramSettings programSettings) :
 		workingDirectory{programSettings.WorkingDirectory},
 		resultsFile{ programSettings.WorkingDirectory + "/" + programSettings.ResultsFile},
-		finalOutputFile{ programSettings.WorkingDirectory + "/" + programSettings.FinalOutputFile},
 		fileManager{ FileManager(programSettings.WorkingDirectory)},
 		mapManager{ MapManager(fileManager, 1024) },
 		sortManager{ SortManager(fileManager, programSettings.SortInputFile) },

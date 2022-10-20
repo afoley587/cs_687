@@ -16,7 +16,6 @@ void WorkFlowComponent::StartWorkFlow() {
 
 	std::string tmpfile     = resultsFile + "/intermediate.txt";
 	std::string successfile = finalOutputFile + "/SUCCESS.txt";
-	std::string resultsfile = finalOutputFile + "/output.txt";
 
     for (auto f : input_files) {
         fileManager.read_file(f, input_file_data);
