@@ -26,7 +26,7 @@ public:
 		fileManager{ FileManager(programSettings.WorkingDirectory)},
 		mapManager{ MapManager(fileManager, 1024) },
 		sortManager{ SortManager(fileManager, programSettings.SortInputFile) },
-		reduceManager{ Reduce(fileManager, programSettings.WorkingDirectory + "\\" + programSettings.ResultsFile)}
+		reduceManager{ Reduce(fileManager, programSettings.WorkingDirectory + "\\" + programSettings.FinalOutputFile)}
 	{};
 
 	void StartWorkFlow();

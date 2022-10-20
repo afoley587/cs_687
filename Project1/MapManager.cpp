@@ -27,7 +27,7 @@ void MapManager::mexport(std::string filename, std::vector<std::string> buffer, 
 		std::vector<std::string> toExport; 
 		
 		for (auto s : filebuffer[filename]) {
-			toExport.push_back("(" + s + ", 1)\n");
+			toExport.push_back("(\"" + s + "\", [1]),");
 		}
 
 		// toExport.push_back("\nEXPORT\n");
