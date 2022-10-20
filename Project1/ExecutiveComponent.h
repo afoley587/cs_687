@@ -11,10 +11,11 @@ public:
 	void RunProgram();
 
 private:
-	WorkFlowComponent workFlowComponent;
+	ProgramSettings programSettings;
 	std::string workingDirectory;
 	std::string InputFilePath;
 
-	bool ValidateArgs(int argCount, char* args[]);
+	bool ValidateArgs(void);
+	bool prompt_for_dir(FileManager fm, std::string dirname);
 	ProgramSettings ParseArgs(int argCount, char* args[]);
 };

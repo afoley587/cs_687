@@ -72,20 +72,3 @@ int main(int argc, char* argv[])
 #endif TEST_SORT
 }
 
-bool prompt_for_dir(FileManager fm, std::string dirname) {
-    if (!fm.directory_exists(dirname)) {
-        char yes_no;
-        std::cout << dirname + " does not exists. Would you like to create it (y/n)?" << std::endl;
-        std::cin >> yes_no;
-
-        if (yes_no == 'y' || yes_no == 'Y') {
-            return fm.mkdir(dirname);
-        }
-        else {
-            std::cout << "Please create directory and run again!" << std::endl;
-            return false;
-        }
-    }
-    return true;
-
-}
