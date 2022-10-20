@@ -12,9 +12,6 @@ public:
 
 private:
 	ProgramSettings programSettings;
-	std::string workingDirectory;
-	std::string InputFilePath;
-
 	bool ValidateArgs(void);
 	bool prompt_for_dir(FileManager fm, std::string dirname);
 	ProgramSettings ParseArgs(int argCount, char* args[]);

@@ -29,6 +29,7 @@ bool ExecutiveComponent::ValidateArgs(void) {
 	FileManager fm{ programSettings.WorkingDirectory }; // this will crash if worrking dir doesnt exist
 
 	if (!fm.directory_exists(programSettings.WorkingDirectory)) {
+		std::cerr << "Input directory doesnt exist! Please provide it!" << std::endl;
 		return false;
 	}
 
@@ -43,11 +44,11 @@ bool ExecutiveComponent::ValidateArgs(void) {
 
 ProgramSettings ExecutiveComponent::ParseArgs(int argCount, char* args[]) {
 	//TODO Parse Args to extract Program Settings
-	workingDirectory = GetDefaultWorkingDirectory(args[0]);
+	std::string _workingDirectory = GetDefaultWorkingDirectory(args[0]);
 
 	ProgramSettings tempProgramSettings =
 	{
-		workingDirectory,
+		_workingDirectory,
 		"TestSortInput.txt",
 		"resultsTextFile.txt",
 		"FinalResultsFile.txt"

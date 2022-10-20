@@ -9,6 +9,26 @@ void WorkFlowComponent::StartWorkFlow() {
 
 	//Start Map Function
 
+    std::vector<std::string> input_files;
+    std::vector<std::string> input_file_data;
+
+    fileManager.read_directory(workingDirectory, input_files);
+
+	std::string tmpfile = resultsFile + "/intermediate.txt";
+
+    for (auto f : input_files) {
+        // std::string tmpfile = f;
+        // tmpfile.replace(0, workingDirectory.length(), resultsFile);
+        // std::cout << "Processinng " << f << " into " << tmpfile << std::endl;
+
+        fileManager.read_file(f, input_file_data);
+        for (int i = 0; i < input_file_data.size(); i++) {
+            bool isLast = (i == input_file_data.size() - 1);
+            mapManager.map(tmpfile, input_file_data[i], isLast);
+        }
+        input_file_data.clear();
+    }
+
 	//Start Sort From Map Output File Read
 	std::map<std::string, std::vector<int>> sortedMapResults = sortManager.SortInput();
 

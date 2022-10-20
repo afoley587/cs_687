@@ -17,9 +17,13 @@ private:
 	std::string workingDirectory;
 	std::string resultsFile;
 	std::string finalOutputFile;
-
+	
 public:
+	
 	WorkFlowComponent(ProgramSettings programSettings) :
+		workingDirectory{programSettings.WorkingDirectory},
+		resultsFile{programSettings.ResultsFile},
+		finalOutputFile{programSettings.FinalOutputFile},
 		fileManager{ FileManager(programSettings.WorkingDirectory)},
 		mapManager{ MapManager(fileManager, 1024) },
 		sortManager{ SortManager(fileManager, programSettings.SortInputFile) },
