@@ -13,8 +13,27 @@ void WorkFlowComponent::StartWorkFlow() {
 
 	//Start Map Function
 
+    std::vector<std::string> input_files;
+    std::vector<std::string> input_file_data;
+
+	std::string infile = "C:\\Users\\alexa\\Source\\Repos\\cs_687\\shakespeare";
+    fileManager.read_directory(infile, input_files);
+
+	std::string tmpfile     = resultsFile + "\\intermediate.txt";
+	std::string successfile = finalOutputFile + "\\SUCCESS.txt";
+
+    for (auto f : input_files) {
+        fileManager.read_file(f, input_file_data);
+        for (int i = 0; i < input_file_data.size(); i++) {
+            bool isLast = (i == input_file_data.size() - 1);
+            mapManager.map(tmpfile, input_file_data[i], isLast);
+        }
+        input_file_data.clear();
+    }
+
 	//Start Sort From Map Output File Read
-	std::map<std::string, std::vector<int>> sortedMapResults = sortManager.SortInput();
+	// fileManager.touch_file(tmpfile);
+	std::map<std::string, std::vector<int>> sortedMapResults = sortManager.SortInput(tmpfile);
 
 	//Start Reduce From Sort Results
 	// Call Reduce 
@@ -31,6 +50,6 @@ void WorkFlowComponent::StartWorkFlow() {
 	
 
 	//Write Final 'SUCCESS' to Final output file
-	reduceManager.WriteFinalOutput();
-}
 
+	fileManager.touch_file(successfile);
+}

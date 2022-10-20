@@ -28,10 +28,10 @@ void MapManager::mexport(std::vector<std::string> buffer, bool forceExport) {
 
 	if (filebuffer[mapOutputFile].size() >= max_buffer_size || forceExport) {
 
-		std::vector<std::string> toExport; 
-		
-		for (auto s : filebuffer[mapOutputFile]) {
-			toExport.push_back("(" + s + ", 1)\n");
+		std::vector<std::string> toExport;
+
+		for (auto s : filebuffer[filename]) {
+			toExport.push_back("(\"" + s + "\", [1]),");
 		}
 
 		// toExport.push_back("\nEXPORT\n");

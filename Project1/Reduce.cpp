@@ -31,11 +31,6 @@ void Reduce::output(std::string key, int sum) {
 	std::ostringstream formattedKvpElement;
 	formattedKvpElement << "KEY:" << key << " , Value: " << sum << std::endl;
 
-	fileManager.append_file(resultsFile, std::vector<std::string> { formattedKvpElement.str()});
+	fileManager.append_file(resultsFile + "\\output.txt", std::vector<std::string> { formattedKvpElement.str()});
 }
  
-
-void Reduce::WriteFinalOutput() 
-{
-	fileManager.write_file(finalOutputFile, std::vector<std::string> { "Success!"});
-}

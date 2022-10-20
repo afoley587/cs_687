@@ -38,45 +38,22 @@ ProgramSettings ExecutiveComponent::ParseArgs(int argCount, char* args[]) {
 }
 
 
-bool ExecutiveComponent::ValidateArgs(std::vector<std::string> args, ProgramSettings &programSettings) {
+bool ExecutiveComponent::ValidateArgs(void) {
 	//TODO Add Validation to ensure Working Directory is set to default or one given is assigned
 
-	std::string workingDirectory = GetDefaultWorkingDirectory(args.front());
+	FileManager fm{ programSettings.WorkingDirectory }; // this will crash if working dir doesnt exist
 
+	/*
+	if (!fm.directory_exists(programSettings.WorkingDirectory)) {
+		std::cerr << "Input directory doesnt exist! Please provide it!" << std::endl;
+		return false;
+	}*/
 
-	int argIndex = 0;
-	// Ensure all files given exist with the correct file extention
-	for (auto DirectoryArg : args) {
-		// First Arg is used to create working directory
-		if (DirectoryArg == args.front()) {
-			programSettings.WorkingDirectory = workingDirectory;
-		}
-		// All other Args are file names
-		else {
-			bool useDefaultFile = false;
-			std::string fullDirectoryPath = workingDirectory + "\\" + DirectoryArg;
-
-			if (!fileManager.directory_exists(fullDirectoryPath)) {
-				//TODO We may want to make the directory instead of return false
-				return false;
-			}
-
-			if (argIndex == 1) 
-			{
-				programSettings.InputDirectory = workingDirectory + "\\" + DirectoryArg;
-			}
-			else if (argIndex == 2) {
-
-				programSettings.OutputDirectory = workingDirectory + "\\" + DirectoryArg;
-			}
-			else if (argIndex == 3) {
-
-				programSettings.TempDirectory = workingDirectory + "\\" + DirectoryArg;
-			}
-		}
-
-		argIndex++;
+	if (!prompt_for_dir(fm, programSettings.WorkingDirectory + "\\" + programSettings.ResultsFile) || !prompt_for_dir(fm, programSettings.WorkingDirectory + "\\" + programSettings.FinalOutputFile)) {
+		std::cerr << "Unable to create some directory. Please see above." << std::endl;
+		return false;
 	}
+
 
 	return true;
 }
@@ -86,6 +63,7 @@ bool ExecutiveComponent::ValidateFile(std::string filePath) {
 	if (!fileManager.file_exists(filePath)) {
 		return false;
 	}
+
 
 	//Does File Have the correct Extenstion
 	return fileManager.validate_file_extension(filePath, ".txt");
@@ -118,3 +96,21 @@ std::vector<std::string> ConvertArgsToStringVector(char* a[], int size)
 	return argVector;
 }
 
+
+bool ExecutiveComponent::prompt_for_dir(FileManager fm, std::string dirname) {
+	if (!fm.directory_exists(dirname)) {
+		char yes_no;
+		std::cout << dirname + " does not exists. Would you like to create it (y/n)?" << std::endl;
+		std::cin >> yes_no;
+
+		if (yes_no == 'y' || yes_no == 'Y') {
+			return fm.mkdir(dirname);
+		}
+		else {
+			std::cout << "Please create directory and run again!" << std::endl;
+			return false;
+		}
+	}
+	return true;
+
+}

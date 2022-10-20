@@ -20,7 +20,7 @@ public:
 		sortInputFile { tempDir + "\\" + "tmpFile.txt" }
 	{};
 	
-	std::map<std::string, std::vector<int>> SortInput();
+	std::map<std::string, std::vector<int>> SortInput(std::string tmpdir);
 
 private:
 	FileManager fileManager;

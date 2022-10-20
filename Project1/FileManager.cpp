@@ -122,10 +122,8 @@ bool FileManager::validate_file_extension(std::string filePath, std::string exte
 		filePath.compare(filePath.size() - extension.size(), extension.size(), extension) == 0;
 }
 
-
-
-void FileManager::reset_output_files() {
-	for (const auto& entry : std::experimental::filesystem::directory_iterator(workingDirectory)) {
+void FileManager::reset_output_files(std::string output_directory) {
+	for (const auto& entry : std::experimental::filesystem::directory_iterator(output_directory)) {
 		std::string pathString = entry.path().string();
 		bool isSortInputFile = pathString.find("TestSortInput") != std::string::npos;
 
@@ -140,7 +138,7 @@ void FileManager::reset_output_files() {
 }
 
 bool FileManager::mkdir(std::string dirname) {
-	bool success = std::experimental::filesystem::create_directory(dirname);
+	bool success = std::experimental::filesystem::create_directories(dirname);
 
 	if (!success) {
 		std::cerr << "Unable to create directory" << std::endl;
