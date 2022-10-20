@@ -78,6 +78,10 @@ int FileManager::touch_file(std::string filename) {
 
 int FileManager::append_file(std::string filename, std::vector<std::string> const data) {
 
+	if (!file_exists(filename)) {
+		touch_file(filename);
+	}
+
 	std::ofstream ofile(filename, std::ios::app);
 
 	if (!ofile) {

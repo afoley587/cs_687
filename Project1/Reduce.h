@@ -13,9 +13,9 @@ class Reduce {
 private:
 	FileManager fileManager;
 	std::string resultsDirectory;
-	std::string resultsFile;
-	std::string finalOutputFile;
 public:
+	std::string finalOutputFile;
+	std::string resultsFile;
 	Reduce() {};
 	Reduce(FileManager fileMgr, std::string resultDir) :
 		fileManager{ fileMgr }, 

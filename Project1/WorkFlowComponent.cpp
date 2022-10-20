@@ -19,6 +19,9 @@ void WorkFlowComponent::StartWorkFlow() {
 	//Start Reduce From Sort Results
 	// Call Reduce 
 	
+	fileManager.touch_file(reduceManager.resultsFile);
+	fileManager.touch_file(reduceManager.resultsFile);
+
 	for (auto keyValuePair : sortedMapResults)
 	{
 		reduceManager.reduce(keyValuePair.first, keyValuePair.second);
@@ -30,3 +33,4 @@ void WorkFlowComponent::StartWorkFlow() {
 	//Write Final 'SUCCESS' to Final output file
 	reduceManager.WriteFinalOutput();
 }
+

@@ -57,6 +57,7 @@ bool ExecutiveComponent::ValidateArgs(std::vector<std::string> args, ProgramSett
 			std::string fullDirectoryPath = workingDirectory + "\\" + DirectoryArg;
 
 			if (!fileManager.directory_exists(fullDirectoryPath)) {
+				//TODO We may want to make the directory instead of return false
 				return false;
 			}
 
@@ -94,6 +95,7 @@ bool ExecutiveComponent::ValidateFile(std::string filePath) {
 std::string GetDefaultWorkingDirectory(std::string workDirectoryString)
 {
 	// Search for the substring in string
+	// TODO Remove this when we are done testing this using Visual Studio
 	std::string toErase = "\\x64\\Debug\\Project1.exe";
 	size_t pos = workDirectoryString.find(toErase);
 	if (pos != std::string::npos)
@@ -108,16 +110,6 @@ std::string GetDefaultWorkingDirectory(std::string workDirectoryString)
 std::vector<std::string> ConvertArgsToStringVector(char* a[], int size)
 {
 	std::vector<std::string> argVector;
-	//for (int index = 0; index < size; index++) {
-
-	//	int i;
-	//	std::string s = "";
-	//	for (i = 0; i < size; i++) {
-	//		s = s + a[i];
-	//	}
-
-	//	argVector.push_back(s);
-	//}
 
 	for (int i = 0; i < size; i++) {
 		argVector.push_back(a[i]);

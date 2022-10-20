@@ -18,7 +18,7 @@ std::string FormatStringForReduceMethod(const std::map<std::string, std::vector<
 std::map<std::string, std::vector<int>> SortManager::SortInput() {
     //Read Map Functions Output File
     std::vector<std::string> dataToBeSorted;
-    fileManager.read_file(tempDirectory, dataToBeSorted);
+    fileManager.read_file(sortInputFile, dataToBeSorted);
     
     std::string fileDataString;
 

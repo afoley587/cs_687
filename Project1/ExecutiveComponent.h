@@ -7,11 +7,6 @@
 class ExecutiveComponent {
 public: 
 	ExecutiveComponent(int argCount, char* args[]);
-	//	: programSettings{ ParseArgs(argCount, args) },
-	//	fileManager{ FileManager(programSettings.WorkingDirectory) },
-	//	workFlowComponent{ WorkFlowComponent(programSettings, fileManager) }
-	//{};
-
 	void RunProgram();
 
 private:
