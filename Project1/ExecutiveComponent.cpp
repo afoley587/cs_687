@@ -27,33 +27,34 @@ ProgramSettings ExecutiveComponent::ParseArgs(int argCount, char* args[]) {
 	std::vector<std::string> argVector = ConvertArgsToStringVector(args, argCount);
 	
 	//TODO Parse Args to extract Program Settings
-	ProgramSettings programSettings;
+	
 
-	if (!ValidateArgs(argVector, programSettings)) {
+	if (!ValidateArgs(argVector)) {
 		std::cout << "\n" << "Invalid Args Provided. Supply Proper Arguements to Program.";
 		throw std::invalid_argument("Invalid Arguements Provided!");
 	}
 
-	return programSettings;
+	return ProgramSettings{ "", args[1], args[2], args[3]};
 }
 
 
-bool ExecutiveComponent::ValidateArgs(void) {
+bool ExecutiveComponent::ValidateArgs(std::vector<std::string> argVector) {
 	//TODO Add Validation to ensure Working Directory is set to default or one given is assigned
 
-	FileManager fm{ programSettings.WorkingDirectory }; // this will crash if working dir doesnt exist
-
-	/*
-	if (!fm.directory_exists(programSettings.WorkingDirectory)) {
-		std::cerr << "Input directory doesnt exist! Please provide it!" << std::endl;
-		return false;
-	}*/
-
-	if (!prompt_for_dir(fm, programSettings.WorkingDirectory + "\\" + programSettings.ResultsFile) || !prompt_for_dir(fm, programSettings.WorkingDirectory + "\\" + programSettings.FinalOutputFile)) {
-		std::cerr << "Unable to create some directory. Please see above." << std::endl;
+	if (argVector.size() < 4) {
 		return false;
 	}
 
+	// Add a check to make sure each dir is unique
+	if (!fileManager.directory_exists(argVector[1])) {
+		std::cerr << "Input directory doesnt exist! Please provide it!" << std::endl;
+		return false;
+	}
+
+	if (!prompt_for_dir(fileManager, argVector[2]) || !prompt_for_dir(fileManager, argVector[3])) {
+		std::cerr << "Unable to create some directory. Please see above." << std::endl;
+		return false;
+	}
 
 	return true;
 }

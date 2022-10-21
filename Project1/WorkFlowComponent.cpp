@@ -4,10 +4,6 @@
 #include "SortManager.h"
 #include "Reduce.h"
 
-
-WorkFlowComponent::WorkFlowComponent() {
-}
-
 void WorkFlowComponent::StartWorkFlow() {
 	//Read Input Text From File
 
@@ -16,30 +12,33 @@ void WorkFlowComponent::StartWorkFlow() {
     std::vector<std::string> input_files;
     std::vector<std::string> input_file_data;
 
-	std::string infile = "C:\\Users\\alexa\\Source\\Repos\\cs_687\\shakespeare";
-    fileManager.read_directory(infile, input_files);
+    fileManager.read_directory(programSettings.InputDirectory, input_files);
 
-	std::string tmpfile     = resultsFile + "\\intermediate.txt";
-	std::string successfile = finalOutputFile + "\\SUCCESS.txt";
+	
+
+	std::string tmpfile     = programSettings.TempDirectory + "\\tempfile.txt";
+	std::string successfile = programSettings.OutputDirectory + "\\SUCCESS.txt";
+
+	mapManager.setTempFile(tmpfile);
+	sortManager.setInputFile(mapManager.getTempFile());
 
     for (auto f : input_files) {
         fileManager.read_file(f, input_file_data);
         for (int i = 0; i < input_file_data.size(); i++) {
             bool isLast = (i == input_file_data.size() - 1);
-            mapManager.map(tmpfile, input_file_data[i], isLast);
+            mapManager.map(input_file_data[i], isLast);
         }
         input_file_data.clear();
     }
 
 	//Start Sort From Map Output File Read
 	// fileManager.touch_file(tmpfile);
-	std::map<std::string, std::vector<int>> sortedMapResults = sortManager.SortInput(tmpfile);
+	std::map<std::string, std::vector<int>> sortedMapResults = sortManager.SortInput();
 
 	//Start Reduce From Sort Results
 	// Call Reduce 
 	
-	fileManager.touch_file(reduceManager.resultsFile);
-	fileManager.touch_file(reduceManager.resultsFile);
+	fileManager.touch_file(reduceManager.getResultsFile());
 
 	for (auto keyValuePair : sortedMapResults)
 	{

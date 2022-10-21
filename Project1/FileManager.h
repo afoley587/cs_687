@@ -8,6 +8,8 @@
 class FileManager {
 public:
 
+	FileManager() {};
+
 	/* Checks if the filename given exists
 	* Args:
 	*	filename: Filename to check

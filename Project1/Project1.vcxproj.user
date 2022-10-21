@@ -4,7 +4,7 @@
     <ShowAllFiles>false</ShowAllFiles>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LocalDebuggerCommandArguments>ExampleFiles\Proj1_InputFiles ExampleFiles\Proj1_OutputFiles ExampleFiles\Proj1_IntermediateFiles</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>C:\Users\alexa\Source\Repos\cs_687\shakespeare C:\Users\alexa\Source\Repos\cs_687\tmp C:\Users\alexa\Source\Repos\cs_687\out</LocalDebuggerCommandArguments>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
 </Project>

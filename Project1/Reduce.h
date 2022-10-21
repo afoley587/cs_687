@@ -12,25 +12,22 @@
 class Reduce {
 private:
 	FileManager fileManager;
-<<<<<<< kchalupa/updatesToMain
-	std::string resultsDirectory;
-public:
 	std::string finalOutputFile;
 	std::string resultsFile;
-	Reduce() {};
-	Reduce(FileManager fileMgr, std::string resultDir) :
-		fileManager{ fileMgr }, 
-		resultsDirectory { resultDir },
-		resultsFile{ resultDir + "\\" + "resultsFile.txt" },
-		finalOutputFile{ resultDir + "\\" + "finalSuccessFile.txt" } {};
-
-=======
-	std::string resultsFile;
 public:
-	Reduce(FileManager fileMgr, std::string resultFile) :
+
+	Reduce() {};
+	Reduce(FileManager fileMgr, std::string resultsFile, std::string successFile) :
 		fileManager{ fileMgr }, 
-		resultsFile{ resultFile } {};
->>>>>>> afoley/addingValidation
+		resultsFile{ resultsFile },
+		finalOutputFile{ successFile } {};
+
+
+	void setResultsFile(std::string r) { resultsFile = r; };
+	std::string getResultsFile(void) { return resultsFile; };
+	void setFinalOutputFile(std::string f) { finalOutputFile = f; };
+	std::string getFinalOutputFile(void) { return finalOutputFile; };
+	
 	// constructor initializer, takes key and iterator
 	// Reduce(string key, vector<int>::iterator it);
 	
