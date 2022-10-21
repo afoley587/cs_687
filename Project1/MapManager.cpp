@@ -7,33 +7,35 @@
 #include <iostream>
 #include <cwctype>
 
-void MapManager::map(std::string filename, std::string line, bool forceExport) {
-	std::vector<std::string> buffer;
-	tokenize(line, buffer);
-	mexport(filename, buffer, forceExport);
+MapManager::MapManager() {
+
 }
 
-void MapManager::mexport(std::string filename, std::vector<std::string> buffer, bool forceExport) {
-	if (filebuffer.find(filename) != filebuffer.end()) {
-		filebuffer[filename].insert(filebuffer[filename].end(), buffer.begin(), buffer.end());
+void MapManager::map(std::string line, bool forceExport) {
+	std::vector<std::string> buffer;
+	tokenize(line, buffer);
+	mexport(buffer, forceExport);
+}
+
+void MapManager::mexport(std::vector<std::string> buffer, bool forceExport) {
+	if (filebuffer.find(tempFile) != filebuffer.end()) {
+		filebuffer[tempFile].insert(filebuffer[tempFile].end(), buffer.begin(), buffer.end());
 	}
 	else {
-		fm.touch_file(filename);
-		filebuffer.insert(std::pair<std::string, std::vector<std::string>>(filename, buffer));
+		fm.touch_file(tempFile);
+		filebuffer.insert(std::pair<std::string, std::vector<std::string>>(tempFile, buffer));
 	}
 
-	if (filebuffer[filename].size() >= max_buffer_size || forceExport) {
+	if (filebuffer[tempFile].size() >= max_buffer_size || forceExport) {
 
-		std::vector<std::string> toExport; 
-		
-		for (auto s : filebuffer[filename]) {
-			toExport.push_back("(" + s + ", 1)\n");
+		std::vector<std::string> toExport;
+
+		for (auto s : filebuffer[tempFile]) {
+			toExport.push_back("(\"" + s + "\", [1]),");
 		}
 
-		// toExport.push_back("\nEXPORT\n");
-
-		fm.append_file(filename, toExport);
-		filebuffer[filename].clear();
+		fm.append_file(tempFile, toExport);
+		filebuffer[tempFile].clear();
 	}
 }
 

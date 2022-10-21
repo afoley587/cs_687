@@ -7,7 +7,6 @@
 #include <filesystem>
 #include <string>
 
-
 bool FileManager::file_exists(std::string filename) {
 	return std::experimental::filesystem::exists(filename);
 }
@@ -79,6 +78,10 @@ int FileManager::touch_file(std::string filename) {
 
 int FileManager::append_file(std::string filename, std::vector<std::string> const data) {
 
+	if (!file_exists(filename)) {
+		touch_file(filename);
+	}
+
 	std::ofstream ofile(filename, std::ios::app);
 
 	if (!ofile) {
@@ -87,7 +90,7 @@ int FileManager::append_file(std::string filename, std::vector<std::string> cons
 	}
 
 	for (auto s : data) {
-		ofile << s;
+		ofile << s << std::endl;
 	}
 
 	ofile.close();
@@ -114,8 +117,13 @@ void FileManager::test_output(std::string textToOutput) {
 	std::cout << "\n" << textToOutput;
 }
 
-void FileManager::reset_output_files() {
-	for (const auto& entry : std::experimental::filesystem::directory_iterator(workingDirectory)) {
+bool FileManager::validate_file_extension(std::string filePath, std::string extension) {
+	return filePath.size() >= extension.size() &&
+		filePath.compare(filePath.size() - extension.size(), extension.size(), extension) == 0;
+}
+
+void FileManager::reset_output_files(std::string output_directory) {
+	for (const auto& entry : std::experimental::filesystem::directory_iterator(output_directory)) {
 		std::string pathString = entry.path().string();
 		bool isSortInputFile = pathString.find("TestSortInput") != std::string::npos;
 
@@ -130,7 +138,7 @@ void FileManager::reset_output_files() {
 }
 
 bool FileManager::mkdir(std::string dirname) {
-	bool success = std::experimental::filesystem::create_directory(dirname);
+	bool success = std::experimental::filesystem::create_directories(dirname);
 
 	if (!success) {
 		std::cerr << "Unable to create directory" << std::endl;

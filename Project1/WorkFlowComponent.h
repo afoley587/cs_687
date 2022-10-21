@@ -14,17 +14,22 @@ private:
 	Reduce reduceManager;
 	ProgramSettings programSettings;
 
-	std::string workingDirectory;
-	std::string resultsFile;
-	std::string finalOutputFile;
-
 public:
-	WorkFlowComponent(ProgramSettings programSettings) :
-		fileManager{ FileManager(programSettings.WorkingDirectory)},
-		mapManager{ MapManager(fileManager, 1024) },
-		sortManager{ SortManager(fileManager, programSettings.SortInputFile) },
-		reduceManager{ Reduce(fileManager, programSettings.ResultsFile, programSettings.FinalOutputFile)}
+	/*
+	 * Set Sane Default For each file. Putting in here
+	 * So we can easily see what they all are and their
+	 * ctors dont hide that and allow for mismatching file
+	 * names
+	*/
+	WorkFlowComponent(ProgramSettings programSettings, FileManager fileMgr) :
+		programSettings{programSettings},
+		fileManager{ fileMgr },
+		mapManager{ MapManager(fileManager, 1024, programSettings.TempDirectory + "\\temp.txt")},
+		sortManager{ SortManager(fileManager, programSettings.TempDirectory + "\\temp.txt")},
+		reduceManager{ Reduce(fileManager, programSettings.OutputDirectory + "\\results.txt", programSettings.OutputDirectory + "\\SUCCESS.txt")}
 	{};
+
+	WorkFlowComponent() {};
 
 	void StartWorkFlow();
 };

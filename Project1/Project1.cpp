@@ -25,7 +25,7 @@ bool prompt_for_dir(FileManager fm, std::string dirname);
 
 int main(int argc, char* argv[])
 {
-    std::string indir, tmpdir, outdir;
+    //std::string indir, tmpdir, outdir;
 
     /*
     if (argc < 4) {
@@ -34,36 +34,9 @@ int main(int argc, char* argv[])
     }
     */
 
-    indir = "c:/Users/alexa/Source/Repos/cs_687/shakespeare"; // argv[1];
-    tmpdir = "c:/Users/alexa/Source/Repos/cs_687/tmp"; // argv[2];
-    outdir = "c:/Users/alexa/Source/Repos/cs_687/tmp"; // argv[3];
-
-#ifdef TEST_MM
-    std::vector<std::string> test_fm_data;
-    std::vector<std::string> test_fm_files;
-    FileManager fm;
-    MapManager mm {1024};
-
-    if (!prompt_for_dir(fm, tmpdir) || !prompt_for_dir(fm, outdir)) {
-        std::cerr << "Unable to create some directory. Please see above." << std::endl;
-        return 1;
-    }
-
-    fm.read_directory(indir, test_fm_files);
-
-    for (auto f : test_fm_files) {
-        std::string tmpfile = f;
-        tmpfile.replace(0, indir.length(), tmpdir);
-        std::cout << "Processinng " << f << " into " << tmpfile << std::endl;
-
-        fm.read_file(f, test_fm_data);
-        for (int i = 0; i < test_fm_data.size(); i++) {
-            bool isLast = (i == test_fm_data.size() - 1);
-            mm.map(tmpfile, test_fm_data[i], isLast);
-        }
-        test_fm_data.clear();
-    }
-#endif // TEST_MM
+    //indir = "c:/Users/alexa/Source/Repos/cs_687/shakespeare"; // argv[1];
+    //tmpdir = "c:/Users/alexa/Source/Repos/cs_687/tmp"; // argv[2];
+    //outdir = "c:/Users/alexa/Source/Repos/cs_687/tmp"; // argv[3];
 
 #ifdef  TEST_WRKFLOW
 
@@ -72,20 +45,3 @@ int main(int argc, char* argv[])
 #endif TEST_SORT
 }
 
-bool prompt_for_dir(FileManager fm, std::string dirname) {
-    if (!fm.directory_exists(dirname)) {
-        char yes_no;
-        std::cout << dirname + " does not exists. Would you like to create it (y/n)?" << std::endl;
-        std::cin >> yes_no;
-
-        if (yes_no == 'y' || yes_no == 'Y') {
-            return fm.mkdir(dirname);
-        }
-        else {
-            std::cout << "Please create directory and run again!" << std::endl;
-            return false;
-        }
-    }
-    return true;
-
-}

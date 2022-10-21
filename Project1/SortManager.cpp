@@ -18,18 +18,22 @@ std::string FormatStringForReduceMethod(const std::map<std::string, std::vector<
 std::map<std::string, std::vector<int>> SortManager::SortInput() {
     //Read Map Functions Output File
     std::vector<std::string> dataToBeSorted;
-    fileManager.read_file(sortInputFilePath, dataToBeSorted);
+    fileManager.read_file(sortInputFile, dataToBeSorted);
     
-    std::string fileDataString;
+    std::ostringstream fileDataString;
+    const char* const delim = " ";
 
+    /*
 	std::for_each(dataToBeSorted.begin(), dataToBeSorted.end(), [&](std::string dataString)
 		{
 			//std::cout << dataString;
             fileDataString = dataString;
 		});
+    */
+    std::copy(dataToBeSorted.begin(), dataToBeSorted.end(), std::ostream_iterator<std::string>(fileDataString, delim));
 
     // Hold Results in Memory/Map of Key ValuePairs while aggregating results
-    auto testMapParseOutput = ParseFileTextToKeyValueMap(fileDataString);
+    auto testMapParseOutput = ParseFileTextToKeyValueMap(fileDataString.str());
 
     return testMapParseOutput;
 }
