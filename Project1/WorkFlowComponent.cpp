@@ -14,8 +14,6 @@ void WorkFlowComponent::StartWorkFlow() {
 
     fileManager.read_directory(programSettings.InputDirectory, input_files);
 
-	
-
 	std::string tmpfile     = programSettings.TempDirectory + "\\tempfile.txt";
 	std::string successfile = programSettings.OutputDirectory + "\\SUCCESS.txt";
 

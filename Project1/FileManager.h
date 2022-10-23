@@ -88,6 +88,8 @@ public:
 
 	bool validate_file_extension(std::string filePath, std::string extension);
 	
+	bool are_unique(std::vector<std::string> dirs);
+
 	std::string workingDirectory;
 
 private:

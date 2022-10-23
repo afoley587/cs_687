@@ -137,14 +137,33 @@ void FileManager::reset_output_files(std::string output_directory) {
 }
 
 bool FileManager::mkdir(std::string dirname) {
+
 	bool success = std::experimental::filesystem::create_directories(dirname);
 
 	if (!success) {
-		std::cerr << "Unable to create directory" << std::endl;
+		std::cerr << "[FILE MGR] - Unabled To Create Directory" << std::endl;
 	}
 	else {
-		std::cout << "Ddirectory created!" << std::endl;
+		std::cout << "[FILE MGR] - Directory Created" << std::endl;
 	}
 
 	return success;
+}
+
+bool FileManager::are_unique(std::vector<std::string> dirs) {
+	std::vector<std::experimental::filesystem::path> canon;
+
+	for (auto s : dirs) {
+		std::experimental::filesystem::path p{ s };
+		canon.push_back(std::experimental::filesystem::canonical( p ));
+	}
+
+	sort(canon.begin(), canon.end());
+	canon.erase(std::unique(canon.begin(), canon.end()), canon.end());
+
+	if (dirs.size() > canon.size()) {
+		return  false;
+	}
+
+	return true;
 }
