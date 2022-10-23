@@ -38,7 +38,8 @@ void MapManager::mexport(std::vector<std::string> buffer, bool forceExport) {
 			fm.append_file(tempFile, toExport);
 		}
 		catch (std::invalid_argument) {
-			throw std::invalid_argument("[MAP MGR] - Could Not Empty Buffer");
+			std::cerr << "[MAP MGR] - Could Not Empty Buffer" << std::endl;
+			throw std::runtime_error("[MAP MGR] - Could Not Empty Buffer");
 		}
 		filebuffer[tempFile].clear();
 	}
