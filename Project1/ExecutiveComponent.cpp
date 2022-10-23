@@ -11,11 +11,26 @@ std::vector<std::string> ConvertArgsToStringVector(char* a[], int size);
 std::string GetDefaultWorkingDirectory(std::string workDirectoryString);
 
 ExecutiveComponent::ExecutiveComponent(int argCount, char* args[]) {
-	programSettings = ParseArgs(argCount, args);
+	try{
+		programSettings = ParseArgs(argCount, args);
+	}
+	catch (std::invalid_argument) {
+		print_help();
+		throw std::invalid_argument("[EXEC COMP] - Unable to verify args!");
+	}
+	
 	fileManager = FileManager();
 	workFlowComponent = WorkFlowComponent(programSettings, fileManager);
 }
 
+void ExecutiveComponent::print_help() {
+	//This is where the program starts after validation and object creation
+	const char* help = "MapRRRRRrrrrreduce.exe. A tool to map, reduce, and group words.\n"
+		"mapreduce.exe [inputdir] [tmpdir] [outputdir]\n"
+		"All passed positional arugemnts must be strings. Integers and special symbols are not allowed.\n"
+		"All passed positional arguments must be unique.\n";
+	std::cout << help;
+}
 
 void ExecutiveComponent::RunProgram() {
 	//This is where the program starts after validation and object creation

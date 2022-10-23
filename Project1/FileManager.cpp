@@ -18,7 +18,7 @@ bool FileManager::directory_exists(std::string dirname) {
 void FileManager::read_directory(std::string dirname, std::vector<std::string>& files) {
 
 	if(!directory_exists(dirname)) {
-		throw std::invalid_argument("Directory does not exist!");
+		throw std::invalid_argument("[FILE MGR] - Directory does not exist!");
 	}
 	std::experimental::filesystem::path top_dir{ dirname };
 
@@ -30,13 +30,13 @@ void FileManager::read_directory(std::string dirname, std::vector<std::string>& 
 void FileManager::read_file(std::string filename, std::vector<std::string>& data) {
 
 	if (!file_exists(filename)) {
-		throw std::invalid_argument("File does not exist!");
+		throw std::invalid_argument("[FILE MGR] - File does not exist!");
 	}
 
 	std::ifstream ifile{ filename };
 
 	if (!ifile) {
-		throw std::invalid_argument("Cannot Open File!");
+		throw std::invalid_argument("[FILE MGR] - Cannot Open File!");
 	}
 
 	std::string line;
@@ -53,7 +53,7 @@ int FileManager::write_file(std::string filename, std::vector<std::string> const
 	std::ofstream ofile(filename);
 
 	if (!ofile) {
-		std::cerr << "Could not open file!\n";
+		throw std::invalid_argument("[FILE MGR] - Could not open file!");
 	}
 
 	for (auto s : data) {
@@ -85,8 +85,7 @@ int FileManager::append_file(std::string filename, std::vector<std::string> cons
 	std::ofstream ofile(filename, std::ios::app);
 
 	if (!ofile) {
-		std::cerr << "Could not open file!\n";
-		std::cerr << filename;
+		throw std::invalid_argument("[FILE MGR] - Could not open file!");
 	}
 
 	for (auto s : data) {

@@ -20,4 +20,5 @@ private:
 	bool ValidateFile(std::string filePath);
 	bool prompt_for_dir(FileManager fm, std::string dirname);
 	ProgramSettings ParseArgs(int argCount, char* args[]);
+	void print_help(void);
 };
