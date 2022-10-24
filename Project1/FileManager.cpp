@@ -18,7 +18,8 @@ bool FileManager::directory_exists(std::string dirname) {
 void FileManager::read_directory(std::string dirname, std::vector<std::string>& files) {
 
 	if(!directory_exists(dirname)) {
-		throw std::invalid_argument("Directory does not exist!");
+		std::cerr << "[FILE MGR] - Directory does not exist!" << std::endl;
+		throw std::invalid_argument("[FILE MGR] - Directory does not exist!");
 	}
 	std::experimental::filesystem::path top_dir{ dirname };
 
@@ -30,13 +31,15 @@ void FileManager::read_directory(std::string dirname, std::vector<std::string>& 
 void FileManager::read_file(std::string filename, std::vector<std::string>& data) {
 
 	if (!file_exists(filename)) {
-		throw std::invalid_argument("File does not exist!");
+		std::cerr << "[FILE MGR] - File does not exist!" << std::endl;
+		throw std::invalid_argument("[FILE MGR] - File does not exist!");
 	}
 
 	std::ifstream ifile{ filename };
 
 	if (!ifile) {
-		throw std::invalid_argument("Cannot Open File!");
+		std::cerr << "[FILE MGR] - Cannot Open File!" << std::endl;
+		throw std::invalid_argument("[FILE MGR] - Cannot Open File!");
 	}
 
 	std::string line;
@@ -53,7 +56,8 @@ int FileManager::write_file(std::string filename, std::vector<std::string> const
 	std::ofstream ofile(filename);
 
 	if (!ofile) {
-		std::cerr << "Could not open file!\n";
+		std::cerr << "[FILE MGR] - Could not open file!" << std::endl;
+		throw std::invalid_argument("[FILE MGR] - Could not open file!");
 	}
 
 	for (auto s : data) {
@@ -85,8 +89,8 @@ int FileManager::append_file(std::string filename, std::vector<std::string> cons
 	std::ofstream ofile(filename, std::ios::app);
 
 	if (!ofile) {
-		std::cerr << "Could not open file!\n";
-		std::cerr << filename;
+		std::cerr << "[FILE MGR] - Could not open file!" << std::endl;
+		throw std::invalid_argument("[FILE MGR] - Could not open file!");
 	}
 
 	for (auto s : data) {
@@ -97,21 +101,6 @@ int FileManager::append_file(std::string filename, std::vector<std::string> cons
 
 	return data.size();
 }
-
-//void FileManager::append_file(std::string filename, std::vector<std::string> const data) {
-//	std::fstream fileStream;
-//	
-//	fileStream.open(filename, std::ios::app);
-//
-//	if (fileStream.is_open()) {
-//		for (auto dataline : data) {
-//			fileStream << "\n" << dataline << std::endl;
-//		}
-//	}
-//
-//	fileStream.close();
-//}
-
 
 void FileManager::test_output(std::string textToOutput) {
 	std::cout << "\n" << textToOutput;
@@ -138,14 +127,33 @@ void FileManager::reset_output_files(std::string output_directory) {
 }
 
 bool FileManager::mkdir(std::string dirname) {
+
 	bool success = std::experimental::filesystem::create_directories(dirname);
 
 	if (!success) {
-		std::cerr << "Unable to create directory" << std::endl;
+		std::cerr << "[FILE MGR] - Unabled To Create Directory" << std::endl;
 	}
 	else {
-		std::cout << "Ddirectory created!" << std::endl;
+		std::cout << "[FILE MGR] - Directory Created" << std::endl;
 	}
 
 	return success;
+}
+
+bool FileManager::are_unique(std::vector<std::string> dirs) {
+	std::vector<std::experimental::filesystem::path> canon;
+
+	for (auto s : dirs) {
+		std::experimental::filesystem::path p{ s };
+		canon.push_back(std::experimental::filesystem::canonical( p ));
+	}
+
+	sort(canon.begin(), canon.end());
+	canon.erase(std::unique(canon.begin(), canon.end()), canon.end());
+
+	if (dirs.size() > canon.size()) {
+		return  false;
+	}
+
+	return true;
 }

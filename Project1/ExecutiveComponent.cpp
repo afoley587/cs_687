@@ -6,16 +6,32 @@
 #include <iostream>
 #include <string>
 #include <filesystem>
+#include <cwctype>
 
 std::vector<std::string> ConvertArgsToStringVector(char* a[], int size);
 std::string GetDefaultWorkingDirectory(std::string workDirectoryString);
 
 ExecutiveComponent::ExecutiveComponent(int argCount, char* args[]) {
-	programSettings = ParseArgs(argCount, args);
+	try{
+		programSettings = ParseArgs(argCount, args);
+	}
+	catch (std::invalid_argument) {
+		print_help();
+		throw std::invalid_argument("[EXEC COMP] - Unable to verify args!");
+	}
+	
 	fileManager = FileManager();
 	workFlowComponent = WorkFlowComponent(programSettings, fileManager);
 }
 
+void ExecutiveComponent::print_help() {
+	//This is where the program starts after validation and object creation
+	const char* help = "\nmapreduce.exe. A tool to map, reduce, and group words.\n"
+		"mapreduce.exe [inputdir] [tmpdir] [outputdir]\n"
+		"All passed positional arugemnts must be strings (or string convertible). Special symbols are not allowed.\n"
+		"All passed positional arguments must be unique.\n";
+	std::cout << help;
+}
 
 void ExecutiveComponent::RunProgram() {
 	//This is where the program starts after validation and object creation
@@ -30,7 +46,6 @@ ProgramSettings ExecutiveComponent::ParseArgs(int argCount, char* args[]) {
 	
 
 	if (!ValidateArgs(argVector)) {
-		std::cout << "\n" << "Invalid Args Provided. Supply Proper Arguements to Program.";
 		throw std::invalid_argument("Invalid Arguements Provided!");
 	}
 
@@ -47,14 +62,19 @@ bool ExecutiveComponent::ValidateArgs(std::vector<std::string> argVector) {
 
 	// Add a check to make sure each dir is unique
 	if (!fileManager.directory_exists(argVector[1])) {
-		std::cerr << "Input directory doesnt exist! Please provide it!" << std::endl;
 		return false;
 	}
 
 	if (!prompt_for_dir(fileManager, argVector[2]) || !prompt_for_dir(fileManager, argVector[3])) {
-		std::cerr << "Unable to create some directory. Please see above." << std::endl;
 		return false;
 	}
+
+	// All dirs should be unique
+
+
+	if (!fileManager.are_unique(argVector)) {
+		return false;
+	};
 
 	return true;
 }
@@ -99,6 +119,16 @@ std::vector<std::string> ConvertArgsToStringVector(char* a[], int size)
 
 
 bool ExecutiveComponent::prompt_for_dir(FileManager fm, std::string dirname) {
+
+	for (int i = 0; i < dirname.length(); i++) {
+		if (dirname[i] == '.' || dirname[i] == '/' || dirname[i] == '\\') {
+			continue;
+		}
+		if (std::iswpunct(dirname[i])) {
+			throw std::invalid_argument("[EXEC COMP] - Special Character In Dirname");
+		}
+	}
+
 	if (!fm.directory_exists(dirname)) {
 		char yes_no;
 		std::cout << dirname + " does not exists. Would you like to create it (y/n)?" << std::endl;
@@ -108,8 +138,7 @@ bool ExecutiveComponent::prompt_for_dir(FileManager fm, std::string dirname) {
 			return fm.mkdir(dirname);
 		}
 		else {
-			std::cout << "Please create directory and run again!" << std::endl;
-			return false;
+			throw std::invalid_argument("[EXEC COMP] - Please Create Directory Manually");
 		}
 	}
 	return true;

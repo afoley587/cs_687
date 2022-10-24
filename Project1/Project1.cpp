@@ -38,10 +38,17 @@ int main(int argc, char* argv[])
     //tmpdir = "c:/Users/alexa/Source/Repos/cs_687/tmp"; // argv[2];
     //outdir = "c:/Users/alexa/Source/Repos/cs_687/tmp"; // argv[3];
 
-#ifdef  TEST_WRKFLOW
 
-    ExecutiveComponent executiveComponent = ExecutiveComponent(argc, argv);
-    executiveComponent.RunProgram();
-#endif TEST_SORT
+    try{
+        ExecutiveComponent executiveComponent = ExecutiveComponent(argc, argv);
+        executiveComponent.RunProgram();
+    }
+    catch (std::invalid_argument) {
+        return EXIT_FAILURE;
+    }
+    catch (std::runtime_error) {
+        return EXIT_FAILURE;
+    }
+    return EXIT_SUCCESS;
 }
 
