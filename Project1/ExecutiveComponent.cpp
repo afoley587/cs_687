@@ -121,7 +121,7 @@ std::vector<std::string> ConvertArgsToStringVector(char* a[], int size)
 bool ExecutiveComponent::prompt_for_dir(FileManager fm, std::string dirname) {
 
 	for (int i = 0; i < dirname.length(); i++) {
-		if (dirname[i] == '.' || dirname[i] == '/' || dirname[i] == '\\') {
+		if (dirname[i] == '.' || dirname[i] == '/' || dirname[i] == '\\' || dirname[i] == '_' || dirname[i] == '-') {
 			continue;
 		}
 		if (std::iswpunct(dirname[i])) {
