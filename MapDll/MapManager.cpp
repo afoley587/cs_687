@@ -1,4 +1,4 @@
-#include "MapManager.h"
+#include "pch.h"
 
 #include <algorithm>
 #include <iterator>
@@ -7,9 +7,9 @@
 #include <iostream>
 #include <cwctype>
 
-MapManager::MapManager() {
+#include "MapManager.h"
 
-}
+MapManager::MapManager() {}
 
 void MapManager::map(std::string line, bool forceExport) {
 	std::vector<std::string> buffer;
@@ -22,7 +22,7 @@ void MapManager::mexport(std::vector<std::string> buffer, bool forceExport) {
 		filebuffer[tempFile].insert(filebuffer[tempFile].end(), buffer.begin(), buffer.end());
 	}
 	else {
-		fm.touch_file(tempFile);
+		// fm.touch_file(tempFile);
 		filebuffer.insert(std::pair<std::string, std::vector<std::string>>(tempFile, buffer));
 	}
 
@@ -34,6 +34,7 @@ void MapManager::mexport(std::vector<std::string> buffer, bool forceExport) {
 			toExport.push_back("(\"" + s + "\", [1]),");
 		}
 
+		/*
 		try {
 			fm.append_file(tempFile, toExport);
 		}
@@ -41,6 +42,7 @@ void MapManager::mexport(std::vector<std::string> buffer, bool forceExport) {
 			std::cerr << "[MAP MGR] - Could Not Empty Buffer" << std::endl;
 			throw std::runtime_error("[MAP MGR] - Could Not Empty Buffer");
 		}
+		*/
 		filebuffer[tempFile].clear();
 	}
 }
@@ -50,7 +52,7 @@ void MapManager::tokenize(std::string in, std::vector<std::string>& out) {
 
 	// Remove all punct/special chars
 
-	
+
 	for (int i = 0; i < in.length(); i++) {
 		if (!std::iswpunct(in[i])) {
 			nopunc += in[i];
@@ -75,7 +77,7 @@ void MapManager::tokenize(std::string in, std::vector<std::string>& out) {
 
 	std::for_each(nopunc.begin(), nopunc.end(), [](char& c) {
 		c = ::tolower(c);
-	});
+		});
 
 	std::istringstream iss{ nopunc };
 
