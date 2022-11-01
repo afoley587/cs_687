@@ -9,6 +9,8 @@
 
 #include "MapManager.h"
 
+
+
 MapManager::MapManager() {}
 
 void MapManager::map(std::string line, bool forceExport) {
@@ -22,8 +24,8 @@ void MapManager::mexport(std::vector<std::string> buffer, bool forceExport) {
 		filebuffer[tempFile].insert(filebuffer[tempFile].end(), buffer.begin(), buffer.end());
 	}
 	else {
-		// fm.touch_file(tempFile);
-		filebuffer.insert(std::pair<std::string, std::vector<std::string>>(tempFile, buffer));
+		fm.touch_file(tempFile);
+ 		filebuffer.insert(std::pair<std::string, std::vector<std::string>>(tempFile, buffer));
 	}
 
 	if (filebuffer[tempFile].size() >= max_buffer_size || forceExport) {
@@ -34,7 +36,7 @@ void MapManager::mexport(std::vector<std::string> buffer, bool forceExport) {
 			toExport.push_back("(\"" + s + "\", [1]),");
 		}
 
-		/*
+		
 		try {
 			fm.append_file(tempFile, toExport);
 		}
@@ -42,7 +44,7 @@ void MapManager::mexport(std::vector<std::string> buffer, bool forceExport) {
 			std::cerr << "[MAP MGR] - Could Not Empty Buffer" << std::endl;
 			throw std::runtime_error("[MAP MGR] - Could Not Empty Buffer");
 		}
-		*/
+		
 		filebuffer[tempFile].clear();
 	}
 }

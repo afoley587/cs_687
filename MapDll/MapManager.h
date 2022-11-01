@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
-#include "../Project1/FileManager.h"
+#include "FileManager.h"
 
 #ifdef MAPDLL_EXPORTS
 #define MAPDLL_API __declspec(dllexport)
@@ -16,6 +16,7 @@ public:
 	MapManager();
 	
 	MapManager(FileManager fileMgr) :max_buffer_size{ 10 }, filebuffer{}, fm{ fileMgr }, tempFile{} {};
+
 	MapManager(FileManager fileMgr, int b, std::string temp) :
 		max_buffer_size{ b },
 		filebuffer{},
