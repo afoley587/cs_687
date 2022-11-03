@@ -9,7 +9,6 @@
 
 
 #include "FileManager.h"
-#include "MapManager.h"
 #include "SortManager.h"
 #include "Reduce.h"
 #include "WorkFlowComponent.h"
