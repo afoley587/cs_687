@@ -63,3 +63,5 @@ private:
 	std::unordered_map<std::string, std::vector<std::string>> filebuffer;
 	FileManager fm;
 };
+
+extern "C" MAPDLL_API MapManager * CreateMapManager();

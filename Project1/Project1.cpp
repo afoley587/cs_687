@@ -5,37 +5,46 @@
 
 
 #include <iostream>
-#include <regex>
+#include <windows.h>
 
-
-#include "FileManager.h"
-#include "SortManager.h"
-#include "Reduce.h"
-#include "WorkFlowComponent.h"
 #include "ExecutiveComponent.h"
 
-// #define TEST_FM 1
-// #define TEST_MM 1
-// #define TEST_REDUCE 1
- #define TEST_WRKFLOW 1
+#include "MapManager.h"
 
-bool prompt_for_dir(FileManager fm, std::string dirname);
+typedef MapManager* (*funcCreateMapManager)();
 
 int main(int argc, char* argv[])
 {
-    //std::string indir, tmpdir, outdir;
 
-    /*
-    if (argc < 4) {
-        std::cerr << "Please supply args" << std::endl;
-        return 1;
+    HINSTANCE mapDLL;
+    HINSTANCE fileDLL;
+
+    const wchar_t* mapDLLLibName = L"MapDLL";
+    const wchar_t* fileDLLLibName = L"FileManagerDLL";
+
+    mapDLL = LoadLibraryEx(mapDLLLibName, NULL, NULL);
+    fileDLL = LoadLibraryEx(fileDLLLibName, NULL, NULL);
+
+    if (mapDLL == NULL) {
+        std::cout << "Couldnt loadd map" << std::endl;
     }
-    */
+    if (mapDLL != NULL) {
+        std::cout << "load map" << std::endl;
+    }
 
-    //indir = "c:/Users/alexa/Source/Repos/cs_687/shakespeare"; // argv[1];
-    //tmpdir = "c:/Users/alexa/Source/Repos/cs_687/tmp"; // argv[2];
-    //outdir = "c:/Users/alexa/Source/Repos/cs_687/tmp"; // argv[3];
+    if (fileDLL == NULL) {
+        std::cout << "Couldnt loadd fileDLL" << std::endl;
+    }
+    if (fileDLL != NULL) {
+        std::cout << "load fileDLL" << std::endl;
+    }
 
+    funcCreateMapManager pfnCreateMapManager;
+    std::cout << "t1" << std::endl;
+    pfnCreateMapManager = (funcCreateMapManager)GetProcAddress(mapDLL, "CreateMapManager");
+    std::cout << "t2" << std::endl;
+    MapManager *mgr = pfnCreateMapManager();
+    std::cout << "t3" << std::endl;
 
     try{
         ExecutiveComponent executiveComponent = ExecutiveComponent(argc, argv);
