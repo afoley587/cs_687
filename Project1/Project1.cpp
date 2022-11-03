@@ -7,10 +7,6 @@
 #include <iostream>
 #include <regex>
 
-
-#include "FileManager.h"
-#include "SortManager.h"
-#include "Reduce.h"
 #include "WorkFlowComponent.h"
 #include "ExecutiveComponent.h"
 

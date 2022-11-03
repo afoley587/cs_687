@@ -1,6 +1,7 @@
+#include "pch.h"
+
 #include "SortManager.h"
 #include "FileManager.h"
-#include "Reduce.h"
 
 #include <iterator>
 #include <functional>
@@ -19,16 +20,16 @@ std::map<std::string, std::vector<int>> SortManager::SortInput() {
     //Read Map Functions Output File
     std::vector<std::string> dataToBeSorted;
     fileManager.read_file(sortInputFile, dataToBeSorted);
-    
+
     std::ostringstream fileDataString;
     const char* const delim = " ";
 
     /*
-	std::for_each(dataToBeSorted.begin(), dataToBeSorted.end(), [&](std::string dataString)
-		{
-			//std::cout << dataString;
+    std::for_each(dataToBeSorted.begin(), dataToBeSorted.end(), [&](std::string dataString)
+        {
+            //std::cout << dataString;
             fileDataString = dataString;
-		});
+        });
     */
     std::copy(dataToBeSorted.begin(), dataToBeSorted.end(), std::ostream_iterator<std::string>(fileDataString, delim));
 
@@ -48,15 +49,15 @@ std::map<std::string, std::vector<int>> ParseFileTextToKeyValueMap(const std::st
             stack.push(it++);
         }
         else if (*it == ')') {
-            auto start = stack.top(); 
+            auto start = stack.top();
             stack.pop();
 
             std::string stringToGetKeyValuePair = std::string{ start, ++it };
 
             auto kvp = GetKeyValuePairFromParsedText(stringToGetKeyValuePair);
 
-            (mapResult.count(kvp.first) == 0) ? 
-                mapResult[kvp.first].push_back(kvp.second): 
+            (mapResult.count(kvp.first) == 0) ?
+                mapResult[kvp.first].push_back(kvp.second) :
                 mapResult[kvp.first].push_back(kvp.second);
         }
         else {
@@ -71,7 +72,7 @@ std::pair<std::string, int> GetKeyValuePairFromParsedText(std::string stringElem
     std::pair<std::string, int> keyValuePairResult;
     std::string::const_iterator startingIterator;
     std::string stringData;
-    bool areCapturingString = false; 
+    bool areCapturingString = false;
 
     for (auto currentIterator = stringElement.begin(); currentIterator != stringElement.end(); currentIterator++) {
         char characterToAppend = *currentIterator;
@@ -99,7 +100,7 @@ std::pair<std::string, int> GetKeyValuePairFromParsedText(std::string stringElem
         else if (*currentIterator == ']') {
             // To ensure we get closing brackets
             keyValuePairResult.second = stoi(stringData);
-            
+
             stringData.clear();
             areCapturingString = false;
         }

@@ -140,15 +140,11 @@
   <ItemGroup>
     <ClCompile Include="ExecutiveComponent.cpp" />
     <ClCompile Include="Project1.cpp" />
-    <ClCompile Include="Reduce.cpp" />
-    <ClCompile Include="SortManager.cpp" />
     <ClCompile Include="WorkFlowComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ExecutiveComponent.h" />
     <ClInclude Include="ProgramSettingsStruct.h" />
-    <ClInclude Include="Reduce.h" />
-    <ClInclude Include="SortManager.h" />
     <ClInclude Include="WorkFlowComponent.h" />
   </ItemGroup>
   <ItemGroup>

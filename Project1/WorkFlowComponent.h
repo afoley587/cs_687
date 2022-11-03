@@ -3,15 +3,16 @@
 #include "FileManager.h"
 #include "MapManager.h"
 #include "SortManager.h"
-#include "Reduce.h"
+#include "ReduceManager.h"
 #include "ProgramSettingsStruct.h"
+#include <SortManager.h>
 
 class WorkFlowComponent {
 private:
 	FileManager fileManager;
 	MapManager mapManager;
 	SortManager sortManager;
-	Reduce reduceManager;
+	ReduceManager reduceManager;
 	ProgramSettings programSettings;
 
 public:
@@ -26,7 +27,7 @@ public:
 		fileManager{ fileMgr },
 		mapManager{ MapManager(fileManager, 1024, programSettings.TempDirectory + "\\temp.txt")},
 		sortManager{ SortManager(fileManager, programSettings.TempDirectory + "\\temp.txt")},
-		reduceManager{ Reduce(fileManager, programSettings.OutputDirectory + "\\results.txt", programSettings.OutputDirectory + "\\SUCCESS.txt")}
+		reduceManager{ ReduceManager(fileManager, programSettings.OutputDirectory + "\\results.txt", programSettings.OutputDirectory + "\\SUCCESS.txt")}
 	{};
 
 	WorkFlowComponent() {};

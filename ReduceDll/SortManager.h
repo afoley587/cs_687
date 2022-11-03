@@ -1,24 +1,24 @@
 #pragma once
-
+#include <string>
+#include <vector>
+#include <unordered_map>
+#include <map>
 #include "FileManager.h"
 
-#include <algorithm>
-#include <iterator>
-#include <functional>
-#include <sstream>
-#include <iostream>
-#include <deque>
-#include <map>
-#include <stack>
+#ifdef REDUCEDLL_EXPORTS
+#define SORTDLL_API __declspec(dllexport)
+#else
+#define SORTDLL_API __declspec(dllimport)
+#endif
 
-class SortManager {
+class SORTDLL_API SortManager {
 public:
 	SortManager() {};
 	SortManager(FileManager fileMgr, std::string input) :
 		fileManager{ fileMgr },
-		sortInputFile{ input } 
+		sortInputFile{ input }
 	{};
-	
+
 	std::map<std::string, std::vector<int>> SortInput(void);
 
 	void setInputFile(std::string in) { sortInputFile = in; };
@@ -27,4 +27,5 @@ public:
 private:
 	FileManager fileManager;
 	std::string sortInputFile;
+
 };
