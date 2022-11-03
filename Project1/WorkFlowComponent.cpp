@@ -2,7 +2,7 @@
 #include "FileManager.h"
 #include "MapManager.h"
 #include "SortManager.h"
-#include "Reduce.h"
+#include "ReduceManager.h"
 
 void WorkFlowComponent::StartWorkFlow() {
 	//Read Input Text From File

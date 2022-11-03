@@ -6,6 +6,6 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LocalDebuggerCommandArguments>$(SolutionDir)shakespeare $(SolutionDir)temp $(SolutionDir)out</LocalDebuggerCommandArguments>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
-    <LocalDebuggerEnvironment>$(SolutionDir)MapDll;$(SolutionDir)FileManagerDll;$(Path)</LocalDebuggerEnvironment>
+    <LocalDebuggerEnvironment>$(SolutionDir)MapDll;$(SolutionDir)ReduceDll;$(SolutionDir)FileManagerDll;$(Path)</LocalDebuggerEnvironment>
   </PropertyGroup>
 </Project>
