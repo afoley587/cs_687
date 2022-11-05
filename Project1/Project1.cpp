@@ -5,17 +5,8 @@
 
 
 #include <iostream>
-#include <regex>
 
-#include "WorkFlowComponent.h"
 #include "ExecutiveComponent.h"
-
-// #define TEST_FM 1
-// #define TEST_MM 1
-// #define TEST_REDUCE 1
- #define TEST_WRKFLOW 1
-
-bool prompt_for_dir(FileManager fm, std::string dirname);
 
 int main(int argc, char* argv[])
 {

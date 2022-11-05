@@ -8,6 +8,8 @@
 #include <filesystem>
 #include <cwctype>
 
+#define NUM_REQUIRED_ARGS 6
+
 std::vector<std::string> ConvertArgsToStringVector(char* a[], int size);
 std::string GetDefaultWorkingDirectory(std::string workDirectoryString);
 
@@ -16,7 +18,8 @@ ExecutiveComponent::ExecutiveComponent(int argCount, char* args[]) {
 		programSettings = ParseArgs(argCount, args);
 	}
 	catch (std::invalid_argument) {
-		print_help();
+		PrintHelp();
+		PrintHelp();
 		throw std::invalid_argument("[EXEC COMP] - Unable to verify args!");
 	}
 	
@@ -24,10 +27,10 @@ ExecutiveComponent::ExecutiveComponent(int argCount, char* args[]) {
 	workFlowComponent = WorkFlowComponent(programSettings, fileManager);
 }
 
-void ExecutiveComponent::print_help() {
+void ExecutiveComponent::PrintHelp() {
 	//This is where the program starts after validation and object creation
 	const char* help = "\nmapreduce.exe. A tool to map, reduce, and group words.\n"
-		"mapreduce.exe [inputdir] [tmpdir] [outputdir]\n"
+		"mapreduce.exe [inputdir] [tmpdir] [outputdir] [mapDll] [reduceDll]\n"
 		"All passed positional arugemnts must be strings (or string convertible). Special symbols are not allowed.\n"
 		"All passed positional arguments must be unique.\n";
 	std::cout << help;
@@ -35,6 +38,10 @@ void ExecutiveComponent::print_help() {
 
 void ExecutiveComponent::RunProgram() {
 	//This is where the program starts after validation and object creation
+	HINSTANCE mapDll = LoadDll(programSettings.MapDllPath);
+	MapManager* mgr = MapManagerFactory(mapDll);
+
+	std::cout << "[EXEC COMP] - Loaded Dlls" << std::endl;
 	workFlowComponent.StartWorkFlow();
 }
 
@@ -49,19 +56,23 @@ ProgramSettings ExecutiveComponent::ParseArgs(int argCount, char* args[]) {
 	//	throw std::invalid_argument("Invalid Arguements Provided!");
 	//}
 
-	return ProgramSettings{ "", args[1], args[2], args[3]};
+	return ProgramSettings{ "", args[1], args[2], args[3], args[4], args[5] };
 }
 
 
 bool ExecutiveComponent::ValidateArgs(std::vector<std::string> argVector) {
 	//TODO Add Validation to ensure Working Directory is set to default or one given is assigned
 
-	if (argVector.size() < 4) {
+	if (argVector.size() < NUM_REQUIRED_ARGS) {
 		return false;
 	}
 
 	// Add a check to make sure each dir is unique
 	if (!fileManager.directory_exists(argVector[1])) {
+		return false;
+	}
+
+	if (!fileManager.file_exists(argVector[4]) || !fileManager.file_exists(argVector[5])) {
 		return false;
 	}
 
@@ -143,4 +154,32 @@ bool ExecutiveComponent::prompt_for_dir(FileManager fm, std::string dirname) {
 	}
 	return true;
 
+}
+
+HINSTANCE ExecutiveComponent::LoadDll(std::string path) {
+
+	std::wstring widepath;
+	HINSTANCE dll;
+
+	for (int i = 0; i < path.length(); ++i) {
+		widepath += wchar_t(path[i]);
+	}
+
+	const wchar_t* dllLibName = widepath.c_str();
+
+	dll = LoadLibraryEx(dllLibName, NULL, NULL);
+
+	if (dll == NULL) {
+		throw std::runtime_error("[EXEC COMP] - Unable to load DLL");
+	}
+
+	return dll;
+
+}
+
+MapManager* ExecutiveComponent::MapManagerFactory(HINSTANCE dll) {
+	funcCreateMapManager pfnCreateMapManager;
+	pfnCreateMapManager = (funcCreateMapManager)GetProcAddress(dll, "CreateMapManager");
+	MapManager* mgr = pfnCreateMapManager();
+	return mgr;
 }

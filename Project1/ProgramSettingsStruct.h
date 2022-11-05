@@ -5,6 +5,8 @@ struct ProgramSettings {
 	std::string InputDirectory;
 	std::string TempDirectory;
 	std::string OutputDirectory;
+	std::string MapDllPath;
+	std::string ReduceDllPath;
 
 	//const std::string sortInputFile = "tmpFile.txt";
 	//const std::string resultsFile = "resultsFile.txt";
