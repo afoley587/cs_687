@@ -5,6 +5,8 @@
 #include "ProgramSettingsStruct.h"
 #include <windows.h>
 
+typedef MapManager* (*funcPtr)();
+
 class ExecutiveComponent {
 public: 
 	ExecutiveComponent(int argCount, char* args[]);
@@ -27,19 +29,13 @@ private:
 	// typedef MapManager* (*funcCreateMapManager)();
 };
 
-/*
-MapManager* MapFactory(HINSTANCE dll) {
-	typedef MapManager* (*funcPtr)();
-	funcPtr pfnCreate;
-	pfnCreate = (funcPtr)GetProcAddress(dll, "Create");
-	MapManager* mgr = pfnCreate();
-	return mgr;
-}
+MapManager* MapFactory(HINSTANCE dll);
 
+/*
 ReduceManager* ReduceFactory(HINSTANCE dll) {
-	typedef ReduceManager* (*funcPtr)();
-	funcPtr pfnCreate;
-	pfnCreate = (funcPtr)GetProcAddress(dll, "Create");
+	typedef ReduceManager* (*rmFuncPtr)();
+	rmFuncPtr pfnCreate;
+	pfnCreate = (rmFuncPtr)GetProcAddress(dll, "RmCreate");
 	ReduceManager* mgr = pfnCreate();
 	return mgr;
 }

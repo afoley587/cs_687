@@ -9,8 +9,6 @@
 
 #include "MapManager.h"
 
-
-
 MapManager::MapManager() {}
 
 void MapManager::map(std::string line, bool forceExport) {
@@ -38,6 +36,7 @@ void MapManager::mexport(std::vector<std::string> buffer, bool forceExport) {
 
 		
 		try {
+			std::cout << "[MAP MGR] - Dumping " << max_buffer_size << " to tempfile " << tempFile << std::endl;
 			fm.append_file(tempFile, toExport);
 		}
 		catch (std::invalid_argument) {

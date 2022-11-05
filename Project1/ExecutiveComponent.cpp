@@ -14,6 +14,7 @@ std::vector<std::string> ConvertArgsToStringVector(char* a[], int size);
 std::string GetDefaultWorkingDirectory(std::string workDirectoryString);
 
 ExecutiveComponent::ExecutiveComponent(int argCount, char* args[]) {
+
 	try{
 		programSettings = ParseArgs(argCount, args);
 	}
@@ -22,9 +23,13 @@ ExecutiveComponent::ExecutiveComponent(int argCount, char* args[]) {
 		PrintHelp();
 		throw std::invalid_argument("[EXEC COMP] - Unable to verify args!");
 	}
+
+	std::cout << "[EXEC COMP] - Entering CTOr" << std::endl;
 	
 	fileManager = FileManager();
-	workFlowComponent = WorkFlowComponent(programSettings, fileManager);
+	workFlowComponent = WorkFlowComponent{ programSettings, fileManager };
+	std::cout << "[EXEC COMP] - Initialized WF Comp and File Man " << std::endl;
+	std::cout << "[EXEC COMP] - Leaving Ctor" << std::endl;
 }
 
 void ExecutiveComponent::PrintHelp() {
@@ -38,13 +43,16 @@ void ExecutiveComponent::PrintHelp() {
 
 void ExecutiveComponent::RunProgram() {
 	//This is where the program starts after validation and object creation
-	HINSTANCE mapDll    = LoadDll(programSettings.MapDllPath);
-	HINSTANCE reduceDll = LoadDll(programSettings.ReduceDllPath);
-
+	// HINSTANCE mapDll    = LoadDll(programSettings.MapDllPath);
+	// HINSTANCE reduceDll = LoadDll(programSettings.ReduceDllPath);
 	// MapManager* _mapManager =  MapFactory(mapDll);
+	// _mapManager->setTempFile(programSettings.TempDirectory + "\\temp.txt");
+	// workFlowComponent.SetMapManager(*_mapManager);
 	// ReduceManager* _reduceManager =  ReduceFactory(reduceDll);
 
 	std::cout << "[EXEC COMP] - Loaded Dlls" << std::endl;
+	std::cout << programSettings.InputDirectory << std::endl;
+	// std::cout << workFlowComponent.programSettings.InputDirectory << std::endl;
 	workFlowComponent.StartWorkFlow();
 }
 
@@ -178,4 +186,11 @@ HINSTANCE ExecutiveComponent::LoadDll(std::string path) {
 
 	return dll;
 
+}
+
+MapManager* MapFactory(HINSTANCE dll) {
+	funcPtr pfnCreate;
+	pfnCreate = (funcPtr)GetProcAddress(dll, "Create");
+	MapManager* mgr = pfnCreate();
+	return mgr;
 }

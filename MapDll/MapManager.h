@@ -15,7 +15,7 @@ class MAPDLL_API MapManager {
 public:
 	MapManager();
 	
-	MapManager(FileManager fileMgr) :max_buffer_size{ 10 }, filebuffer{}, fm{ fileMgr }, tempFile{} {};
+	MapManager(FileManager fileMgr) :max_buffer_size{ 1024 }, filebuffer{}, fm{ fileMgr }, tempFile{} {};
 
 	MapManager(FileManager fileMgr, int b, std::string temp) :
 		max_buffer_size{ b },

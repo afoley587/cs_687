@@ -54,4 +54,4 @@ public:
 
 };
 
-extern "C" REDUCEDLL_API ReduceManager * Create();
+extern "C" REDUCEDLL_API ReduceManager * RmCreate();
