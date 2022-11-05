@@ -47,14 +47,14 @@ void ExecutiveComponent::RunProgram() {
 
 ProgramSettings ExecutiveComponent::ParseArgs(int argCount, char* args[]) {
 	//convert character array to string vector
-	std::vector<std::string> argVector = ConvertArgsToStringVector(args, argCount);
-	
-	//TODO Parse Args to extract Program Settings
-	
+	//std::vector<std::string> argVector = ConvertArgsToStringVector(args, argCount);
+	//
+	////TODO Parse Args to extract Program Settings
+	//
 
-	if (!ValidateArgs(argVector)) {
-		throw std::invalid_argument("Invalid Arguements Provided!");
-	}
+	//if (!ValidateArgs(argVector)) {
+	//	throw std::invalid_argument("Invalid Arguements Provided!");
+	//}
 
 	return ProgramSettings{ "", args[1], args[2], args[3], args[4], args[5] };
 }

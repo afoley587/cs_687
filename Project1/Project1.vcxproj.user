@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <ShowAllFiles>false</ShowAllFiles>
+    <ShowAllFiles>true</ShowAllFiles>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LocalDebuggerCommandArguments>$(SolutionDir)shakespeare $(SolutionDir)temp $(SolutionDir)out</LocalDebuggerCommandArguments>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
-    <LocalDebuggerEnvironment>$(SolutionDir)MapDll;$(SolutionDir)FileManagerDll;$(Path)</LocalDebuggerEnvironment>
+    <LocalDebuggerEnvironment>$(SolutionDir)MapDll;$(SolutionDir)ReduceDll;$(SolutionDir)FileManagerDll;$(Path)</LocalDebuggerEnvironment>
   </PropertyGroup>
 </Project>
