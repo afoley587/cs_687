@@ -7,6 +7,7 @@
 class ExecutiveComponent {
 public: 
 	ExecutiveComponent(int argCount, char* args[]);
+	ExecutiveComponent() {};
 	void RunProgram();
 
 private:
