@@ -53,3 +53,5 @@ public:
 	void setsum(int s);
 
 };
+
+extern "C" REDUCEDLL_API ReduceManager * Create();

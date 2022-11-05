@@ -37,3 +37,7 @@ void ReduceManager::output(std::string key, int sum) {
 
 	fileManager.append_file(resultsFile, std::vector<std::string> { formattedKvpElement.str()});
 }
+
+REDUCEDLL_API ReduceManager* Create() {
+	return new ReduceManager();
+}
