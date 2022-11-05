@@ -24,7 +24,13 @@ private:
 	ProgramSettings ParseArgs(int argCount, char* args[]);
 	void PrintHelp(void);
 	HINSTANCE LoadDll(std::string path);
-	MapManager* MapManagerFactory(HINSTANCE dll);
-
-	typedef MapManager* (*funcCreateMapManager)();
+	// typedef MapManager* (*funcCreateMapManager)();
 };
+
+MapManager* MapFactory(HINSTANCE dll) {
+	typedef MapManager* (*funcPtr)();
+	funcPtr pfnCreate;
+	pfnCreate = (funcPtr)GetProcAddress(dll, "Create");
+	MapManager* mgr = pfnCreate();
+	return mgr;
+}

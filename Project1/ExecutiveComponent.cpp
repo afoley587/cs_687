@@ -39,7 +39,7 @@ void ExecutiveComponent::PrintHelp() {
 void ExecutiveComponent::RunProgram() {
 	//This is where the program starts after validation and object creation
 	HINSTANCE mapDll = LoadDll(programSettings.MapDllPath);
-	MapManager* mgr = MapManagerFactory(mapDll);
+	MapManager* _mapManager =  MapFactory(mapDll);
 
 	std::cout << "[EXEC COMP] - Loaded Dlls" << std::endl;
 	workFlowComponent.StartWorkFlow();
@@ -175,11 +175,4 @@ HINSTANCE ExecutiveComponent::LoadDll(std::string path) {
 
 	return dll;
 
-}
-
-MapManager* ExecutiveComponent::MapManagerFactory(HINSTANCE dll) {
-	funcCreateMapManager pfnCreateMapManager;
-	pfnCreateMapManager = (funcCreateMapManager)GetProcAddress(dll, "CreateMapManager");
-	MapManager* mgr = pfnCreateMapManager();
-	return mgr;
 }

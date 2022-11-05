@@ -64,4 +64,4 @@ private:
 	FileManager fm;
 };
 
-extern "C" MAPDLL_API MapManager * CreateMapManager();
+extern "C" MAPDLL_API MapManager * Create();

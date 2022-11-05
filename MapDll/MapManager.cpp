@@ -92,6 +92,6 @@ void MapManager::tokenize(std::string in, std::vector<std::string>& out) {
 
 }
 
-MAPDLL_API MapManager * CreateMapManager() {
+MAPDLL_API MapManager * Create() {
 	return new MapManager();
 }
