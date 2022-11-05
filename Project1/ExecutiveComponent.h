@@ -27,6 +27,7 @@ private:
 	// typedef MapManager* (*funcCreateMapManager)();
 };
 
+/*
 MapManager* MapFactory(HINSTANCE dll) {
 	typedef MapManager* (*funcPtr)();
 	funcPtr pfnCreate;
@@ -34,3 +35,12 @@ MapManager* MapFactory(HINSTANCE dll) {
 	MapManager* mgr = pfnCreate();
 	return mgr;
 }
+
+ReduceManager* ReduceFactory(HINSTANCE dll) {
+	typedef ReduceManager* (*funcPtr)();
+	funcPtr pfnCreate;
+	pfnCreate = (funcPtr)GetProcAddress(dll, "Create");
+	ReduceManager* mgr = pfnCreate();
+	return mgr;
+}
+*/
