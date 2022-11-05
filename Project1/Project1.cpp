@@ -19,20 +19,6 @@ bool prompt_for_dir(FileManager fm, std::string dirname);
 
 int main(int argc, char* argv[])
 {
-    //std::string indir, tmpdir, outdir;
-
-    /*
-    if (argc < 4) {
-        std::cerr << "Please supply args" << std::endl;
-        return 1;
-    }
-    */
-
-    //indir = "c:/Users/alexa/Source/Repos/cs_687/shakespeare"; // argv[1];
-    //tmpdir = "c:/Users/alexa/Source/Repos/cs_687/tmp"; // argv[2];
-    //outdir = "c:/Users/alexa/Source/Repos/cs_687/tmp"; // argv[3];
-
-
     try{
         ExecutiveComponent executiveComponent = ExecutiveComponent(argc, argv);
         executiveComponent.RunProgram();

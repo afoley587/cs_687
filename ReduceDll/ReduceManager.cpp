@@ -18,6 +18,8 @@ void ReduceManager::reduce(std::string key, std::vector<int>::iterator it) {
 
 // ========== reduce w/ VECTOR ==========
 void ReduceManager::reduce(std::string key, std::vector<int> vec) {
+	fileManager.touch_file(resultsFile);
+	
 	int sum = 0;
 
 	// loop iterates and sums through std::vector

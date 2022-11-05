@@ -17,6 +17,9 @@ std::string AddTickToValue(std::string currentVal, std::string valueToAppend);
 std::string FormatStringForReduceMethod(const std::map<std::string, std::vector<int>> map);
 
 std::map<std::string, std::vector<int>> SortManager::SortInput() {
+    //May or may not need this 
+    fileManager.touch_file(sortInputFile);
+
     //Read Map Functions Output File
     std::vector<std::string> dataToBeSorted;
     fileManager.read_file(sortInputFile, dataToBeSorted);
