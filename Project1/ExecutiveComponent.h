@@ -3,6 +3,7 @@
 #include "WorkFlowComponent.h"
 #include "FileManager.h"
 #include "ProgramSettingsStruct.h"
+#include <windows.h>
 
 class ExecutiveComponent {
 public: 
@@ -20,5 +21,9 @@ private:
 	bool ValidateFile(std::string filePath);
 	bool prompt_for_dir(FileManager fm, std::string dirname);
 	ProgramSettings ParseArgs(int argCount, char* args[]);
-	void print_help(void);
+	void PrintHelp(void);
+	HINSTANCE LoadDll(std::string path);
+	MapManager* MapManagerFactory(HINSTANCE dll);
+
+	typedef MapManager* (*funcCreateMapManager)();
 };
