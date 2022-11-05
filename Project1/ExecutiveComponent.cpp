@@ -39,6 +39,8 @@ void ExecutiveComponent::PrintHelp() {
 void ExecutiveComponent::RunProgram() {
 	//This is where the program starts after validation and object creation
 	HINSTANCE mapDll = LoadDll(programSettings.MapDllPath);
+	HINSTANCE reduceDll = LoadDll(programSettings.ReduceDllPath);
+
 	MapManager* _mapManager =  MapFactory(mapDll);
 
 	std::cout << "[EXEC COMP] - Loaded Dlls" << std::endl;
