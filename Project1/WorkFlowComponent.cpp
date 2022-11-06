@@ -25,15 +25,11 @@ void WorkFlowComponent::StartWorkFlow() {
     std::vector<std::string> input_files;
     std::vector<std::string> input_file_data;
 
+	std::cout << "[WF COMP] - Reading Input Directory " << std::endl;
+
 	fileManager.read_directory(programSettings.InputDirectory, input_files);
 
-	std::string tmpfile     = programSettings.TempDirectory + "\\tempfile.txt";
-	std::string successfile = programSettings.OutputDirectory + "\\SUCCESS.txt";
-
-	// mapManager.setTempFile(tmpfile);
-	// sortManager.setInputFile(mapManager.getTempFile());
-
-	std::cout << "[WF COMP] - Testing " << this->mapManager.getTempFile() << std::endl;
+	std::cout << "[WF COMP] - Running Map Utility " << std::endl;
 
     for (auto f : input_files) {
         fileManager.read_file(f, input_file_data);

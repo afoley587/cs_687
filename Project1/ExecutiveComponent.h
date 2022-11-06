@@ -5,7 +5,7 @@
 #include "ProgramSettingsStruct.h"
 #include <windows.h>
 
-typedef MapManager* (*funcPtr)();
+typedef MapManager* (*funcPtr)(FileManager, int, std::string);
 
 class ExecutiveComponent {
 public: 
@@ -26,10 +26,11 @@ private:
 	ProgramSettings ParseArgs(int argCount, char* args[]);
 	void PrintHelp(void);
 	HINSTANCE LoadDll(std::string path);
+	MapManager* MapFactory(HINSTANCE dll);
 	// typedef MapManager* (*funcCreateMapManager)();
 };
 
-MapManager* MapFactory(HINSTANCE dll);
+
 
 /*
 ReduceManager* ReduceFactory(HINSTANCE dll) {

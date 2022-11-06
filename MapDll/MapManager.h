@@ -14,9 +14,7 @@
 class MAPDLL_API MapManager {
 public:
 	MapManager();
-	
 	MapManager(FileManager fileMgr) :max_buffer_size{ 1024 }, filebuffer{}, fm{ fileMgr }, tempFile{} {};
-
 	MapManager(FileManager fileMgr, int b, std::string temp) :
 		max_buffer_size{ b },
 		filebuffer{},
@@ -25,8 +23,8 @@ public:
 	{};
 
 
-	void setTempFile(std::string t) { tempFile = t; };
-	std::string getTempFile(void) { return tempFile; };
+	inline void setTempFile(std::string t) { tempFile = t; };
+	inline std::string getTempFile(void) { return tempFile; };
 
 	/* Reads a line of text, tokenizes it, and puts it into a readable format
 	* Args:
@@ -64,4 +62,4 @@ private:
 	FileManager fm;
 };
 
-extern "C" MAPDLL_API MapManager * Create();
+extern "C" MAPDLL_API MapManager * Create(FileManager fm, int bufflen, std::string tempfile);

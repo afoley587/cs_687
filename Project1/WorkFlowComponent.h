@@ -22,8 +22,12 @@ private:
 public:
 	WorkFlowComponent(ProgramSettings programSettings, FileManager fileMgr);
 	WorkFlowComponent() {};
-	
-	// void SetMapManager(MapManager m) { mapManager = m; };
+
+	inline std::string GetIntermediateFile(void) { return intermediateFile; };
+	inline std::string GetResultsFile(void) { return resultsFile; };
+	inline std::string GetSuccessFile(void) { return successFile; };
+	inline void SetMapManager(MapManager m) { mapManager = m; };
+
 	void StartWorkFlow();
 
 	WorkFlowComponent(const WorkFlowComponent& ws) : 
