@@ -20,7 +20,6 @@ ExecutiveComponent::ExecutiveComponent(int argCount, char* args[]) {
 	}
 	catch (std::invalid_argument) {
 		PrintHelp();
-		PrintHelp();
 		throw std::invalid_argument("[EXEC COMP] - Unable to verify args!");
 	}
 
@@ -46,11 +45,17 @@ void ExecutiveComponent::RunProgram() {
 	HINSTANCE mapDll        = LoadDll(programSettings.MapDllPath);
 	MapManager* _mapManager = MapFactory(mapDll);
 
-	std::cout << "[EXEC COMP] - New MM Initialized With " << _mapManager->getTempFile() << std::endl;
-	workFlowComponent.SetMapManager(*_mapManager);
+	std::cout << "[EXEC COMP] - New MM Initialized" << std::endl;
 
-	// HINSTANCE reduceDll = LoadDll(programSettings.ReduceDllPath);
-	// ReduceManager* _reduceManager =  ReduceFactory(reduceDll);
+	HINSTANCE reduceDll = LoadDll(programSettings.ReduceDllPath);
+	ReduceManager* _reduceManager = ReduceFactory(reduceDll);
+	SortManager* _sortManager = SortFactory(reduceDll);
+
+	std::cout << "[EXEC COMP] - New RM Initialized" << std::endl;
+
+	workFlowComponent.SetMapManager(*_mapManager);
+	workFlowComponent.SetReduceManager(*_reduceManager);
+	workFlowComponent.SetSortManager(*_sortManager);
 
 	std::cout << "[EXEC COMP] - Loaded Dlls" << std::endl;
 	workFlowComponent.StartWorkFlow();
@@ -181,18 +186,44 @@ HINSTANCE ExecutiveComponent::LoadDll(std::string path) {
 		throw std::runtime_error("[EXEC COMP] - Unable to load DLL");
 	}
 
+	std::cout << "[EXEC COMP] - Loaded DLL " << path << std::endl;
+
 	return dll;
 
 }
 
 MapManager* ExecutiveComponent::MapFactory(HINSTANCE dll) {
-	funcPtr pfnCreate;
-	pfnCreate = (funcPtr)GetProcAddress(dll, "Create");
+	mapManagerCreateFuncPtr pfnCreate;
+	pfnCreate = (mapManagerCreateFuncPtr)GetProcAddress(dll, "MapCreate");
 
 	if (pfnCreate == NULL) {
 		throw std::runtime_error("[EXEC COMP] - Could Not Load Map Instance");
 	}
 
 	MapManager* mgr = pfnCreate(fileManager, 1024, programSettings.TempDirectory + workFlowComponent.GetIntermediateFile());
+	return mgr;
+}
+
+ReduceManager* ExecutiveComponent::ReduceFactory(HINSTANCE dll) {
+	reduceManagerCreateFuncPtr pfnCreate;
+	pfnCreate = (reduceManagerCreateFuncPtr)GetProcAddress(dll, "ReduceCreate");
+
+	if (pfnCreate == NULL) {
+		throw std::runtime_error("[EXEC COMP] - Could Not Load Reduce Instance");
+	}
+
+	ReduceManager* mgr = pfnCreate(fileManager, programSettings.OutputDirectory + workFlowComponent.GetResultsFile(), programSettings.OutputDirectory + workFlowComponent.GetSuccessFile());
+	return mgr;
+}
+
+SortManager* ExecutiveComponent::SortFactory(HINSTANCE dll) {
+	sortManagerCreateFuncPtr pfnCreate;
+	pfnCreate = (sortManagerCreateFuncPtr)GetProcAddress(dll, "SortCreate");
+
+	if (pfnCreate == NULL) {
+		throw std::runtime_error("[EXEC COMP] - Could Not Load Sort Instance");
+	}
+
+	SortManager* mgr = pfnCreate(fileManager, programSettings.TempDirectory + workFlowComponent.GetIntermediateFile());
 	return mgr;
 }

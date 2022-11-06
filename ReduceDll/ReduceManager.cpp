@@ -18,7 +18,6 @@ void ReduceManager::reduce(std::string key, std::vector<int>::iterator it) {
 
 // ========== reduce w/ VECTOR ==========
 void ReduceManager::reduce(std::string key, std::vector<int> vec) {
-	fileManager.touch_file(resultsFile);
 	
 	int sum = 0;
 
@@ -38,6 +37,6 @@ void ReduceManager::output(std::string key, int sum) {
 	fileManager.append_file(resultsFile, std::vector<std::string> { formattedKvpElement.str()});
 }
 
-REDUCEDLL_API ReduceManager* RmCreate() {
-	return new ReduceManager();
+REDUCEDLL_API ReduceManager* ReduceCreate(FileManager fm, std::string resFile, std::string outFile) {
+	return new ReduceManager(fm, resFile, outFile);
 }

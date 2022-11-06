@@ -27,6 +27,8 @@ public:
 	inline std::string GetResultsFile(void) { return resultsFile; };
 	inline std::string GetSuccessFile(void) { return successFile; };
 	inline void SetMapManager(MapManager m) { mapManager = m; };
+	inline void SetReduceManager(ReduceManager m) { reduceManager = m; };
+	inline void SetSortManager(SortManager m) { sortManager = m; };
 
 	void StartWorkFlow();
 

@@ -91,7 +91,7 @@ void MapManager::tokenize(std::string in, std::vector<std::string>& out) {
 
 }
 
-MAPDLL_API MapManager * Create(FileManager fm, int bufflen = 1024, std::string tempfile = "") {
+MAPDLL_API MapManager * MapCreate(FileManager fm, int bufflen = 1024, std::string tempfile = "") {
 	std::cout << "[MAP DLL] - Creating instance with " << bufflen << " and " << tempfile << std::endl;
 	return new MapManager(fm, bufflen, tempfile);
 }

@@ -62,4 +62,4 @@ private:
 	FileManager fm;
 };
 
-extern "C" MAPDLL_API MapManager * Create(FileManager fm, int bufflen, std::string tempfile);
+extern "C" MAPDLL_API MapManager * MapCreate(FileManager fm, int bufflen, std::string tempfile);

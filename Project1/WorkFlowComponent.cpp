@@ -53,4 +53,6 @@ void WorkFlowComponent::StartWorkFlow() {
 	{
 		reduceManager.reduce(keyValuePair.first, keyValuePair.second);
 	}
+	std::cout << "[WF COMP] - Reduce Finished. Creating Success File." << std::endl;
+	fileManager.touch_file(programSettings.OutputDirectory + successFile);
 }

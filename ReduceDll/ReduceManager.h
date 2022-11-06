@@ -54,4 +54,4 @@ public:
 
 };
 
-extern "C" REDUCEDLL_API ReduceManager * RmCreate();
+extern "C" REDUCEDLL_API ReduceManager * ReduceCreate(FileManager fm, std::string resFile, std::string outFile);
