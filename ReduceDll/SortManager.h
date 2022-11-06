@@ -29,3 +29,5 @@ private:
 	std::string sortInputFile;
 
 };
+
+extern "C" SORTDLL_API SortManager * SortCreate(FileManager fm, std::string sortFile);

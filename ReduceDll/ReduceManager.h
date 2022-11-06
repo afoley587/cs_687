@@ -53,3 +53,5 @@ public:
 	void setsum(int s);
 
 };
+
+extern "C" REDUCEDLL_API ReduceManager * ReduceCreate(FileManager fm, std::string resFile, std::string outFile);

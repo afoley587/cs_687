@@ -9,8 +9,6 @@
 
 #include "MapManager.h"
 
-
-
 MapManager::MapManager() {}
 
 void MapManager::map(std::string line, bool forceExport) {
@@ -38,6 +36,7 @@ void MapManager::mexport(std::vector<std::string> buffer, bool forceExport) {
 
 		
 		try {
+			std::cout << "[MAP MGR] - Dumping " << max_buffer_size << " to tempfile " << tempFile << std::endl;
 			fm.append_file(tempFile, toExport);
 		}
 		catch (std::invalid_argument) {
@@ -92,6 +91,7 @@ void MapManager::tokenize(std::string in, std::vector<std::string>& out) {
 
 }
 
-MAPDLL_API MapManager * CreateMapManager() {
-	return new MapManager();
+MAPDLL_API MapManager * MapCreate(FileManager fm, int bufflen = 1024, std::string tempfile = "") {
+	std::cout << "[MAP DLL] - Creating instance with " << bufflen << " and " << tempfile << std::endl;
+	return new MapManager(fm, bufflen, tempfile);
 }
