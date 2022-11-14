@@ -31,17 +31,4 @@ private:
 	MapManager* MapFactory(HINSTANCE dll);
 	ReduceManager* ReduceFactory(HINSTANCE dll);
 	SortManager* SortFactory(HINSTANCE dll);
-	// typedef MapManager* (*funcCreateMapManager)();
 };
-
-
-
-/*
-ReduceManager* ReduceFactory(HINSTANCE dll) {
-	typedef ReduceManager* (*rmFuncPtr)();
-	rmFuncPtr pfnCreate;
-	pfnCreate = (rmFuncPtr)GetProcAddress(dll, "RmCreate");
-	ReduceManager* mgr = pfnCreate();
-	return mgr;
-}
-*/

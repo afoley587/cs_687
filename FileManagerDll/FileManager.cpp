@@ -30,7 +30,7 @@ void FileManager::read_directory(std::string dirname, std::vector<std::string>& 
 void FileManager::read_file(std::string filename, std::vector<std::string>& data) {
 
 	if (!file_exists(filename)) {
-		std::cerr << "[FILE MGR] - File does not exist!" << std::endl;
+		std::cerr << "[FILE MGR] - File does not exist! " << filename << std::endl;
 		throw std::invalid_argument("[FILE MGR] - File does not exist!");
 	}
 
