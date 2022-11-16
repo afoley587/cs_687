@@ -18,33 +18,43 @@ void MapManager::map(std::string line, bool forceExport) {
 }
 
 void MapManager::mexport(std::vector<std::string> buffer, bool forceExport) {
-	if (filebuffer.find(tempFile) != filebuffer.end()) {
-		filebuffer[tempFile].insert(filebuffer[tempFile].end(), buffer.begin(), buffer.end());
+
+	std::vector<std::string> tsmbuff;
+	std::unique_lock<std::mutex> lock(mut);
+	std::string bucketTempFile{ tempFile + "_R" + std::to_string(lastBucket)};
+	lastBucket = (lastBucket + 1) % numBuckets;
+	lock.unlock();
+
+	if (tsm.has(bucketTempFile)) {
+		tsmbuff = tsm.get(bucketTempFile);
+		tsmbuff.insert(tsmbuff.end(), buffer.begin(), buffer.end());
+		tsm.insert(bucketTempFile, tsmbuff);
 	}
 	else {
-		fm.touch_file(tempFile);
- 		filebuffer.insert(std::pair<std::string, std::vector<std::string>>(tempFile, buffer));
+		tsmbuff = buffer;
+		fm.touch_file(bucketTempFile);
+ 		tsm.insert(bucketTempFile, tsmbuff);
 	}
 
-	if (filebuffer[tempFile].size() >= max_buffer_size || forceExport) {
+	if (tsmbuff.size() >= max_buffer_size || forceExport) {
 
 		std::vector<std::string> toExport;
 
-		for (auto s : filebuffer[tempFile]) {
+		for (auto s : tsmbuff) {
 			toExport.push_back("(\"" + s + "\", [1]),");
 		}
-
 		
 		try {
-			std::cout << "[MAP MGR] - Dumping " << max_buffer_size << " to tempfile " << tempFile << std::endl;
-			fm.append_file(tempFile, toExport);
+			std::cout << "[MAP MGR] - Dumping " << max_buffer_size << " to tempfile " << bucketTempFile << std::endl;
+			fm.append_file(bucketTempFile, toExport);
 		}
 		catch (std::invalid_argument) {
 			std::cerr << "[MAP MGR] - Could Not Empty Buffer" << std::endl;
 			throw std::runtime_error("[MAP MGR] - Could Not Empty Buffer");
 		}
 		
-		filebuffer[tempFile].clear();
+		tsmbuff.clear();
+		tsm.insert(bucketTempFile, tsmbuff);
 	}
 }
 

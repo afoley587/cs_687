@@ -1,6 +1,5 @@
 #include "ThreadSafeMap.h"
 
-#define TEST_TSM 1
 #ifdef TEST_TSM
 
 #include <string>
@@ -19,14 +18,14 @@ int main() {
 
 	std::cout << "Started threads" << std::endl;
 
-	readers.push_back(std::thread(read, "hello"));
-	readers.push_back(std::thread(read, "world"));
-
 	writers.push_back(std::thread(write, "hello", 1));
 	writers.push_back(std::thread(write, "world", 2));
-
-	for (std::thread& t : readers) { t.join(); };
 	for (std::thread& t : writers) { t.join(); };
+
+	readers.push_back(std::thread(read, "hello"));
+	readers.push_back(std::thread(read, "world"));
+	for (std::thread& t : readers) { t.join(); };
+	
 	
 	return 0;
 }

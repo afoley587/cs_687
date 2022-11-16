@@ -9,7 +9,7 @@
 #include <cwctype>
 
 #define NUM_REQUIRED_ARGS 6
-#define NUM_MAPS 6
+#define NUM_MAPS 5
 
 std::vector<std::string> ConvertArgsToStringVector(char* a[], int size);
 std::string GetDefaultWorkingDirectory(std::string workDirectoryString);
@@ -46,8 +46,7 @@ void ExecutiveComponent::RunProgram() {
 	HINSTANCE mapDll        = LoadDll(programSettings.MapDllPath);
 
 	for (int i = 0; i < NUM_MAPS; i++) {
-		MapManager* _mapManager = MapFactory(mapDll);
-		workFlowComponent.AddMapManager(*_mapManager);
+		workFlowComponent.AddMapManager(MapFactory(mapDll));
 	}
 
 	std::cout << "[EXEC COMP] - New MM Initialized" << std::endl;

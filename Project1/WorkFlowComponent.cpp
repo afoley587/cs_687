@@ -8,10 +8,9 @@
 #include <thread>
 #include <time.h>
 
-#define NUM_MAPS 6
-#define NUM_BUCKETS 3
-
-void MapDispatch(std::vector<std::string> infiles, std::string tempDir, FileManager fm, MapManager mm);
+#define NUM_BUCKETS 5
+#define NUM_MAPS 5
+void MapDispatch(std::vector<std::string> infiles, std::string tempDir, FileManager fm, MapManager* mm);
 
 WorkFlowComponent::WorkFlowComponent(ProgramSettings ps, FileManager fileMgr) {
 	programSettings = ps;
@@ -79,11 +78,11 @@ void WorkFlowComponent::StartWorkFlow() {
 	fileManager.touch_file(programSettings.OutputDirectory + successFile);
 }
 
-void MapDispatch(std::vector<std::string> infiles, std::string tempDir, FileManager fm, MapManager mm) {
+void MapDispatch(std::vector<std::string> infiles, std::string tempDir, FileManager fm, MapManager* mm) {
 	std::vector<std::string> buff;
 	std::stringstream new_tf;
 	new_tf << tempDir << "\\M" << std::this_thread::get_id();
-	mm.setTempFile(new_tf.str());
+	mm->setTempFile(new_tf.str());
 
 	for (auto f : infiles) {
 		std::cout << "Reading " << f << std::endl;
@@ -91,7 +90,7 @@ void MapDispatch(std::vector<std::string> infiles, std::string tempDir, FileMana
 
 		for (int i = 0; i < buff.size(); i++) {
 			bool isLast = (i == buff.size() - 1);
-			mm.map(buff[i], isLast);
+			mm->map(buff[i], isLast);
 		}
 	}
 }

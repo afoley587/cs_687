@@ -14,7 +14,7 @@ private:
 	ReduceManager reduceManager;
 	ProgramSettings programSettings;
 
-	std::vector<MapManager> mapManagers;
+	std::vector<MapManager *> mapManagers;
 
 	std::string intermediateFile = "\\temp.txt";
 	std::string resultsFile = "\\results.txt";
@@ -27,7 +27,7 @@ public:
 	inline std::string GetIntermediateFile(void) { return intermediateFile; };
 	inline std::string GetResultsFile(void) { return resultsFile; };
 	inline std::string GetSuccessFile(void) { return successFile; };
-	inline void AddMapManager(MapManager m) { mapManagers.push_back(m); };
+	inline void AddMapManager(MapManager* m) { mapManagers.push_back(m); };
 	inline void SetReduceManager(ReduceManager m) { reduceManager = m; };
 	inline void SetSortManager(SortManager m) { sortManager = m; };
 

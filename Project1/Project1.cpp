@@ -3,7 +3,6 @@
 
 #define _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING 1
 
-
 #include <iostream>
 
 #include "ExecutiveComponent.h"

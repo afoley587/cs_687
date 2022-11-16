@@ -4,6 +4,7 @@
 #include <vector>
 #include <unordered_map>
 #include "FileManager.h"
+#include "../ThreadSafeMap/ThreadSafeMap.h"
 
 #ifdef MAPDLL_EXPORTS
 #define MAPDLL_API __declspec(dllexport)
@@ -57,8 +58,12 @@ public:
 
 private:
 	std::string tempFile;
+	int numBuckets{ 5 };
+	int lastBucket{ 0 };
+	std::mutex mut;
 	int max_buffer_size; /* Max Number Of Words In A Buffer Vector */
 	std::unordered_map<std::string, std::vector<std::string>> filebuffer;
+	ThreadSafeMap<std::string, std::vector<std::string>> tsm;
 	FileManager fm;
 };
 
