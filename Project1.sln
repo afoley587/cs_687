@@ -15,6 +15,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ThreadSafeMap", "ThreadSafe
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SingleThreadMap", "SingleThreadMap\SingleThreadMap.vcxproj", "{361F6EAC-957A-459C-9073-FCFC2E915086}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ThreadPool", "ThreadPool\ThreadPool.vcxproj", "{E3ED3C5A-F50A-443E-B33C-E9737F21B5FE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -71,6 +73,14 @@ Global
 		{361F6EAC-957A-459C-9073-FCFC2E915086}.Release|x64.Build.0 = Release|x64
 		{361F6EAC-957A-459C-9073-FCFC2E915086}.Release|x86.ActiveCfg = Release|Win32
 		{361F6EAC-957A-459C-9073-FCFC2E915086}.Release|x86.Build.0 = Release|Win32
+		{E3ED3C5A-F50A-443E-B33C-E9737F21B5FE}.Debug|x64.ActiveCfg = Debug|x64
+		{E3ED3C5A-F50A-443E-B33C-E9737F21B5FE}.Debug|x64.Build.0 = Debug|x64
+		{E3ED3C5A-F50A-443E-B33C-E9737F21B5FE}.Debug|x86.ActiveCfg = Debug|Win32
+		{E3ED3C5A-F50A-443E-B33C-E9737F21B5FE}.Debug|x86.Build.0 = Debug|Win32
+		{E3ED3C5A-F50A-443E-B33C-E9737F21B5FE}.Release|x64.ActiveCfg = Release|x64
+		{E3ED3C5A-F50A-443E-B33C-E9737F21B5FE}.Release|x64.Build.0 = Release|x64
+		{E3ED3C5A-F50A-443E-B33C-E9737F21B5FE}.Release|x86.ActiveCfg = Release|Win32
+		{E3ED3C5A-F50A-443E-B33C-E9737F21B5FE}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
