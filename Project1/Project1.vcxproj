@@ -111,7 +111,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>MapDll.lib;ReduceDll.lib; FileManagerDll.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ThreadPool.lib;MapDll.lib;ReduceDll.lib; FileManagerDll.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>

@@ -13,6 +13,7 @@ public:
 	void StopAccepting();
 	void StartAccepting();
 	void FlushTasks();
+	void FlushThreads();
 	void Shutdown();
 	bool HasTasks();
 	ThreadPool& operator = (ThreadPool&) = delete;

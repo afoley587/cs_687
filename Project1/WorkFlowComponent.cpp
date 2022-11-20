@@ -8,7 +8,9 @@
 #include <thread>
 #include <time.h>
 
-void MapDispatch(std::vector<std::string> infiles, std::string tempDir, FileManager fm, MapManager* mm);
+#include "../MapFunctor/MapFunctor.h"
+
+// void MapDispatch(std::vector<std::string> infiles, std::string tempDir, FileManager fm, MapManager* mm);
 
 WorkFlowComponent::WorkFlowComponent(ProgramSettings ps, FileManager fileMgr) {
 	programSettings = ps;
@@ -18,7 +20,6 @@ WorkFlowComponent::WorkFlowComponent(ProgramSettings ps, FileManager fileMgr) {
 	sortManager = SortManager{fileManager, ps.TempDirectory + intermediateFile};
 	reduceManager = ReduceManager{ fileManager, ps.OutputDirectory + resultsFile, ps.OutputDirectory + successFile };
 	std::cout << "[WF COMP] - leaving ctor" << std::endl;
-	tp.Init();
 }
 
 void WorkFlowComponent::StartWorkFlow() {
@@ -29,6 +30,8 @@ void WorkFlowComponent::StartWorkFlow() {
     std::vector<std::string> input_files;
 	std::vector<std::vector<std::string>> batches;
 	std::vector<std::thread> map_threads;
+
+	tp.Init();
 
 	std::cout << "[WF COMP] - Reading Input Directory " << std::endl;
 
@@ -56,10 +59,12 @@ void WorkFlowComponent::StartWorkFlow() {
 	// tp.AddJob(MapDispatch, batches[i], programSettings.TempDirectory, fileManager, mapManagers[i]);
 	for (int i = 0; i < programSettings.NumMappers; i++) {
 		std::cout << "[WF COMP] - Dispatching Thread With " << batches[i].size() << " files." << std::endl;
+		tp.AddJob(MapFunctor(fileManager, mapManagers[i], batches[i], programSettings.TempDirectory));
 		// map_threads.push_back(std::thread(MapDispatch, batches[i], programSettings.TempDirectory, fileManager, mapManagers[i]));
 	}
 
-	for (std::thread& t : map_threads) { t.join(); };
+
+	tp.FlushTasks();
 
 	std::cout << "[WF COMP] - Map Finished. Sorting." << std::endl;
 
@@ -78,6 +83,7 @@ void WorkFlowComponent::StartWorkFlow() {
 	fileManager.touch_file(programSettings.OutputDirectory + successFile);
 }
 
+/*
 void MapDispatch(std::vector<std::string> infiles, std::string tempDir, FileManager fm, MapManager* mm) {
 	std::vector<std::string> buff;
 	std::stringstream new_tf;
@@ -97,3 +103,4 @@ void MapDispatch(std::vector<std::string> infiles, std::string tempDir, FileMana
 		std::cout << "[WF COMP] - Thread " << threadid.str() << " Finished " << f << std::endl;
 	}
 }
+*/

@@ -1,9 +1,7 @@
 #include "ThreadPool.h"
-
-#define TEST_TP 1
-#ifdef TEST_TP
-
 #include <iostream>
+// #define TEST_TP 1
+#ifdef TEST_TP
 #include <string>
 #include <sstream>
 #endif
@@ -43,7 +41,6 @@ void ThreadPool::AddJob(const std::function<void()>& task) {
 	tasks.push(task);
 	lock.unlock();
 	cv.notify_one();
-	std::cout << "Job Added" << std::endl;
 }
 
 bool ThreadPool::HasTasks() {
@@ -69,17 +66,21 @@ void ThreadPool::FlushTasks() {
 		return tasks.empty();
 	});
 	lock.unlock();
+	FlushThreads();
 }
 
-void ThreadPool::Shutdown() {
+void ThreadPool::FlushThreads() {
 	std::unique_lock<std::mutex> lock(mut);
 	kill = true;
 	lock.unlock();
 	cv.notify_all();
-	for (std::thread& t : threads) { 
-		std::cout << "Joining " << std::endl;
-		t.join(); 
+	for (std::thread& t : threads) {
+		t.join();
 	};
+}
+
+void ThreadPool::Shutdown() {
+	FlushThreads();
 	threads.clear();
 }
 
@@ -98,6 +99,6 @@ int main() {
 			});
 	}
 	tp.FlushTasks();
-	tp.Shutdown();
+	// tp.Shutdown();
 }
 #endif
