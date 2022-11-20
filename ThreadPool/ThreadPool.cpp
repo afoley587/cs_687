@@ -6,9 +6,15 @@
 #include <sstream>
 #endif
 
-void ThreadPool::Init() {
+void ThreadPool::Init(int _numTasks) {
 	isAccepting = true;
-	numTasks    = std::thread::hardware_concurrency();
+
+	if (_numTasks < 1) {
+		numTasks = std::thread::hardware_concurrency();
+	}
+	else {
+		numTasks = _numTasks;
+	}
 	threads.resize(numTasks);
 	for (int i = 0; i < numTasks; i++) {
 		threads.at(i) = std::thread(&ThreadPool::EventLoop, this);
@@ -66,7 +72,6 @@ void ThreadPool::FlushTasks() {
 		return tasks.empty();
 	});
 	lock.unlock();
-	FlushThreads();
 }
 
 void ThreadPool::FlushThreads() {
@@ -79,8 +84,12 @@ void ThreadPool::FlushThreads() {
 	};
 }
 
-void ThreadPool::Shutdown() {
+void ThreadPool::Flush() {
+	FlushTasks();
 	FlushThreads();
+}
+void ThreadPool::Shutdown() {
+	Flush();
 	threads.clear();
 }
 

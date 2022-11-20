@@ -31,7 +31,7 @@ void WorkFlowComponent::StartWorkFlow() {
 	std::vector<std::vector<std::string>> batches;
 	std::vector<std::thread> map_threads;
 
-	tp.Init();
+	tp.Init(programSettings.NumMappers);
 
 	std::cout << "[WF COMP] - Reading Input Directory " << std::endl;
 
@@ -64,7 +64,7 @@ void WorkFlowComponent::StartWorkFlow() {
 	}
 
 
-	tp.FlushTasks();
+	tp.Flush();
 
 	std::cout << "[WF COMP] - Map Finished. Sorting." << std::endl;
 
