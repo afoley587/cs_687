@@ -40,12 +40,13 @@ void MapManager::mexport(std::vector<std::string> buffer, bool forceExport) {
 
 		std::vector<std::string> toExport;
 
+		// std::cout << tsmbuff.size() << std::endl;
+
 		for (auto s : tsmbuff) {
 			toExport.push_back("(\"" + s + "\", [1]),");
 		}
 		
 		try {
-			// std::cout << "[MAP MGR] - Dumping " << max_buffer_size << " to tempfile " << bucketTempFile << std::endl;
 			fm.append_file(bucketTempFile, toExport);
 		}
 		catch (std::invalid_argument) {
@@ -53,8 +54,8 @@ void MapManager::mexport(std::vector<std::string> buffer, bool forceExport) {
 			throw std::runtime_error("[MAP MGR] - Could Not Empty Buffer");
 		}
 		
-		tsmbuff.clear();
-		tsm.insert(bucketTempFile, tsmbuff);
+		tsm.clear(bucketTempFile);
+
 	}
 }
 

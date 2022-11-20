@@ -22,6 +22,10 @@ public:
 		return data.find(key) != data.end();
 	}
 
+	void clear(T key) {
+		data[key] = U{};
+	}
+
 	U get(T key) {
 		U val = data[key];
 		return val;

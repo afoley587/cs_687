@@ -25,6 +25,11 @@ public:
 		return data.find(key) != data.end();
 	}
 
+	void clear(T key) {
+		std::lock_guard<std::mutex> lock(write_mut);
+		data[key] = U{};
+	}
+
 	U get(T key) {
 		std::shared_lock<std::shared_mutex> lock(read_mut);
 		// cv.wait(lock, [this, key] { return this->data.find(key) != this->data.end(); });

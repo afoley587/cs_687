@@ -37,6 +37,7 @@ public:
 				mm->map(buff[i], isLast);
 			}
 			std::cout << "[MAP FUNCT] - Thread " << threadid.str() << " Finished " << f << std::endl;
+			buff.clear();
 		}
 	}
 };
