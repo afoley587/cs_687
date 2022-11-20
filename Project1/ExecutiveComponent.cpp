@@ -43,9 +43,9 @@ void ExecutiveComponent::PrintHelp() {
 
 void ExecutiveComponent::RunProgram() {
 	//This is where the program starts after validation and object creation
-	HINSTANCE mapDll        = LoadDll(programSettings.MapDllPath);
+	HINSTANCE mapDll = LoadDll(programSettings.MapDllPath);
 
-	for (int i = 0; i < NUM_MAPS; i++) {
+	for (int i = 0; i < programSettings.NumMappers; i++) {
 		workFlowComponent.AddMapManager(MapFactory(mapDll));
 	}
 

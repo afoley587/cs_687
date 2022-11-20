@@ -7,6 +7,8 @@ struct ProgramSettings {
 	std::string OutputDirectory;
 	std::string MapDllPath;
 	std::string ReduceDllPath;
+	int NumMappers{ 5 };
+	int NumBuckets{ 5 };
 
 	ProgramSettings() {};
 

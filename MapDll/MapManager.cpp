@@ -20,10 +20,10 @@ void MapManager::map(std::string line, bool forceExport) {
 void MapManager::mexport(std::vector<std::string> buffer, bool forceExport) {
 
 	std::vector<std::string> tsmbuff;
-	std::unique_lock<std::mutex> lock(mut);
+	// std::unique_lock<std::mutex> lock(mut);
 	std::string bucketTempFile{ tempFile + "_R" + std::to_string(lastBucket)};
 	lastBucket = (lastBucket + 1) % numBuckets;
-	lock.unlock();
+	// lock.unlock();
 
 	if (tsm.has(bucketTempFile)) {
 		tsmbuff = tsm.get(bucketTempFile);
@@ -45,7 +45,7 @@ void MapManager::mexport(std::vector<std::string> buffer, bool forceExport) {
 		}
 		
 		try {
-			std::cout << "[MAP MGR] - Dumping " << max_buffer_size << " to tempfile " << bucketTempFile << std::endl;
+			// std::cout << "[MAP MGR] - Dumping " << max_buffer_size << " to tempfile " << bucketTempFile << std::endl;
 			fm.append_file(bucketTempFile, toExport);
 		}
 		catch (std::invalid_argument) {

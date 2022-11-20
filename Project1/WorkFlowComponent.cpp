@@ -8,8 +8,6 @@
 #include <thread>
 #include <time.h>
 
-#define NUM_BUCKETS 5
-#define NUM_MAPS 5
 void MapDispatch(std::vector<std::string> infiles, std::string tempDir, FileManager fm, MapManager* mm);
 
 WorkFlowComponent::WorkFlowComponent(ProgramSettings ps, FileManager fileMgr) {
@@ -37,9 +35,9 @@ void WorkFlowComponent::StartWorkFlow() {
 
 	std::cout << "[WF COMP] - Running Map Utility " << std::endl;
 
-	const int subVectorSize = static_cast<int>(ceil(static_cast<double>(input_files.size()) / static_cast<double>(NUM_MAPS)));
+	const int subVectorSize = static_cast<int>(ceil(static_cast<double>(input_files.size()) / static_cast<double>(programSettings.NumMappers)));
 
-	for (int i = 0; i < NUM_MAPS; ++i) {
+	for (int i = 0; i < programSettings.NumMappers; ++i) {
 		std::vector<std::string> batch;
 		batch.resize(input_files.size() - i * subVectorSize);
 		auto start_iter = std::next(input_files.begin(), i * subVectorSize);
@@ -54,7 +52,7 @@ void WorkFlowComponent::StartWorkFlow() {
 
 	std::cout << "[WF COMP] - Vector Batched " << std::endl;
 
-	for (int i = 0; i < NUM_MAPS; i++) {
+	for (int i = 0; i < programSettings.NumMappers; i++) {
 		std::cout << "[WF COMP] - Dispatching Thread With " << batches[i].size() << " files." << std::endl;
 		map_threads.push_back(std::thread(MapDispatch, batches[i], programSettings.TempDirectory, fileManager, mapManagers[i]));
 	}
@@ -81,16 +79,19 @@ void WorkFlowComponent::StartWorkFlow() {
 void MapDispatch(std::vector<std::string> infiles, std::string tempDir, FileManager fm, MapManager* mm) {
 	std::vector<std::string> buff;
 	std::stringstream new_tf;
-	new_tf << tempDir << "\\M" << std::this_thread::get_id();
+	std::stringstream threadid;
+	threadid << std::this_thread::get_id();
+	new_tf << tempDir << "\\M" << threadid.str();
 	mm->setTempFile(new_tf.str());
 
 	for (auto f : infiles) {
-		std::cout << "Reading " << f << std::endl;
+		std::cout << "[WF COMP] - Thread " << threadid.str() << " Reading " << f << std::endl;
 		fm.read_file(f, buff);
 
 		for (int i = 0; i < buff.size(); i++) {
 			bool isLast = (i == buff.size() - 1);
 			mm->map(buff[i], isLast);
 		}
+		std::cout << "[WF COMP] - Thread " << threadid.str() << " Finished " << f << std::endl;
 	}
 }

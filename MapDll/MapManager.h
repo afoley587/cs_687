@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include "FileManager.h"
 #include "../ThreadSafeMap/ThreadSafeMap.h"
+#include "../SingleThreadMap/SingleThreadedMap.h"
 
 #ifdef MAPDLL_EXPORTS
 #define MAPDLL_API __declspec(dllexport)
@@ -63,7 +64,9 @@ private:
 	std::mutex mut;
 	int max_buffer_size; /* Max Number Of Words In A Buffer Vector */
 	std::unordered_map<std::string, std::vector<std::string>> filebuffer;
+	//Test the below to see if race conds actually exist
 	ThreadSafeMap<std::string, std::vector<std::string>> tsm;
+	// SingleThreadedMap<std::string, std::vector<std::string>> tsm;
 	FileManager fm;
 };
 
