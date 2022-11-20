@@ -6,6 +6,7 @@
 #include "ReduceManager.h"
 #include "ProgramSettingsStruct.h"
 #include <SortManager.h>
+#include "../ThreadPool/ThreadPool.h"
 
 class WorkFlowComponent {
 private:
@@ -13,6 +14,7 @@ private:
 	SortManager sortManager;
 	ReduceManager reduceManager;
 	ProgramSettings programSettings;
+	ThreadPool tp;
 
 	std::vector<MapManager *> mapManagers;
 

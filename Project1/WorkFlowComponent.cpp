@@ -18,6 +18,7 @@ WorkFlowComponent::WorkFlowComponent(ProgramSettings ps, FileManager fileMgr) {
 	sortManager = SortManager{fileManager, ps.TempDirectory + intermediateFile};
 	reduceManager = ReduceManager{ fileManager, ps.OutputDirectory + resultsFile, ps.OutputDirectory + successFile };
 	std::cout << "[WF COMP] - leaving ctor" << std::endl;
+	tp.Init();
 }
 
 void WorkFlowComponent::StartWorkFlow() {
@@ -52,9 +53,10 @@ void WorkFlowComponent::StartWorkFlow() {
 
 	std::cout << "[WF COMP] - Vector Batched " << std::endl;
 
+	// tp.AddJob(MapDispatch, batches[i], programSettings.TempDirectory, fileManager, mapManagers[i]);
 	for (int i = 0; i < programSettings.NumMappers; i++) {
 		std::cout << "[WF COMP] - Dispatching Thread With " << batches[i].size() << " files." << std::endl;
-		map_threads.push_back(std::thread(MapDispatch, batches[i], programSettings.TempDirectory, fileManager, mapManagers[i]));
+		// map_threads.push_back(std::thread(MapDispatch, batches[i], programSettings.TempDirectory, fileManager, mapManagers[i]));
 	}
 
 	for (std::thread& t : map_threads) { t.join(); };
