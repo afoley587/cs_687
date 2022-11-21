@@ -6,15 +6,18 @@
 #include "ReduceManager.h"
 #include "ProgramSettingsStruct.h"
 #include <SortManager.h>
+#include "../ThreadPool/ThreadPool.h"
 
 class WorkFlowComponent {
 private:
 	FileManager fileManager;
-	MapManager mapManager;
 	SortManager sortManager;
 	ReduceManager reduceManager;
 	ProgramSettings programSettings;
-	
+	ThreadPool tp;
+
+	std::vector<MapManager *> mapManagers;
+
 	std::string intermediateFile = "\\temp.txt";
 	std::string resultsFile = "\\results.txt";
 	std::string successFile = "\\SUCCESS.txt";
@@ -26,7 +29,7 @@ public:
 	inline std::string GetIntermediateFile(void) { return intermediateFile; };
 	inline std::string GetResultsFile(void) { return resultsFile; };
 	inline std::string GetSuccessFile(void) { return successFile; };
-	inline void SetMapManager(MapManager m) { mapManager = m; };
+	inline void AddMapManager(MapManager* m) { mapManagers.push_back(m); };
 	inline void SetReduceManager(ReduceManager m) { reduceManager = m; };
 	inline void SetSortManager(SortManager m) { sortManager = m; };
 
@@ -35,7 +38,7 @@ public:
 	WorkFlowComponent(const WorkFlowComponent& ws) : 
 		programSettings{ws.programSettings},
 		fileManager{ ws.fileManager },
-		mapManager{ ws.mapManager },
+		mapManagers{ ws.mapManagers },
 		sortManager{ ws.sortManager },
 		reduceManager{ ws.reduceManager }
 	{
@@ -45,7 +48,7 @@ public:
 	WorkFlowComponent(WorkFlowComponent&& ws) :
 		programSettings{ ws.programSettings },
 		fileManager{ ws.fileManager },
-		mapManager{ ws.mapManager },
+		mapManagers{ ws.mapManagers },
 		sortManager{ ws.sortManager },
 		reduceManager{ ws.reduceManager } 
 	{
@@ -63,7 +66,7 @@ public:
 		std::cout << "[WF COMP] - mine premove " << this->programSettings.InputDirectory << std::endl;
 		std::cout << "[WF COMP] - theirs premove " << ws.programSettings.InputDirectory << std::endl;
 		programSettings = std::move(ws.programSettings);
-		mapManager = std::move(ws.mapManager);
+		mapManagers = std::move(ws.mapManagers);
 		fileManager = std::move(ws.fileManager);
 		reduceManager = std::move(ws.reduceManager);
 		sortManager = std::move(ws.sortManager);

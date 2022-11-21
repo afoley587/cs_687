@@ -5,15 +5,20 @@
 #include "ReduceManager.h"
 
 #include <map>
+#include <thread>
+#include <time.h>
+
+#include "../MapFunctor/MapFunctor.h"
+
+// void MapDispatch(std::vector<std::string> infiles, std::string tempDir, FileManager fm, MapManager* mm);
 
 WorkFlowComponent::WorkFlowComponent(ProgramSettings ps, FileManager fileMgr) {
 	programSettings = ps;
 	fileManager = fileMgr;
 	std::cout << "[WF COMP] - In " << ps.TempDirectory + intermediateFile << std::endl;
-	mapManager = MapManager{ fileManager, 1024, ps.TempDirectory + intermediateFile };
+	// mapManagers.clear();
 	sortManager = SortManager{fileManager, ps.TempDirectory + intermediateFile};
 	reduceManager = ReduceManager{ fileManager, ps.OutputDirectory + resultsFile, ps.OutputDirectory + successFile };
-	std::cout << "[WF COMP] - Testing " << this->mapManager.getTempFile() << std::endl;
 	std::cout << "[WF COMP] - leaving ctor" << std::endl;
 }
 
@@ -23,7 +28,10 @@ void WorkFlowComponent::StartWorkFlow() {
 	//Start Map Function
 
     std::vector<std::string> input_files;
-    std::vector<std::string> input_file_data;
+	std::vector<std::vector<std::string>> batches;
+	std::vector<std::thread> map_threads;
+
+	tp.Init(programSettings.NumMappers);
 
 	std::cout << "[WF COMP] - Reading Input Directory " << std::endl;
 
@@ -31,14 +39,32 @@ void WorkFlowComponent::StartWorkFlow() {
 
 	std::cout << "[WF COMP] - Running Map Utility " << std::endl;
 
-    for (auto f : input_files) {
-        fileManager.read_file(f, input_file_data);
-        for (int i = 0; i < input_file_data.size(); i++) {
-            bool isLast = (i == input_file_data.size() - 1);
-            mapManager.map(input_file_data[i], isLast);
-        }
-        input_file_data.clear();
-    }
+	const int subVectorSize = static_cast<int>(ceil(static_cast<double>(input_files.size()) / static_cast<double>(programSettings.NumMappers)));
+
+	for (int i = 0; i < programSettings.NumMappers; ++i) {
+		std::vector<std::string> batch;
+		batch.resize(input_files.size() - i * subVectorSize);
+		auto start_iter = std::next(input_files.begin(), i * subVectorSize);
+		auto end_iter = input_files.end();
+		if (i * subVectorSize + subVectorSize < input_files.size()) {
+			end_iter = std::next(input_files.begin(), i * subVectorSize + subVectorSize);
+			batch.resize(subVectorSize);
+		}
+		std::copy(start_iter, end_iter, batch.begin());
+		batches.push_back(batch);
+	}
+
+	std::cout << "[WF COMP] - Vector Batched " << std::endl;
+
+	// tp.AddJob(MapDispatch, batches[i], programSettings.TempDirectory, fileManager, mapManagers[i]);
+	for (int i = 0; i < programSettings.NumMappers; i++) {
+		std::cout << "[WF COMP] - Dispatching Thread With " << batches[i].size() << " files." << std::endl;
+		tp.AddJob(MapFunctor(fileManager, mapManagers[i], batches[i], programSettings.TempDirectory));
+		// map_threads.push_back(std::thread(MapDispatch, batches[i], programSettings.TempDirectory, fileManager, mapManagers[i]));
+	}
+
+
+	tp.Flush();
 
 	std::cout << "[WF COMP] - Map Finished. Sorting." << std::endl;
 
@@ -56,3 +82,25 @@ void WorkFlowComponent::StartWorkFlow() {
 	std::cout << "[WF COMP] - Reduce Finished. Creating Success File." << std::endl;
 	fileManager.touch_file(programSettings.OutputDirectory + successFile);
 }
+
+/*
+void MapDispatch(std::vector<std::string> infiles, std::string tempDir, FileManager fm, MapManager* mm) {
+	std::vector<std::string> buff;
+	std::stringstream new_tf;
+	std::stringstream threadid;
+	threadid << std::this_thread::get_id();
+	new_tf << tempDir << "\\M" << threadid.str();
+	mm->setTempFile(new_tf.str());
+
+	for (auto f : infiles) {
+		std::cout << "[WF COMP] - Thread " << threadid.str() << " Reading " << f << std::endl;
+		fm.read_file(f, buff);
+
+		for (int i = 0; i < buff.size(); i++) {
+			bool isLast = (i == buff.size() - 1);
+			mm->map(buff[i], isLast);
+		}
+		std::cout << "[WF COMP] - Thread " << threadid.str() << " Finished " << f << std::endl;
+	}
+}
+*/

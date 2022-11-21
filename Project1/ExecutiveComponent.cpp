@@ -9,6 +9,7 @@
 #include <cwctype>
 
 #define NUM_REQUIRED_ARGS 6
+#define NUM_MAPS 5
 
 std::vector<std::string> ConvertArgsToStringVector(char* a[], int size);
 std::string GetDefaultWorkingDirectory(std::string workDirectoryString);
@@ -42,8 +43,11 @@ void ExecutiveComponent::PrintHelp() {
 
 void ExecutiveComponent::RunProgram() {
 	//This is where the program starts after validation and object creation
-	HINSTANCE mapDll        = LoadDll(programSettings.MapDllPath);
-	MapManager* _mapManager = MapFactory(mapDll);
+	HINSTANCE mapDll = LoadDll(programSettings.MapDllPath);
+
+	for (int i = 0; i < programSettings.NumMappers; i++) {
+		workFlowComponent.AddMapManager(MapFactory(mapDll));
+	}
 
 	std::cout << "[EXEC COMP] - New MM Initialized" << std::endl;
 
@@ -52,8 +56,7 @@ void ExecutiveComponent::RunProgram() {
 	SortManager* _sortManager = SortFactory(reduceDll);
 
 	std::cout << "[EXEC COMP] - New RM Initialized" << std::endl;
-
-	workFlowComponent.SetMapManager(*_mapManager);
+	
 	workFlowComponent.SetReduceManager(*_reduceManager);
 	workFlowComponent.SetSortManager(*_sortManager);
 
