@@ -2,7 +2,7 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
-#include "FileManager.h"
+#include "../FileManagerDll/FileManager.h"
 
 #ifdef REDUCEDLL_EXPORTS
 #define REDUCEDLL_API __declspec(dllexport)

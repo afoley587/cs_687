@@ -52,13 +52,19 @@ void ExecutiveComponent::RunProgram() {
 	std::cout << "[EXEC COMP] - New MM Initialized" << std::endl;
 
 	HINSTANCE reduceDll = LoadDll(programSettings.ReduceDllPath);
-	ReduceManager* _reduceManager = ReduceFactory(reduceDll);
-	SortManager* _sortManager = SortFactory(reduceDll);
+
+	for (int i = 0; i < programSettings.NumReducers; i++) {
+		workFlowComponent.AddReduceManager(ReduceFactory(reduceDll));
+	}
+
+	for (int i = 0; i < programSettings.NumSorters; i++) {
+		workFlowComponent.AddSortManager(SortFactory(reduceDll));
+	}
 
 	std::cout << "[EXEC COMP] - New RM Initialized" << std::endl;
 	
-	workFlowComponent.SetReduceManager(*_reduceManager);
-	workFlowComponent.SetSortManager(*_sortManager);
+	//workFlowComponent.SetReduceManager(*_reduceManager);
+	//workFlowComponent.SetSortManager(*_sortManager);
 
 	std::cout << "[EXEC COMP] - Loaded Dlls" << std::endl;
 	workFlowComponent.StartWorkFlow();
@@ -227,6 +233,6 @@ SortManager* ExecutiveComponent::SortFactory(HINSTANCE dll) {
 		throw std::runtime_error("[EXEC COMP] - Could Not Load Sort Instance");
 	}
 
-	SortManager* mgr = pfnCreate(fileManager, programSettings.TempDirectory + workFlowComponent.GetIntermediateFile());
+	SortManager* mgr = pfnCreate(fileManager, programSettings.TempDirectory);
 	return mgr;
 }

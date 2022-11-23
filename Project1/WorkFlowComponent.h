@@ -17,6 +17,8 @@ private:
 	ThreadPool tp;
 
 	std::vector<MapManager *> mapManagers;
+	std::vector<ReduceManager *> reduceManagers;
+	std::vector<SortManager *> sortManagers;
 
 	std::string intermediateFile = "\\temp.txt";
 	std::string resultsFile = "\\results.txt";
@@ -30,6 +32,8 @@ public:
 	inline std::string GetResultsFile(void) { return resultsFile; };
 	inline std::string GetSuccessFile(void) { return successFile; };
 	inline void AddMapManager(MapManager* m) { mapManagers.push_back(m); };
+	inline void AddReduceManager(ReduceManager* m) { reduceManagers.push_back(m); };
+	inline void AddSortManager(SortManager* m) { sortManagers.push_back(m); };
 	inline void SetReduceManager(ReduceManager m) { reduceManager = m; };
 	inline void SetSortManager(SortManager m) { sortManager = m; };
 

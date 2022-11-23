@@ -16,12 +16,13 @@ std::pair<std::string, int> GetKeyValuePairFromParsedText(const std::string stri
 std::string AddTickToValue(std::string currentVal, std::string valueToAppend);
 std::string FormatStringForReduceMethod(const std::map<std::string, std::vector<int>> map);
 
-std::map<std::string, std::vector<int>> SortManager::SortInput() {
-    std::cout << "[SORT MAN] - Sorting Input From " << sortInputFile << std::endl;
+
+std::map<std::string, std::vector<int>> SortManager::SortInput(std::string filePath) {
+    std::cout << "[SORT MAN] - Sorting Input From " << sortInputDirectory << std::endl;
 
     //Read Map Functions Output File
     std::vector<std::string> dataToBeSorted;
-    fileManager.read_file(sortInputFile, dataToBeSorted);
+    fileManager.read_file(sortInputDirectory + "\\" + filePath, dataToBeSorted);
 
     std::ostringstream fileDataString;
     const char* const delim = " ";

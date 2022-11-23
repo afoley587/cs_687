@@ -4,6 +4,7 @@
 #include <vector>
 #include <queue>
 #include <thread>
+#include <future>
 
 class ThreadPool
 {
@@ -16,8 +17,11 @@ public:
 	void Shutdown();
 	bool HasTasks();
 	ThreadPool& operator = (ThreadPool&) = delete;
+	bool IsExecuting = false;
+	void WaitUntilCompleted();
 
 private:
+	void ExecuteFunc(const std::function<void()>& task);
 	void EventLoop();
 	void FlushTasks();
 	void FlushThreads();
@@ -28,5 +32,12 @@ private:
 	std::condition_variable cv;
 	std::vector<std::thread> threads;
 	std::queue<std::function<void()>> tasks;
+	int numExecuting = 0;
+	std::vector<std::future<bool>> futures;
+
+
+	std::atomic<int> njobs_pending;
+	std::mutex main_mutex;
+	std::condition_variable main_condition;
 };
 

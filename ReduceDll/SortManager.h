@@ -14,19 +14,21 @@
 class SORTDLL_API SortManager {
 public:
 	SortManager() {};
-	SortManager(FileManager fileMgr, std::string input) :
+	SortManager(FileManager fileMgr, std::string inputDirectory) :
 		fileManager{ fileMgr },
-		sortInputFile{ input }
+		sortInputDirectory{ inputDirectory }
 	{};
 
-	std::map<std::string, std::vector<int>> SortInput(void);
+	std::map<std::string, std::vector<int>> SortInputFiles(std::vector<std::string> inputFiles);
 
-	void setInputFile(std::string in) { sortInputFile = in; };
-	std::string getInputFile(void) { return sortInputFile; };
+	std::map<std::string, std::vector<int>> SortInput(std::string filePath);
+
+	void setInputFile(std::string in) { sortInputDirectory = in; };
+	std::string getInputFile(void) { return sortInputDirectory; };
 
 private:
 	FileManager fileManager;
-	std::string sortInputFile;
+	std::string sortInputDirectory;
 
 };
 
