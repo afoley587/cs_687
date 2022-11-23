@@ -41,8 +41,8 @@ void ThreadPool::EventLoop() {
 			//futures.push_back(std::move(future));
 			//promise.set_value(true);
 
-			lock.unlock();
 			task();
+			lock.unlock();
 			cv.notify_one();
 		}
 		if (kill) {

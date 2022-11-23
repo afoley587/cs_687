@@ -119,11 +119,10 @@ void WorkFlowComponent::StartWorkFlow() {
 	}
 
 	std::vector<std::promise<std::map<std::string, std::vector<int>>>> sortPromises;
-	std::vector< std::map<std::string, std::vector<int>>> sortMaps;
+	std::vector<ThreadSafeMap<std::string, std::vector<int>>> sortMaps;
 	for (int i = 0; i < programSettings.NumSorters; i++) {
 		std::cout << "[WF COMP] - Dispatching Thread for Sorting." << std::endl;
-		std::map<std::string, std::vector<int>> sortMap;
-		std::promise< std::map<std::string, std::vector<int>>> promise = std::promise<std::map<std::string, std::vector<int>>> ();
+		ThreadSafeMap<std::string, std::vector<int>> sortMap = ThreadSafeMap<std::string, std::vector<int>>();
 		//auto sortFunc = SortFunctor(fileManager, sortManagers[i], sortThreadMetaMap[threadKey], std::ref(promise));
 		std::string threadKey = threadKeys[i];
 		auto sortFunc = SortFunctor(fileManager, sortManagers[i], sortThreadMetaMap[threadKey], std::ref(sortMap));
@@ -141,9 +140,9 @@ void WorkFlowComponent::StartWorkFlow() {
 
 	//TODO Start adding sorting to threadpool
 	std::map<std::string, std::vector<int>> sortedMapResults;
-	for (auto &sortMap : sortMaps) {
-		sortedMapResults.insert(sortMap.begin(), sortMap.end());
-	}
+	//for (auto &sortMap : sortMaps) {
+	//	sortedMapResults.insert(sortMap.begin(), sortMap.end());
+	//}
 
 
 	std::string testString = "KennyTestString";

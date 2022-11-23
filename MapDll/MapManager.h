@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
-#include "FileManager.h"
+#include "../FileManagerDll/FileManager.h"
 #include "../ThreadSafeMap/ThreadSafeMap.h"
 #include "../SingleThreadMap/SingleThreadedMap.h"
 

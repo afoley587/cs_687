@@ -20,6 +20,8 @@ public:
 		else {
 			data.insert(std::pair<T, U>(key, val));
 		}
+
+		
 		// cv.notify_one();
 	}
 
@@ -42,6 +44,16 @@ public:
 		lock.unlock();
 		return val;
 	}
+
+	ThreadSafeMap(const ThreadSafeMap& other)
+	{
+
+		data = other.data;
+	}
+
+	//ThreadSafeMap(ThreadSafeMap&& other)
+	//{
+	//}
 
 private:
 	std::mutex write_mut;
