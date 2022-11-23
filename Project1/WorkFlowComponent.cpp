@@ -18,6 +18,8 @@ using namespace std::chrono_literals;
 
 // void MapDispatch(std::vector<std::string> infiles, std::string tempDir, FileManager fm, MapManager* mm);
 
+ThreadSafeMap <std::string, std::vector<int>> SortFunctor::sortMap;
+
 WorkFlowComponent::WorkFlowComponent(ProgramSettings ps, FileManager fileMgr) {
 	programSettings = ps;
 	fileManager = fileMgr;
@@ -120,13 +122,13 @@ void WorkFlowComponent::StartWorkFlow() {
 
 	std::vector<std::promise<std::map<std::string, std::vector<int>>>> sortPromises;
 	std::vector<ThreadSafeMap<std::string, std::vector<int>>> sortMaps;
+	
 	for (int i = 0; i < programSettings.NumSorters; i++) {
 		std::cout << "[WF COMP] - Dispatching Thread for Sorting." << std::endl;
-		ThreadSafeMap<std::string, std::vector<int>> sortMap = ThreadSafeMap<std::string, std::vector<int>>();
 		//auto sortFunc = SortFunctor(fileManager, sortManagers[i], sortThreadMetaMap[threadKey], std::ref(promise));
 		std::string threadKey = threadKeys[i];
-		auto sortFunc = SortFunctor(fileManager, sortManagers[i], sortThreadMetaMap[threadKey], std::ref(sortMap));
-		sortMaps.push_back(sortMap);
+		auto sortFunc = SortFunctor(fileManager, sortManagers[i], sortThreadMetaMap[threadKey]);
+		// sortMaps.push_back(sortMap);
 		tp.AddJob(sortFunc);
 		//sortPromises.push_back(promise);
 	}

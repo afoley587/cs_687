@@ -15,14 +15,13 @@ private:
 	SortManager* sm;
 	std::vector<std::string> infiles;
 	//std::promise <std::map<std::string, std::vector<int>>>& promise;
-	ThreadSafeMap<std::string, std::vector<int>>& sortMap;
+	
 public:
-
-	SortFunctor(FileManager _fm, SortManager* _rm, std::vector<std::string> _infiles, ThreadSafeMap<std::string, std::vector<int>>& _sortMap) :
+	static ThreadSafeMap<std::string, std::vector<int>> sortMap;
+	SortFunctor(FileManager _fm, SortManager* _rm, std::vector<std::string> _infiles) :
 		fm(_fm),
 		sm{ _rm },
-		infiles{ _infiles },
-		sortMap{ _sortMap } {};
+		infiles{ _infiles } {};
 
 	//SortFunctor() {};
 	//SortFunctor(FileManager _fm, SortManager* _sm, std::vector<std::string> _infiles, std::promise<std::map<std::string, std::vector<int>>> & _promise) 
@@ -93,9 +92,11 @@ public:
 
 				for (auto& kvp : tempMap) 
 				{
-					sortMap.insert(kvp.first, kvp.second);
+					
+					sortMap.insert(kvp.first, kvp.second, true);
 				}
 
+				std::cout << &sortMap << std::endl;
 				//sortMap.insert(tempMap.begin(), tempMap.end());
 			}
 			catch (std::exception exception)
