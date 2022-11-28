@@ -1,4 +1,4 @@
-#include "ThreadPool.h"
+#include "ThreadPoolTemplate.h"
 #include <iostream>
 // #define TEST_TP 1
 #ifdef TEST_TP
@@ -6,9 +6,10 @@
 #include <sstream>
 #endif
 
-void ThreadPool::Init(int _numTasks) {
+template<class T>
+void ThreadPoolTemplate<T>::Init(int _numTasks) {
 	isAccepting = true;
-	kill = false;
+
 	if (_numTasks < 1) {
 		numTasks = std::thread::hardware_concurrency();
 	}
@@ -17,11 +18,14 @@ void ThreadPool::Init(int _numTasks) {
 	}
 	threads.resize(numTasks);
 	for (int i = 0; i < numTasks; i++) {
-		threads.at(i) = std::thread(&ThreadPool::EventLoop, this);
+		threads.at(i) = std::thread(&ThreadPoolTemplate<T>::EventLoop, this);
 	}
+
+	kill = false;
 }
 
-void ThreadPool::EventLoop() {
+template<class T>
+void ThreadPoolTemplate<T>::EventLoop() {
 	while (true) {
 		std::function<void()> task;
 		std::unique_lock<std::mutex> lock(mut);
@@ -32,15 +36,6 @@ void ThreadPool::EventLoop() {
 		if (!tasks.empty()) {
 			task = std::move(tasks.front());
 			tasks.pop();
-			//auto taskStatus = std::async(task);
-			//futures.emplace_back(std::move(taskStatus));
-			//ExecuteFunc(task);
-			//std::thread::id threadId = std::this_thread::get_id();
-			//std::promise<bool> promise = std::promise<bool>();
-			//std::future<bool> future = promise.get_future();
-			//futures.push_back(std::move(future));
-			//promise.set_value(true);
-
 			lock.unlock();
 			task();
 			cv.notify_one();
@@ -51,23 +46,27 @@ void ThreadPool::EventLoop() {
 	}
 }
 
-void ThreadPool::ExecuteFunc(const std::function<void()>& task)
+template<class T>
+void ThreadPoolTemplate<T>::ExecuteFunc(const std::function<void()>& task)
 {
 	std::promise<bool> promise = std::promise<bool>();
 	std::future<bool> future = promise.get_future();
-	futures.push_back( std::move(future));
+	futures.push_back(std::move(future));
 	task();
 	promise.set_value(true);
 }
 
-void ThreadPool::AddJob(const std::function<void()>& task) {
+template<class T>
+void ThreadPoolTemplate<T>::AddJob(const std::function<T()>& task) {
 	if (!isAccepting) { return; };
 	std::unique_lock<std::mutex> lock(mut);
 	tasks.push(task);
+	lock.unlock();
 	cv.notify_one();
 }
 
-bool ThreadPool::HasTasks() {
+template<class T>
+bool ThreadPoolTemplate<T>::HasTasks() {
 	bool hasTasks;
 	std::unique_lock<std::mutex> lock(mut);
 	hasTasks = !tasks.empty();
@@ -75,7 +74,8 @@ bool ThreadPool::HasTasks() {
 	return hasTasks;
 }
 
-void ThreadPool::WaitUntilCompleted() {
+template<class T>
+void ThreadPoolTemplate<T>::WaitUntilCompleted() {
 	for (std::thread& t : threads) {
 		t.join();
 	};
@@ -85,20 +85,23 @@ void ThreadPool::WaitUntilCompleted() {
 	for (int i = 0; i < futures.size(); i++)
 	{
 		std::future<bool> future = std::move(futures.at(i));
-		
+
 		future.get();
 	}
 }
 
-void ThreadPool::StartAccepting() {
+template<class T>
+void ThreadPoolTemplate<T>::StartAccepting() {
 	isAccepting = true;
 }
 
-void ThreadPool::StopAccepting() {
+template<class T>
+void ThreadPoolTemplate<T>::StopAccepting() {
 	isAccepting = false;
 }
 
-void ThreadPool::FlushTasks() {
+template<class T>
+void ThreadPoolTemplate<T>::FlushTasks() {
 	StopAccepting();
 	std::unique_lock<std::mutex> lock(mut);
 	cv.wait(lock, [this] {
@@ -107,7 +110,8 @@ void ThreadPool::FlushTasks() {
 	lock.unlock();
 }
 
-void ThreadPool::FlushThreads() {
+template<class T>
+void ThreadPoolTemplate<T>::FlushThreads() {
 	std::unique_lock<std::mutex> lock(mut);
 	kill = true;
 	lock.unlock();
@@ -117,11 +121,14 @@ void ThreadPool::FlushThreads() {
 	};
 }
 
-void ThreadPool::Flush() {
+template<class T>
+void ThreadPoolTemplate<T>::Flush() {
 	FlushTasks();
 	FlushThreads();
 }
-void ThreadPool::Shutdown() {
+
+template<class T>
+void ThreadPoolTemplate<T>::Shutdown() {
 	Flush();
 	threads.clear();
 }
@@ -136,11 +143,12 @@ int main() {
 	for (int i = 0; i < 10; i++) {
 		tp.AddJob([tester](void) {
 			std::stringstream tid;
-			tid << std::this_thread::get_id();
-			std::cout << "Hello From " << tid.str() << " tester = " << tester << std::endl;
+		tid << std::this_thread::get_id();
+		std::cout << "Hello From " << tid.str() << " tester = " << tester << std::endl;
 			});
 	}
 	tp.FlushTasks();
 	// tp.Shutdown();
 }
+
 #endif

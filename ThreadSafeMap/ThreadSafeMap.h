@@ -4,13 +4,17 @@
 #include <unordered_map>
 #include <map>
 
-
 template <typename T, typename U>
 class ThreadSafeMap
 {
 public:
 	ThreadSafeMap() {};
 	ThreadSafeMap& operator = (ThreadSafeMap&) = delete;
+	ThreadSafeMap& operator = (const ThreadSafeMap& sourceMap) 
+	{
+		data = sourceMap.data;
+		return *this;
+	}
 
 	void insert(T key, U val) {
 		std::lock_guard<std::mutex> lock(write_mut);
@@ -34,6 +38,11 @@ public:
 		data[key] = U{};
 	}
 
+	//void merge(std::map<t, u> map) 
+	//{
+	//
+	//}
+
 	U get(T key) {
 		std::shared_lock<std::shared_mutex> lock(read_mut);
 		// cv.wait(lock, [this, key] { return this->data.find(key) != this->data.end(); });
@@ -44,6 +53,15 @@ public:
 		lock.unlock();
 		return val;
 	}
+
+	std::map<T, U> getData() 
+	{
+		std::shared_lock<std::shared_mutex> lock(read_mut);
+		//makes a copy for thread safe purposes
+		std::map<T, U> map(data);
+		return map;
+	}
+
 
 	ThreadSafeMap(const ThreadSafeMap& other)
 	{
@@ -58,7 +76,7 @@ public:
 private:
 	std::mutex write_mut;
 	std::shared_mutex read_mut;
-	std::unordered_map<T, U> data;
+	std::map<T, U> data;
 	std::condition_variable cv;
 };
 

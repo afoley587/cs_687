@@ -42,6 +42,35 @@ std::map<std::string, std::vector<int>> SortManager::SortInput(std::string fileP
     return testMapParseOutput;
 }
 
+std::map< int, std::map<std::string, std::vector<int>>> SortManager::ChunkMapForReduce(std::map<std::string, std::vector<int>> threadSafeMap, const int numChunks, int chunkIndex)
+{
+    std::map<std::string, std::vector<int>> resultArray[5];
+    std::map<int ,std::map<std::string, std::vector<int>>> result;
+    int refMapSize = threadSafeMap.size();
+
+    std::map<std::string, std::vector<int>> tempMap;
+
+    int loopIndex = 1;
+    int arrayIndex = 0;
+    for (auto kvp : threadSafeMap)
+    {
+        tempMap[kvp.first] = kvp.second;
+        
+        if (loopIndex % (refMapSize / numChunks) == 0)
+        {
+            std::map<std::string, std::vector<int>> mapContainer(tempMap);
+            result[arrayIndex] = tempMap;
+            //resultArray[arrayIndex] = std::move(mapContainer);
+            tempMap = std::map<std::string, std::vector<int>>();
+            arrayIndex++;
+        }
+
+        loopIndex++;
+    }
+
+    return result;
+}
+
 std::map<std::string, std::vector<int>> ParseFileTextToKeyValueMap(const std::string& dataString) {
     std::map<std::int16_t, std::deque<std::string>> map;
     std::map<std::string, std::vector<int>> mapResult;

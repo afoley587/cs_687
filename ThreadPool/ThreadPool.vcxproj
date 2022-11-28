@@ -128,9 +128,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="ThreadPool.h" />
+    <ClInclude Include="ThreadPoolTemplate.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ThreadPool.cpp" />
+    <ClCompile Include="ThreadPoolTemplate.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

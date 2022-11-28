@@ -7,6 +7,7 @@
 #include "ProgramSettingsStruct.h"
 #include <SortManager.h>
 #include "../ThreadPool/ThreadPool.h"
+//#include "../ThreadPool/ThreadPoolTemplate.h"
 
 class WorkFlowComponent {
 private:

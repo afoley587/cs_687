@@ -9,7 +9,7 @@ struct ProgramSettings {
 	std::string ReduceDllPath;
 	int NumMappers{ 5 };
 	int NumReducers{ 5 };
-	int NumSorters{ 4 };
+	int NumSorters{ 5 };
 	int NumBuckets{ 5 };
 
 	ProgramSettings() {};

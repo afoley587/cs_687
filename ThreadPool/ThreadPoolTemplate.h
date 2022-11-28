@@ -6,12 +6,16 @@
 #include <thread>
 #include <future>
 
-class ThreadPool
+template<typename T>
+class ThreadPoolTemplate
 {
 public:
-	ThreadPool& operator = (ThreadPool&) = delete;
+	ThreadPoolTemplate<T>& operator = (ThreadPoolTemplate&) = delete;
+	ThreadPoolTemplate<T>(const ThreadPoolTemplate& source) { };
+	ThreadPoolTemplate() {};
+
 	void Init(int _numTasks = 0);
-	void AddJob(const std::function<void()>& task);
+	void AddJob(const std::function<T()>& task);
 	void StopAccepting();
 	void StartAccepting();
 	void Flush();
@@ -31,7 +35,7 @@ private:
 	std::mutex mut;
 	std::condition_variable cv;
 	std::vector<std::thread> threads;
-	std::queue<std::function<void()>> tasks;
+	std::queue<std::function<T()>> tasks;
 	int numExecuting = 0;
 	std::vector<std::future<bool>> futures;
 
