@@ -19,6 +19,10 @@
 
 using namespace std::chrono_literals;
 
+// void MapDispatch(std::vector<std::string> infiles, std::string tempDir, FileManager fm, MapManager* mm);
+
+ThreadSafeMap <std::string, std::vector<int>> SortFunctor::sortMap;
+
 WorkFlowComponent::WorkFlowComponent(ProgramSettings ps, FileManager fileMgr) {
 	programSettings = ps;
 	fileManager = fileMgr;

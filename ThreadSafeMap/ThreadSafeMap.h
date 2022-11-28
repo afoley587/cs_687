@@ -16,10 +16,15 @@ public:
 		return *this;
 	}
 
-	void insert(T key, U val) {
+	void insert(T key, U val, bool extend = false) {
 		std::lock_guard<std::mutex> lock(write_mut);
 		if (has(key)) {
-			data[key] = val;
+			if (extend) {
+				data[key].insert(data[key].begin(), val.begin(), val.end());
+			}
+			else {
+				data[key] = val;
+			}
 		}
 		else {
 			data.insert(std::pair<T, U>(key, val));

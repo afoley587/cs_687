@@ -20,8 +20,7 @@ public:
 	SortFunctor(FileManager _fm, SortManager* _rm, std::vector<std::string> _infiles, ThreadSafeMap<std::string, std::vector<int>> * _sortMap) :
 		fm(_fm),
 		sm{ _rm },
-		infiles{ _infiles },
-		sortMap{ _sortMap } {};
+		infiles{ _infiles } {};
 
 	void operator()() {
 		std::vector<std::string> buff;
