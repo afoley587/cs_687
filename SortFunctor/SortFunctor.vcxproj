@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{e3ed3c5a-f50a-443e-b33c-e9737f21b5fe}</ProjectGuid>
-    <RootNamespace>ThreadPool</RootNamespace>
+    <ProjectGuid>{5743f8e4-c8dc-4f78-9818-bac5245fad4f}</ProjectGuid>
+    <RootNamespace>SortFunctor</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -40,7 +40,7 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
@@ -127,12 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="ThreadPool.h" />
-    <ClInclude Include="ThreadPoolTemplate.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="ThreadPool.cpp" />
-    <ClCompile Include="ThreadPoolTemplate.cpp" />
+    <ClInclude Include="SortFunctor.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

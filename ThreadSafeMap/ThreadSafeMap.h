@@ -2,6 +2,7 @@
 #include <mutex>
 #include <shared_mutex>
 #include <unordered_map>
+#include <map>
 
 template <typename T, typename U>
 class ThreadSafeMap
@@ -9,17 +10,29 @@ class ThreadSafeMap
 public:
 	ThreadSafeMap() {};
 	ThreadSafeMap& operator = (ThreadSafeMap&) = delete;
+	ThreadSafeMap& operator = (const ThreadSafeMap& sourceMap) 
+	{
+		data = sourceMap.data;
+		return *this;
+	}
 
-	void insert(T key, U val) {
+	void insert(T key, U val, bool extend = false) {
 		std::lock_guard<std::mutex> lock(write_mut);
 		if (has(key)) {
-			data[key] = val;
+			if (extend) {
+				data[key].insert(data[key].end(), val.begin(), val.end());
+			}
+			else {
+				data[key] = val;
+			}
 		}
 		else {
 			data.insert(std::pair<T, U>(key, val));
 		}
 		// cv.notify_one();
 	}
+
+
 
 	bool has(T key) {
 		return data.find(key) != data.end();
@@ -29,6 +42,11 @@ public:
 		std::lock_guard<std::mutex> lock(write_mut);
 		data[key] = U{};
 	}
+
+	//void merge(std::map<t, u> map) 
+	//{
+	//
+	//}
 
 	U get(T key) {
 		std::shared_lock<std::shared_mutex> lock(read_mut);
@@ -41,10 +59,29 @@ public:
 		return val;
 	}
 
+	std::map<T, U> getData() 
+	{
+		std::shared_lock<std::shared_mutex> lock(read_mut);
+		//makes a copy for thread safe purposes
+		std::map<T, U> map(data);
+		return map;
+	}
+
+
+	ThreadSafeMap(const ThreadSafeMap& other)
+	{
+
+		data = other.data;
+	}
+
+	//ThreadSafeMap(ThreadSafeMap&& other)
+	//{
+	//}
+
 private:
 	std::mutex write_mut;
 	std::shared_mutex read_mut;
-	std::unordered_map<T, U> data;
+	std::map<T, U> data;
 	std::condition_variable cv;
 };
 

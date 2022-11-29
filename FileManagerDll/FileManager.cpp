@@ -22,8 +22,25 @@ void FileManager::read_directory(std::string dirname, std::vector<std::string>& 
 	}
 	std::experimental::filesystem::path top_dir{ dirname };
 
+	
 	for (auto const& dir_entry : std::experimental::filesystem::recursive_directory_iterator{ top_dir }) {
 		files.push_back(dir_entry.path().string());
+	}
+}
+
+void FileManager::getFiles_directory(std::string dirname, std::vector<std::string>& files) {
+
+	if (!directory_exists(dirname)) {
+		std::cerr << "[FILE MGR] - Directory does not exist!" << std::endl;
+		throw std::invalid_argument("[FILE MGR] - Directory does not exist!");
+	}
+
+	std::experimental::filesystem::path top_dir{ dirname };
+
+
+	for (const auto& entry : std::experimental::filesystem::recursive_directory_iterator{ top_dir }) {
+		std::experimental::filesystem::path filePath{ entry.path() };
+		files.push_back(filePath.filename().string());
 	}
 }
 

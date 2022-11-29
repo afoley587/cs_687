@@ -2,7 +2,9 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
-#include "FileManager.h"
+#include "../FileManagerDll/FileManager.h"
+#include <map>
+#include <tuple>
 
 #ifdef REDUCEDLL_EXPORTS
 #define REDUCEDLL_API __declspec(dllexport)
@@ -38,6 +40,7 @@ public:
 	// ========== reduce w/ VECTOR ==========
 	void reduce(std::string key, std::vector<int> vec);
 
+	int reduceForMap(std::vector<int> vec);
 
 
 	// writes result to output directoy - creates empty txt file names SUCCESS upon success

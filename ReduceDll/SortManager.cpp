@@ -16,12 +16,13 @@ std::pair<std::string, int> GetKeyValuePairFromParsedText(const std::string stri
 std::string AddTickToValue(std::string currentVal, std::string valueToAppend);
 std::string FormatStringForReduceMethod(const std::map<std::string, std::vector<int>> map);
 
-std::map<std::string, std::vector<int>> SortManager::SortInput() {
-    std::cout << "[SORT MAN] - Sorting Input From " << sortInputFile << std::endl;
+
+std::map<std::string, std::vector<int>> SortManager::SortInput(std::string filePath) {
+    std::cout << "[SORT MAN] - Sorting Input From " << sortInputDirectory << std::endl;
 
     //Read Map Functions Output File
     std::vector<std::string> dataToBeSorted;
-    fileManager.read_file(sortInputFile, dataToBeSorted);
+    fileManager.read_file(sortInputDirectory + "\\" + filePath, dataToBeSorted);
 
     std::ostringstream fileDataString;
     const char* const delim = " ";
@@ -39,6 +40,35 @@ std::map<std::string, std::vector<int>> SortManager::SortInput() {
     auto testMapParseOutput = ParseFileTextToKeyValueMap(fileDataString.str());
 
     return testMapParseOutput;
+}
+
+std::map< int, std::map<std::string, std::vector<int>>> SortManager::ChunkMapForReduce(std::map<std::string, std::vector<int>> threadSafeMap, const int numChunks, int chunkIndex)
+{
+    std::map<std::string, std::vector<int>> resultArray[5];
+    std::map<int ,std::map<std::string, std::vector<int>>> result;
+    int refMapSize = threadSafeMap.size();
+
+    std::map<std::string, std::vector<int>> tempMap;
+
+    int loopIndex = 1;
+    int arrayIndex = 0;
+    for (auto kvp : threadSafeMap)
+    {
+        tempMap[kvp.first] = kvp.second;
+        
+        if (loopIndex % (refMapSize / numChunks) == 0)
+        {
+            std::map<std::string, std::vector<int>> mapContainer(tempMap);
+            result[arrayIndex] = tempMap;
+            //resultArray[arrayIndex] = std::move(mapContainer);
+            tempMap = std::map<std::string, std::vector<int>>();
+            arrayIndex++;
+        }
+
+        loopIndex++;
+    }
+
+    return result;
 }
 
 std::map<std::string, std::vector<int>> ParseFileTextToKeyValueMap(const std::string& dataString) {

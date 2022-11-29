@@ -1,5 +1,5 @@
 #include "ThreadSafeMap.h"
-
+int main() { return 0; }
 #ifdef TEST_TSM
 
 #include <string>

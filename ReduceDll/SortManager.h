@@ -4,7 +4,7 @@
 #include <unordered_map>
 #include <map>
 #include "FileManager.h"
-
+#include "../ThreadSafeMap/ThreadSafeMap.h"
 #ifdef REDUCEDLL_EXPORTS
 #define SORTDLL_API __declspec(dllexport)
 #else
@@ -14,19 +14,23 @@
 class SORTDLL_API SortManager {
 public:
 	SortManager() {};
-	SortManager(FileManager fileMgr, std::string input) :
+	SortManager(FileManager fileMgr, std::string inputDirectory) :
 		fileManager{ fileMgr },
-		sortInputFile{ input }
+		sortInputDirectory{ inputDirectory }
 	{};
 
-	std::map<std::string, std::vector<int>> SortInput(void);
+	std::map<std::string, std::vector<int>> SortInputFiles(std::vector<std::string> inputFiles);
 
-	void setInputFile(std::string in) { sortInputFile = in; };
-	std::string getInputFile(void) { return sortInputFile; };
+	std::map<std::string, std::vector<int>> SortInput(std::string filePath);
+
+	void setInputFile(std::string in) { sortInputDirectory = in; };
+	std::string getInputFile(void) { return sortInputDirectory; };
+
+	std::map<int, std::map< std::string, std::vector<int>>> ChunkMapForReduce(std::map<std::string, std::vector<int >> threadSafeMap, int chunkSize, int chunkIndex);
 
 private:
 	FileManager fileManager;
-	std::string sortInputFile;
+	std::string sortInputDirectory;
 
 };
 

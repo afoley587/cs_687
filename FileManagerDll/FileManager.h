@@ -86,6 +86,7 @@ public:
 
 	//void append_file(std::string filename, std::vector<std::string> const data);
 
+	void getFiles_directory(std::string dirname, std::vector<std::string>& files);
 
 	void read_directory(std::string directory);
 
