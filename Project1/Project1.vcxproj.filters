@@ -27,6 +27,9 @@
     <ClCompile Include="SortOrchestrator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ReduceOrchestrator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="WorkFlowComponent.h">
@@ -39,6 +42,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SortOrchestrator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ReduceOrchestrator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

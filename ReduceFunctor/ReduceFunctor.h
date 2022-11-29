@@ -11,33 +11,32 @@
 
 class ReduceFunctor {
 private:
-	FileManager fm;
 	ReduceManager* rm;
-	std::vector<std::string> infiles;
+	ThreadSafeMap<std::string, std::vector<int>>* reduceMap;
+	std::map<std::string, std::vector<int>> sortedMap;
 
 public:
 
-	ReduceFunctor(FileManager _fm, ReduceManager* _rm, std::vector<std::string> _infiles) :
-		fm(_fm),
+	ReduceFunctor(ReduceManager* _rm, ThreadSafeMap<std::string, std::vector<int>>* _reduceMap, std::map<std::string, std::vector<int>> _sortedMap) :
 		rm{ _rm },
-		infiles{ _infiles } {};
+		reduceMap{_reduceMap},
+		sortedMap{ _sortedMap }
+	{};
 
 	void operator()() {
 		std::vector<std::string> buff;
 		std::stringstream new_tf;
 		std::stringstream threadid;
+
 		threadid << std::this_thread::get_id();
 
-		for (auto f : infiles) {
-			//std::cout << "[SORT FUNCT] - Thread " << threadid.str() << " Reading " << f << std::endl;
-			//fm.read_file(f, buff);
-
-			//for (int i = 0; i < buff.size(); i++) {
-			//	bool isLast = (i == buff.size() - 1);
-			//	rm->map(buff[i], isLast);
-			//}
-			//std::cout << "[MAP FUNCT] - Thread " << threadid.str() << " Finished " << f << std::endl;
-			//buff.clear();
+		for (auto element : sortedMap)
+		{
+			auto reduceElement = rm->reduceForMap(element.second);
+			std::vector<int> reduceElementVec{ reduceElement };
+			reduceMap->insert(element.first, reduceElementVec, false);
 		}
+		
+		return;
 	}
 };

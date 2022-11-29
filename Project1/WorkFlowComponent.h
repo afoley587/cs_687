@@ -16,6 +16,8 @@ private:
 	ReduceManager reduceManager;
 	ProgramSettings programSettings;
 	ThreadPool tp;
+	std::vector<std::map<std::string, std::vector<int>>> chunkMap(ThreadSafeMap<std::string, std::vector<int>> sortMap);
+
 
 	std::vector<MapManager *> mapManagers;
 	std::vector<ReduceManager *> reduceManagers;

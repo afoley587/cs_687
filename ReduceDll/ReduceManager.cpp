@@ -30,6 +30,18 @@ void ReduceManager::reduce(std::string key, std::vector<int> vec) {
 	output(key, sum);
 }
 
+int ReduceManager::reduceForMap( std::vector<int> vec)
+{
+	int sum = 0;
+
+	for (int valElement : vec) {
+		sum += valElement;
+	}
+	
+	return sum;
+}
+
+
 void ReduceManager::output(std::string key, int sum) {
 	std::ostringstream formattedKvpElement;
 	formattedKvpElement << "KEY: " << key << " , Value: " << sum << std::endl;

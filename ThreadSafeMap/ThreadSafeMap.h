@@ -20,7 +20,7 @@ public:
 		std::lock_guard<std::mutex> lock(write_mut);
 		if (has(key)) {
 			if (extend) {
-				data[key].insert(data[key].begin(), val.begin(), val.end());
+				data[key].insert(data[key].end(), val.begin(), val.end());
 			}
 			else {
 				data[key] = val;
@@ -29,10 +29,10 @@ public:
 		else {
 			data.insert(std::pair<T, U>(key, val));
 		}
-
-		
 		// cv.notify_one();
 	}
+
+
 
 	bool has(T key) {
 		return data.find(key) != data.end();
