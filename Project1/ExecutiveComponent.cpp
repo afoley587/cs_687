@@ -209,7 +209,7 @@ MapManager* ExecutiveComponent::MapFactory(HINSTANCE dll) {
 		throw std::runtime_error("[EXEC COMP] - Could Not Load Map Instance");
 	}
 
-	MapManager* mgr = pfnCreate(fileManager, 1024, programSettings.TempDirectory + workFlowComponent.GetIntermediateFile());
+	MapManager* mgr = pfnCreate(fileManager, 1024, programSettings.TempDirectory);
 	return mgr;
 }
 

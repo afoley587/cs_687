@@ -18,32 +18,27 @@ void MapManager::map(std::string line, bool forceExport) {
 }
 
 void MapManager::mexport(std::vector<std::string> buffer, bool forceExport) {
-
-	std::vector<std::string> tsmbuff;
-	// std::unique_lock<std::mutex> lock(mut);
+	
 	std::string bucketTempFile{ tempFile + "_R" + std::to_string(lastBucket)};
 	lastBucket = (lastBucket + 1) % numBuckets;
-	// lock.unlock();
 
 	if (tsm.has(bucketTempFile)) {
-		tsmbuff = tsm.get(bucketTempFile);
-		tsmbuff.insert(tsmbuff.end(), buffer.begin(), buffer.end());
-		tsm.insert(bucketTempFile, tsmbuff);
+		tsm.insert(bucketTempFile, buffer, true);
 	}
 	else {
-		tsmbuff = buffer;
 		fm.touch_file(bucketTempFile);
- 		tsm.insert(bucketTempFile, tsmbuff);
+ 		tsm.insert(bucketTempFile, buffer);
 	}
+
+	std::vector<std::string> tsmbuff = tsm.get(bucketTempFile);
 
 	if (tsmbuff.size() >= max_buffer_size || forceExport) {
 
 		std::vector<std::string> toExport;
+		toExport.resize(tsmbuff.size());
 
-		// std::cout << tsmbuff.size() << std::endl;
-
-		for (auto s : tsmbuff) {
-			toExport.push_back("(\"" + s + "\", [1]),");
+		for (int i = 0; i < tsmbuff.size(); i++) {
+			toExport.at(i) = "(\"" + tsmbuff[i] + "\", [1]),";
 		}
 		
 		try {

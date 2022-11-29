@@ -18,11 +18,11 @@ std::string FormatStringForReduceMethod(const std::map<std::string, std::vector<
 
 
 std::map<std::string, std::vector<int>> SortManager::SortInput(std::string filePath) {
-    std::cout << "[SORT MAN] - Sorting Input From " << sortInputDirectory << std::endl;
+    std::cout << "[SORT MAN] - Sorting Input From " << filePath << std::endl;
 
     //Read Map Functions Output File
     std::vector<std::string> dataToBeSorted;
-    fileManager.read_file(sortInputDirectory + "\\" + filePath, dataToBeSorted);
+    fileManager.read_file(filePath, dataToBeSorted);
 
     std::ostringstream fileDataString;
     const char* const delim = " ";
