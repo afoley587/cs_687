@@ -9,8 +9,6 @@
 void ThreadPool::Init(int _numTasks) {
 	isAccepting = true;
 	kill = false;
-	std::cout << "==============" << std::endl;
-	std::cout << "NUM TASKS" << _numTasks << std::endl;
 	if (_numTasks < 1) {
 		numTasks = std::thread::hardware_concurrency();
 	}
