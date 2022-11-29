@@ -84,6 +84,8 @@ void WorkFlowComponent::StartWorkFlow() {
 	ReduceOrchestrator reduceOrchestrator = ReduceOrchestrator(fileManager, programSettings, reduceManagers);
 	
 	ThreadSafeMap<std::string, std::vector<int>> reduceResult = reduceOrchestrator.Reduce(subMapVec);
+
+	fileManager.touch_file(programSettings.OutputDirectory + "\\" + successFile);
 }
 
 std::vector<std::map<std::string, std::vector<int>>> WorkFlowComponent::chunkMap(ThreadSafeMap<std::string, std::vector<int>> sortMap)
