@@ -26,7 +26,7 @@ ThreadSafeMap<std::string, std::vector<int>> SortOrchestrator::Sort()
 	//Read Map Temp Files
 	//	- Get Number of Threads
 	//	- Get Files For Each Thread
-	fileManager.getFiles_directory(programSettings.TempDirectory, reduce_tempFiles);
+	fileManager.read_directory(programSettings.TempDirectory, reduce_tempFiles);
 
 	for (std::string reduce_temp_file : reduce_tempFiles)
 	{

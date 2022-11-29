@@ -84,12 +84,6 @@ public:
 	*/
 	bool mkdir(std::string dirname);
 
-	//void append_file(std::string filename, std::vector<std::string> const data);
-
-	void getFiles_directory(std::string dirname, std::vector<std::string>& files);
-
-	void read_directory(std::string directory);
-
 	void test_output(std::string textToOutput);
 
 	bool validate_file_extension(std::string filePath, std::string extension);

@@ -17,11 +17,8 @@ public:
 	void Flush();
 	void Shutdown();
 	bool HasTasks();
-	bool IsExecuting = false;
-	void WaitUntilCompleted();
 
 private:
-	void ExecuteFunc(const std::function<void()>& task);
 	void EventLoop();
 	void FlushTasks();
 	void FlushThreads();

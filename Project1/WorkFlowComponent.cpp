@@ -41,38 +41,38 @@ void WorkFlowComponent::StartWorkFlow() {
 	std::vector<std::vector<std::string>> batches;
 	std::vector<std::thread> map_threads;
 
-	//tp.Init(programSettings.NumMappers);
+	tp.Init(programSettings.NumMappers);
 
-	//std::cout << "[WF COMP] - Reading Input Directory " << std::endl;
+	std::cout << "[WF COMP] - Reading Input Directory " << std::endl;
 
-	//fileManager.read_directory(programSettings.InputDirectory, input_files);
+	fileManager.read_directory(programSettings.InputDirectory, input_files);
 
-	//std::cout << "[WF COMP] - Running Map Utility " << std::endl;
+	std::cout << "[WF COMP] - Running Map Utility " << std::endl;
 
-	//const int subVectorSize = static_cast<int>(ceil(static_cast<double>(input_files.size()) / static_cast<double>(programSettings.NumMappers)));
+	const int subVectorSize = static_cast<int>(ceil(static_cast<double>(input_files.size()) / static_cast<double>(programSettings.NumMappers)));
 
-	//for (int i = 0; i < programSettings.NumMappers; ++i) {
-	//	std::vector<std::string> batch;
-	//	batch.resize(input_files.size() - i * subVectorSize);
-	//	auto start_iter = std::next(input_files.begin(), i * subVectorSize);
-	//	auto end_iter = input_files.end();
-	//	if (i * subVectorSize + subVectorSize < input_files.size()) {
-	//		end_iter = std::next(input_files.begin(), i * subVectorSize + subVectorSize);
-	//		batch.resize(subVectorSize);
-	//	}
-	//	std::copy(start_iter, end_iter, batch.begin());
-	//	batches.push_back(batch);
-	//}
+	for (int i = 0; i < programSettings.NumMappers; ++i) {
+		std::vector<std::string> batch;
+		batch.resize(input_files.size() - i * subVectorSize);
+		auto start_iter = std::next(input_files.begin(), i * subVectorSize);
+		auto end_iter = input_files.end();
+		if (i * subVectorSize + subVectorSize < input_files.size()) {
+			end_iter = std::next(input_files.begin(), i * subVectorSize + subVectorSize);
+			batch.resize(subVectorSize);
+		}
+		std::copy(start_iter, end_iter, batch.begin());
+		batches.push_back(batch);
+	}
 
-	//std::cout << "[WF COMP] - Vector Batched " << std::endl;
+	std::cout << "[WF COMP] - Vector Batched " << std::endl;
 
-	//for (int i = 0; i < programSettings.NumMappers; i++) {
-	//	std::cout << "[WF COMP] - Dispatching Thread With " << batches[i].size() << " files." << std::endl;
-	//	tp.AddJob(MapFunctor(fileManager, mapManagers[i], batches[i], programSettings.TempDirectory));
-	//}
+	for (int i = 0; i < programSettings.NumMappers; i++) {
+		std::cout << "[WF COMP] - Dispatching Thread With " << batches[i].size() << " files." << std::endl;
+		tp.AddJob(MapFunctor(fileManager, mapManagers[i], batches[i], programSettings.TempDirectory));
+	}
 
 
-	/*tp.Flush();*/
+	tp.Flush();
 
 	std::cout << "[WF COMP] - Map Finished. Sorting." << std::endl;
 	
@@ -84,10 +84,6 @@ void WorkFlowComponent::StartWorkFlow() {
 	ReduceOrchestrator reduceOrchestrator = ReduceOrchestrator(fileManager, programSettings, reduceManagers);
 	
 	ThreadSafeMap<std::string, std::vector<int>> reduceResult = reduceOrchestrator.Reduce(subMapVec);
-
-	std::string testString = "KennyTestString";
-
-
 }
 
 std::vector<std::map<std::string, std::vector<int>>> WorkFlowComponent::chunkMap(ThreadSafeMap<std::string, std::vector<int>> sortMap)
@@ -123,26 +119,3 @@ std::vector<std::map<std::string, std::vector<int>>> WorkFlowComponent::chunkMap
 	
 	return result;
 }
-
-
-/*
-void MapDispatch(std::vector<std::string> infiles, std::string tempDir, FileManager fm, MapManager* mm) {
-	std::vector<std::string> buff;
-	std::stringstream new_tf;
-	std::stringstream threadid;
-	threadid << std::this_thread::get_id();
-	new_tf << tempDir << "\\M" << threadid.str();
-	mm->setTempFile(new_tf.str());
-
-	for (auto f : infiles) {
-		std::cout << "[WF COMP] - Thread " << threadid.str() << " Reading " << f << std::endl;
-		fm.read_file(f, buff);
-
-		for (int i = 0; i < buff.size(); i++) {
-			bool isLast = (i == buff.size() - 1);
-			mm->map(buff[i], isLast);
-		}
-		std::cout << "[WF COMP] - Thread " << threadid.str() << " Finished " << f << std::endl;
-	}
-}
-*/

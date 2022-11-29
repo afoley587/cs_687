@@ -9,6 +9,8 @@
 void ThreadPool::Init(int _numTasks) {
 	isAccepting = true;
 	kill = false;
+	std::cout << "==============" << std::endl;
+	std::cout << "NUM TASKS" << _numTasks << std::endl;
 	if (_numTasks < 1) {
 		numTasks = std::thread::hardware_concurrency();
 	}
@@ -30,17 +32,8 @@ void ThreadPool::EventLoop() {
 			});
 
 		if (!tasks.empty()) {
-			task = std::move(tasks.front());
+			task = tasks.front();
 			tasks.pop();
-			//auto taskStatus = std::async(task);
-			//futures.emplace_back(std::move(taskStatus));
-			//ExecuteFunc(task);
-			//std::thread::id threadId = std::this_thread::get_id();
-			//std::promise<bool> promise = std::promise<bool>();
-			//std::future<bool> future = promise.get_future();
-			//futures.push_back(std::move(future));
-			//promise.set_value(true);
-
 			lock.unlock();
 			task();
 			cv.notify_one();
@@ -51,19 +44,11 @@ void ThreadPool::EventLoop() {
 	}
 }
 
-void ThreadPool::ExecuteFunc(const std::function<void()>& task)
-{
-	std::promise<bool> promise = std::promise<bool>();
-	std::future<bool> future = promise.get_future();
-	futures.push_back( std::move(future));
-	task();
-	promise.set_value(true);
-}
-
 void ThreadPool::AddJob(const std::function<void()>& task) {
 	if (!isAccepting) { return; };
 	std::unique_lock<std::mutex> lock(mut);
 	tasks.push(task);
+	lock.unlock();
 	cv.notify_one();
 }
 
@@ -73,21 +58,6 @@ bool ThreadPool::HasTasks() {
 	hasTasks = !tasks.empty();
 	lock.unlock();
 	return hasTasks;
-}
-
-void ThreadPool::WaitUntilCompleted() {
-	for (std::thread& t : threads) {
-		t.join();
-	};
-
-	std::unique_lock<std::mutex> lock(mut);
-
-	for (int i = 0; i < futures.size(); i++)
-	{
-		std::future<bool> future = std::move(futures.at(i));
-		
-		future.get();
-	}
 }
 
 void ThreadPool::StartAccepting() {
