@@ -12,10 +12,14 @@
 #include <future> 
 #include <chrono>
 
+#include <iostream>
+#include <cstdlib>
+
 #include "../MapFunctor/MapFunctor.h"
 #include "../SortFunctor/SortFunctor.h"
 #include "../ReduceFunctor/ReduceFunctor.h"
 #include "../ThreadPool/ThreadPool.h"
+#include "StopWatch.h"
 //#include "../ThreadPool/ThreadPoolTemplate.cpp"
 
 using namespace std::chrono_literals;
@@ -36,11 +40,13 @@ void WorkFlowComponent::StartWorkFlow() {
 	//Read Input Text From File
 
 	//Start Map Function
-
     std::vector<std::string> input_files;
 	std::vector<std::vector<std::string>> batches;
 	std::vector<std::thread> map_threads;
 
+
+	StopWatch stopWatch;
+	stopWatch.Start();
 	tp.Init(programSettings.NumMappers);
 
 	std::cout << "[WF COMP] - Reading Input Directory " << std::endl;
@@ -74,18 +80,52 @@ void WorkFlowComponent::StartWorkFlow() {
 
 	tp.Flush();
 
+	stopWatch.Stop();
+	executionTimeLog[mapExecutionTimeKey] = cast_duration<double>(stopWatch.elapsed());
+
 	std::cout << "[WF COMP] - Map Finished. Sorting." << std::endl;
 	
-	SortOrchestrator sortOrchestrator = SortOrchestrator(fileManager, programSettings, sortManagers);
+	stopWatch.Start();
+	SortOrchestrator sortOrchestrator = SortOrchestrator(fileManager, &programSettings, sortManagers);
 	ThreadSafeMap<std::string, std::vector<int>> sortResult = sortOrchestrator.Sort();
 
-	auto subMapVec = chunkMap(sortResult);
+	stopWatch.Stop();
+	executionTimeLog[sortExecutionTimeKey] = cast_duration<double>(stopWatch.elapsed());
 	
+
+	stopWatch.Start();
+	auto subMapVec = chunkMap(sortResult);
+	stopWatch.Stop();
+	executionTimeLog["Chunking Sort Results"] = cast_duration<double>(stopWatch.elapsed());
+
+	stopWatch.Start();
 	ReduceOrchestrator reduceOrchestrator = ReduceOrchestrator(fileManager, programSettings, reduceManagers);
 	
 	ThreadSafeMap<std::string, std::vector<int>> reduceResult = reduceOrchestrator.Reduce(subMapVec);
 
 	fileManager.touch_file(programSettings.OutputDirectory + "\\" + successFile);
+	stopWatch.Stop();
+	executionTimeLog[reduceExecutionTimeKey] = cast_duration<double>(stopWatch.elapsed());
+	
+	PrintExecutionTimeResults();
+
+	//std::cout << std::endl << std::endl << std::endl << "[WF COMP] - Validation of a count: " << sortResult.get("a").size() << std::endl;
+}
+
+void WorkFlowComponent::PrintExecutionTimeResults() 
+{
+	std::cout << '\n' <<  "*** PRINTING RESULTS FOR EXECUTION TIME: " << '\n';
+	double totalTime = 0.0;
+	for (auto element : executionTimeLog) 
+	{
+		double elapsedTime = element.second;
+		std::cout << std::endl;
+		std::cout << "\t" << element.first << " Time Elapsed : " << elapsedTime << " sec. " << '\n';
+		std::cout << std::endl;
+		totalTime += elapsedTime;
+	}
+
+	std::cout <<"*** TOTAL TIME ELAPSED: " << totalTime << " sec. " << '\n';
 }
 
 std::vector<std::map<std::string, std::vector<int>>> WorkFlowComponent::chunkMap(ThreadSafeMap<std::string, std::vector<int>> sortMap)

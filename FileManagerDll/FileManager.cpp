@@ -157,3 +157,7 @@ bool FileManager::are_unique(std::vector<std::string> dirs) {
 
 	return true;
 }
+
+std::string FileManager::get_filename_from_path(std::string path) {
+	return std::experimental::filesystem::path(path).filename().string();
+}

@@ -32,10 +32,8 @@ public:
 			std::cout << "[MAP FUNCT] - Thread " << threadid.str() << " Reading " << f << std::endl;
 			fm.read_file(f, buff);
 
-			for (int i = 0; i < buff.size(); i++) {
-				bool isLast = (i == buff.size() - 1);
-				mm->map(buff[i], isLast);
-			}
+			mm->mapFromVector(buff, true);
+
 			std::cout << "[MAP FUNCT] - Thread " << threadid.str() << " Finished " << f << std::endl;
 			buff.clear();
 		}

@@ -29,7 +29,7 @@ public:
 		else {
 			data.insert(std::pair<T, U>(key, val));
 		}
-		// cv.notify_one();
+		cv.notify_one();
 	}
 
 

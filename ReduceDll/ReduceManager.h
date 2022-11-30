@@ -30,7 +30,7 @@ public:
 	std::string getResultsFile(void) { return resultsFile; };
 	void setFinalOutputFile(std::string f) { finalOutputFile = f; };
 	std::string getFinalOutputFile(void) { return finalOutputFile; };
-
+	void outputMapToFile(std::map<std::string, std::vector<int>> results);
 	// constructor initializer, takes key and iterator
 	// Reduce(string key, vector<int>::iterator it);
 

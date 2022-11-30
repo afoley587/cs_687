@@ -149,6 +149,7 @@
     <ClInclude Include="ReduceOrchestrator.h" />
     <ClInclude Include="ProgramSettingsStruct.h" />
     <ClInclude Include="SortOrchestrator.h" />
+    <ClInclude Include="StopWatch.h" />
     <ClInclude Include="WorkFlowComponent.h" />
   </ItemGroup>
   <ItemGroup>

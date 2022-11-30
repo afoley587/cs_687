@@ -26,6 +26,12 @@ private:
 	std::string intermediateFile = "\\temp.txt";
 	std::string resultsFile = "\\results.txt";
 	std::string successFile = "\\SUCCESS.txt";
+	std::map<std::string, double> executionTimeLog;
+	std::string mapExecutionTimeKey = "MapTime";
+	std::string sortExecutionTimeKey = "SortTime";
+	std::string reduceExecutionTimeKey = "ReduceTime";
+
+	void PrintExecutionTimeResults();
 
 public:
 	WorkFlowComponent(ProgramSettings programSettings, FileManager fileMgr);

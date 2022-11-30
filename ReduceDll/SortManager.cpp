@@ -15,7 +15,7 @@ std::map<std::string, std::vector<int>> ParseFileTextToKeyValueMap(const std::st
 std::pair<std::string, int> GetKeyValuePairFromParsedText(const std::string stringElement);
 std::string AddTickToValue(std::string currentVal, std::string valueToAppend);
 std::string FormatStringForReduceMethod(const std::map<std::string, std::vector<int>> map);
-
+void ParseFileTextToKeyValueMap(const std::string& dataString, std::unordered_map<std::string, std::vector<int>>& mapToUse);
 
 std::map<std::string, std::vector<int>> SortManager::SortInput(std::string filePath) {
     std::cout << "[SORT MAN] - Sorting Input From " << filePath << std::endl;
@@ -27,13 +27,6 @@ std::map<std::string, std::vector<int>> SortManager::SortInput(std::string fileP
     std::ostringstream fileDataString;
     const char* const delim = " ";
 
-    /*
-    std::for_each(dataToBeSorted.begin(), dataToBeSorted.end(), [&](std::string dataString)
-        {
-            //std::cout << dataString;
-            fileDataString = dataString;
-        });
-    */
     std::copy(dataToBeSorted.begin(), dataToBeSorted.end(), std::ostream_iterator<std::string>(fileDataString, delim));
 
     // Hold Results in Memory/Map of Key ValuePairs while aggregating results
@@ -41,6 +34,45 @@ std::map<std::string, std::vector<int>> SortManager::SortInput(std::string fileP
 
     return testMapParseOutput;
 }
+
+std::map<std::string, std::vector<int>> SortManager::SortInputForPaths(std::vector<std::string> filePaths) {
+
+    //Read Map Functions Output File
+    std::vector<std::string> dataToBeSorted;
+    for (auto file : filePaths)
+    {
+        std::cout << "[SORT MAN] - Sorting Input From " << file << std::endl;
+        fileManager.read_file(file, dataToBeSorted);
+    }
+
+    std::ostringstream fileDataString;
+    const char* const delim = " ";
+
+    std::copy(dataToBeSorted.begin(), dataToBeSorted.end(), std::ostream_iterator<std::string>(fileDataString, delim));
+
+    // Hold Results in Memory/Map of Key ValuePairs while aggregating results
+    auto testMapParseOutput = ParseFileTextToKeyValueMap(fileDataString.str());
+
+    return testMapParseOutput;
+}
+
+void SortManager::SortInput_withMap(std::string filePath, std::unordered_map<std::string, std::vector<int>>& mapToUse) 
+{
+    std::cout << "[SORT MAN] - Sorting Input From " << filePath << std::endl;
+
+    //Read Map Functions Output File
+    std::vector<std::string> dataToBeSorted;
+    fileManager.read_file(filePath, dataToBeSorted);
+
+    std::ostringstream fileDataString;
+    const char* const delim = " ";
+
+    std::copy(dataToBeSorted.begin(), dataToBeSorted.end(), std::ostream_iterator<std::string>(fileDataString, delim));
+    ParseFileTextToKeyValueMap(fileDataString.str(), mapToUse);
+    
+    return;
+}
+
 
 std::map< int, std::map<std::string, std::vector<int>>> SortManager::ChunkMapForReduce(std::map<std::string, std::vector<int>> threadSafeMap, const int numChunks, int chunkIndex)
 {
@@ -98,6 +130,31 @@ std::map<std::string, std::vector<int>> ParseFileTextToKeyValueMap(const std::st
     }
 
     return mapResult;
+}
+
+void ParseFileTextToKeyValueMap(const std::string& dataString, std::unordered_map<std::string, std::vector<int>>& mapToUse) {
+
+    std::stack<std::string::const_iterator> stack;
+
+    for (auto it = dataString.begin(); it != dataString.end();) {
+        if (*it == '(') {
+            stack.push(it++);
+        }
+        else if (*it == ')') {
+            auto start = stack.top();
+            stack.pop();
+
+            std::string stringToGetKeyValuePair = std::string{ start, ++it };
+
+            auto kvp = GetKeyValuePairFromParsedText(stringToGetKeyValuePair);
+            mapToUse[kvp.first].push_back(kvp.second);
+        }
+        else {
+            it++;
+        }
+    }
+
+
 }
 
 std::pair<std::string, int> GetKeyValuePairFromParsedText(std::string stringElement) {
