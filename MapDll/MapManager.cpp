@@ -17,6 +17,16 @@ void MapManager::map(std::string line, bool forceExport) {
 	mexport(buffer, forceExport);
 }
 
+void MapManager::mapFromVector(std::vector<std::string> lines, bool forceExport) {
+	std::vector<std::string> buffer;
+	for (auto element : lines) 
+	{
+		tokenize(element, buffer);
+	}
+
+	mexport(buffer, forceExport);
+}
+
 void MapManager::mexport(std::vector<std::string> buffer, bool forceExport) {
 	
 	std::string bucketTempFile{ tempFile + "_R" + std::to_string(lastBucket)};

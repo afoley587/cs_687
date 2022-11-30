@@ -49,6 +49,18 @@ void ReduceManager::output(std::string key, int sum) {
 	fileManager.append_file(resultsFile, std::vector<std::string> { formattedKvpElement.str()});
 }
 
+void ReduceManager::outputMapToFile(std::map<std::string, std::vector<int>> results) {
+	std::ostringstream formattedKvpElement;
+
+	for (auto element : results) 
+	{
+		formattedKvpElement << "KEY: " << element.first << " , Value: " << element.second[0] << std::endl;
+	}
+
+	fileManager.append_file(resultsFile, std::vector<std::string> { formattedKvpElement.str()});
+}
+
+
 REDUCEDLL_API ReduceManager* ReduceCreate(FileManager fm, std::string resFile, std::string outFile) {
 	return new ReduceManager(fm, resFile, outFile);
 }

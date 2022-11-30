@@ -24,6 +24,7 @@ public:
 		tempFile{ temp }
 	{};
 
+	void mapFromVector(std::vector<std::string> lines, bool forceExport);
 
 	inline void setTempFile(std::string t) { tempFile = t; };
 	inline std::string getTempFile(void) { return tempFile; };

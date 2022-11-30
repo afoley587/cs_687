@@ -33,10 +33,11 @@ ThreadSafeMap<std::string, std::vector<int>> ReduceOrchestrator::Reduce(std::vec
 
 	threadPool.Flush();
 
-	for (auto const& [key, val] : reduceMap.getData())
-	{
-		reduceManagers[0]->output(key, val[0]);
-	}
+	reduceManagers[0]->outputMapToFile(reduceMap.getData());
+	//for (auto const& [key, val] : reduceMap.getData())
+	//{
+	//	reduceManagers[0]->output(key, val[0]);
+	//}
 
 	/*for (auto element : reduceMap.getData())
 	{

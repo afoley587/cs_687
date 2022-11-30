@@ -24,12 +24,12 @@ private:
 	ThreadPool threadPool;
 	std::vector<SortManager*> sortManagers;
 	FileManager fileManager;
-	ProgramSettings programSettings;
+	ProgramSettings * programSettings;
 
 	void GenerateSortManagers();
 
 public:
-	SortOrchestrator(FileManager _fileManager, ProgramSettings _programSettings, std::vector<SortManager*> _sortManagers)
+	SortOrchestrator(FileManager _fileManager, ProgramSettings * _programSettings, std::vector<SortManager*> _sortManagers)
 	{
 		fileManager = _fileManager;
 		programSettings = _programSettings;

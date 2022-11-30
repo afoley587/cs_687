@@ -21,32 +21,29 @@ ThreadSafeMap<std::string, std::vector<int>> SortOrchestrator::Sort()
 
 	std::vector<std::string> reduce_tempFiles;
 
-	threadPool.Init(programSettings.NumSorters);
-	//TODO
-	//Read Map Temp Files
-	//	- Get Number of Threads
-	//	- Get Files For Each Thread
-	fileManager.read_directory(programSettings.TempDirectory, reduce_tempFiles);
+	threadPool.Init(programSettings->NumSorters);
 
-	for (std::string reduce_temp_file : reduce_tempFiles)
+	fileManager.read_directory(programSettings->TempDirectory, reduce_tempFiles);
+
+	int fileIndex = 0;
+	for (std::string reduce_temp_file_path : reduce_tempFiles)
 	{
-		std::string tempFile = reduce_temp_file;
+		std::string tempFile = fileManager.get_filename_from_path(reduce_temp_file_path);
 		std::size_t found = tempFile.find('_');
 		std::string threadKey = tempFile.substr(0, found);
 		std::cout << "[WF COMP] - File Name is." << threadKey << std::endl;
 
 		if (sortThreadMetaMap.count(threadKey) > 0)
 		{
-			sortThreadMetaMap[threadKey].push_back(tempFile);
+			sortThreadMetaMap[threadKey].push_back(reduce_temp_file_path);
 		}
 		else
 		{
-			std::vector<std::string> tempFilesVector{ tempFile };
+			std::vector<std::string> tempFilesVector{ reduce_temp_file_path };
 			sortThreadMetaMap.insert({ threadKey, tempFilesVector });
 		}
+		fileIndex++;
 	}
-
-	//TODO Create Sort Threads
 
 	int threadTempIndex = 0;
 	std::vector<std::string> threadKeys;
@@ -56,8 +53,7 @@ ThreadSafeMap<std::string, std::vector<int>> SortOrchestrator::Sort()
 
 	ThreadSafeMap<std::string, std::vector<int>> sortMap = ThreadSafeMap<std::string, std::vector<int>>();
 
-	std::vector<std::promise<std::map<std::string, std::vector<int>>>> sortPromises;
-	for (int i = 0; i < programSettings.NumSorters; i++) {
+	for (int i = 0; i < programSettings->NumSorters; i++) {
 		std::cout << "[WF COMP] - Dispatching Thread for Sorting." << std::endl;
 		std::string threadKey = threadKeys[i];
 		auto sortFunc = SortFunctor(fileManager, sortManagers[i], sortThreadMetaMap[threadKey], &sortMap);
@@ -66,7 +62,7 @@ ThreadSafeMap<std::string, std::vector<int>> SortOrchestrator::Sort()
 
 	threadPool.Flush();
 
-	return std::move(sortMap);
+	return sortMap;
 }
 
 void SortOrchestrator::GenerateSortManagers() 

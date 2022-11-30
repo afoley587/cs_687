@@ -90,6 +90,8 @@ public:
 
 	bool are_unique(std::vector<std::string> dirs);
 
+	std::string  get_filename_from_path(std::string path);
+
 	std::string workingDirectory;
 
 private:

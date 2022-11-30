@@ -20,8 +20,9 @@ public:
 	{};
 
 	std::map<std::string, std::vector<int>> SortInputFiles(std::vector<std::string> inputFiles);
-
+	std::map<std::string, std::vector<int>> SortInputForPaths(std::vector<std::string> filePaths);
 	std::map<std::string, std::vector<int>> SortInput(std::string filePath);
+	void SortInput_withMap(std::string filePath, std::unordered_map<std::string, std::vector<int>>& mapToUse);
 
 	void setInputFile(std::string in) { sortInputDirectory = in; };
 	std::string getInputFile(void) { return sortInputDirectory; };
