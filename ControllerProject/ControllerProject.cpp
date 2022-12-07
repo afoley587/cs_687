@@ -4,7 +4,6 @@
 #include <WS2tcpip.h>
 #include <string>
 #include <sstream>
-//#include <boost/asio.hpp>
 #pragma comment (lib, "ws2_32.lib")
 
 using namespace std;
@@ -12,8 +11,7 @@ void ListenOnPort(int portno);
 void multipleConnectionCode(int socketNum);
 void LogBuffer(char buffer[], SOCKET socket);
 void EchoMessage(char buffer[], SOCKET socket);
-//using boost::asio::ip::tcp;
-//using boost::asio;
+
 
 int main()
 {
@@ -52,31 +50,15 @@ void multipleConnectionCode(int socketNum)
 	// Tell Winsock the socket is for listening 
 	listen(listening, SOMAXCONN);
 
-	// Create the master file descriptor set and zero it
 	fd_set master;
 	FD_ZERO(&master);
 
-	// Add our first socket that we're interested in interacting with; the listening socket!
-	// It's important that this socket is added for our server or else we won't 'hear' incoming
-	// connections 
 	FD_SET(listening, &master);
 
-	// this will be changed by the \quit command (see below, bonus not in video!)
 	bool running = true;
 
 	while (running)
 	{
-		// Make a copy of the master file descriptor set, this is SUPER important because
-		// the call to select() is _DESTRUCTIVE_. The copy only contains the sockets that
-		// are accepting inbound connection requests OR messages. 
-
-		// E.g. You have a server and it's master file descriptor set contains 5 items;
-		// the listening socket and four clients. When you pass this set into select(), 
-		// only the sockets that are interacting with the server are returned. Let's say
-		// only one client is sending a message at that time. The contents of 'copy' will
-		// be one socket. You will have LOST all the other sockets.
-
-		// SO MAKE A COPY OF THE MASTER LIST TO PASS INTO select() !!!
 
 		fd_set copy = master;
 
@@ -99,7 +81,7 @@ void multipleConnectionCode(int socketNum)
 				FD_SET(client, &master);
 
 				// Send a welcome message to the connected client
-				string welcomeMsg = "Welcome to the Awesome Chat Server!\r\n";
+				string welcomeMsg = "Welcome to the Map Reduce Server!\r\n";
 				send(client, welcomeMsg.c_str(), welcomeMsg.size() + 1, 0);
 				Sleep(2000);
 				string startMsg = "_r";
@@ -134,19 +116,6 @@ void multipleConnectionCode(int socketNum)
 
 						// Unknown command
 						continue;
-					}
-
-					for (int i = 0; i < master.fd_count; i++)
-					{
-						SOCKET outSock = master.fd_array[i];
-						if (outSock != listening && outSock != sock)
-						{
-							//ostringstream ss;
-							//ss << "SOCKET #" << sock << ": " << buf << "\r\n";
-							//string strOut = ss.str();
-							//cout << strOut;
-							//send(outSock, strOut.c_str(), strOut.size() + 1, 0);
-						}
 					}
 				}
 
@@ -199,13 +168,4 @@ void LogBuffer(char buffer[], SOCKET socket)
 	cout << strOut;
 }
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
 
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file

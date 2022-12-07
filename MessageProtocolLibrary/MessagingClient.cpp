@@ -42,28 +42,6 @@ bool MessagingClient::InitializeWinSock()
 	}
 }
 
-//SOCKET MessagingClient::CreateSocket(sockaddr_in &hint)
-//{
-//	// Create socket
-//	SOCKET sock = socket(AF_INET, SOCK_STREAM, 0);
-//	if (sock == INVALID_SOCKET)
-//	{
-//		cerr << "Can't create socket, Err #" << WSAGetLastError() << endl;
-//		WSACleanup();
-//		return NULL;
-//	}
-//
-//	//// Set the socket to non-blocking mode
-//	//u_long mode = 1;
-//	//int iResult = ioctlsocket(sock, FIONBIO, &mode);
-//
-//	// Fill in a hint structure
-//	sockaddr_in hint;
-//	hint.sin_family = AF_INET;
-//	hint.sin_port = htons(MESSAGING_PORT);
-//	inet_pton(AF_INET, MESSAGING_IP_ADDRESS.c_str(), &hint.sin_addr);
-//}
-
 bool MessagingClient::ConnectToServer(std::promise<startEnum>& executionPromise)
 {
 	string ipAddress = MESSAGING_IP_ADDRESS;			// IP Address of the server
@@ -139,10 +117,6 @@ bool MessagingClient::ConnectToServer(std::promise<startEnum>& executionPromise)
 	} while (sendHeartbeats);
 
 	t1.join();
-
-	//// Gracefully close down everything
-	//closesocket(sock);
-	//WSACleanup();
 
 	return true;
 }

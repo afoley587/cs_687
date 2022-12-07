@@ -26,10 +26,12 @@ class MESSAGING_API MessagingClient {
 		bool InitializeWinSock();
 		//SOCKET CreateSocket(sockaddr_in &hint);
 		SOCKET sendingSocket;
+		~MessagingClient() { ShutDownConnection(); };
 	public:
 		using byte = char;
 		bool SendString(const std::string& str, byte terminator = '\0');
 		MessagingClient() {};
 		bool ConnectToServer(std::promise<startEnum>& executionPromise);
 		bool ShutDownConnection();
+
 };

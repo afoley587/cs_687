@@ -7,10 +7,6 @@
 #include "..\MessageProtocolLibrary\MessagingClient.h"
 #pragma comment(lib, "ws2_32.lib")
 
-
-//#include <boost/array.hpp>
-//#include <boost/asio.hpp>
-//using boost::asio::ip::tcp;
 using namespace std;
 
 int main()
