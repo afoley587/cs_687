@@ -136,6 +136,11 @@ void ParseFileTextToKeyValueMap(const std::string& dataString, std::unordered_ma
 
     std::stack<std::string::const_iterator> stack;
 
+    std::pair<std::string, int> keyValuePairResult;
+    std::string::const_iterator startingIterator;
+    std::string stringData;
+    bool areCapturingString = false;
+
     for (auto it = dataString.begin(); it != dataString.end();) {
         if (*it == '(') {
             stack.push(it++);
@@ -147,7 +152,42 @@ void ParseFileTextToKeyValueMap(const std::string& dataString, std::unordered_ma
             std::string stringToGetKeyValuePair = std::string{ start, ++it };
 
             auto kvp = GetKeyValuePairFromParsedText(stringToGetKeyValuePair);
-            mapToUse[kvp.first].push_back(kvp.second);
+
+
+            if (*it == '\\') {
+                continue;
+            }
+
+            if (*it == '"') {
+                if (!areCapturingString) {
+                    areCapturingString = true;
+                    continue;
+                }
+                else {
+                    // To ensure we get closing double quote
+                    keyValuePairResult.first = stringData;
+                    stringData.clear();
+                    areCapturingString = false;
+                }
+            }
+            else if (*it == '[') {
+                areCapturingString = true;
+                continue;
+            }
+            else if (*it == ']') {
+                // To ensure we get closing brackets
+                keyValuePairResult.second = stoi(stringData);
+
+                stringData.clear();
+                areCapturingString = false;
+            }
+
+            // Append string with char if we are capturing characters for either Key or Value
+            if (areCapturingString) {
+                stringData.append(1, *it);
+            }
+
+            mapToUse[keyValuePairResult.first].push_back(keyValuePairResult.second);
         }
         else {
             it++;

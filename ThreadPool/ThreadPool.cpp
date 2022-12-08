@@ -33,8 +33,8 @@ void ThreadPool::EventLoop() {
 			task = tasks.front();
 			tasks.pop();
 			lock.unlock();
-			task();
 			cv.notify_one();
+			task();
 		}
 		if (kill) {
 			return;
