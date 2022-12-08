@@ -128,6 +128,7 @@ bool MessagingClient::ShutDownConnection()
 	return true;
 }
 
+
 void MessagingClient::SendHeartBeat(SOCKET socket) {
 	string heartBeatText = "HeartBeat: ";
 	int sendResult = send(socket, heartBeatText.c_str(), heartBeatText.size() + 1, 0);
