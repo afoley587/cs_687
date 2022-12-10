@@ -42,6 +42,10 @@ void ThreadPool::EventLoop() {
 	}
 }
 
+void ThreadPool::AddTask(const std::function<void()>& task) {
+	AddJob(task);
+}
+
 void ThreadPool::AddJob(const std::function<void()>& task) {
 	if (!isAccepting) { return; };
 	std::unique_lock<std::mutex> lock(mut);

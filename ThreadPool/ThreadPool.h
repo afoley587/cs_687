@@ -12,6 +12,7 @@ public:
 	ThreadPool& operator = (ThreadPool&) = delete;
 	void Init(int _numTasks = 0);
 	void AddJob(const std::function<void()>& task);
+	void AddTask(const std::function<void()>& task);
 	void StopAccepting();
 	void StartAccepting();
 	void Flush();
