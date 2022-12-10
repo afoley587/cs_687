@@ -96,6 +96,8 @@ void multipleConnectionCode(int socketNum)
 				send(client, stub_msg.c_str(), stub_msg.size() + 1, 0);
 
 				last_batch_processed++;
+				// We've finished doing all of the map input files
+				// and can swich to reduce
 				if (last_batch_processed > total_batches) {
 					stub_msg = "_r";
 				}
