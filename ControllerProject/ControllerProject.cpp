@@ -4,6 +4,9 @@
 #include <WS2tcpip.h>
 #include <string>
 #include <sstream>
+#include <vector>
+#include "../FileManagerDll/FileManager.h"
+
 #pragma comment (lib, "ws2_32.lib")
 
 using namespace std;
@@ -11,7 +14,7 @@ void ListenOnPort(int portno);
 void multipleConnectionCode(int socketNum);
 void LogBuffer(char buffer[], SOCKET socket);
 void EchoMessage(char buffer[], SOCKET socket);
-
+vector<vector<string>> BatchFiles(string inputdir, int batchSize );
 
 int main()
 {
@@ -56,6 +59,11 @@ void multipleConnectionCode(int socketNum)
 	FD_SET(listening, &master);
 
 	bool running = true;
+	string stub_msg = "_m";
+
+	vector<vector<string>> files_to_process = BatchFiles("C:\\Users\\alexa\\Source\\Repos\\project-2\\shakespeare", 3/*programSettings..., numMappers...*/);
+	int last_batch_processed = 0;
+	int total_batches = files_to_process.size();
 
 	while (running)
 	{
@@ -84,8 +92,15 @@ void multipleConnectionCode(int socketNum)
 				string welcomeMsg = "Welcome to the Map Reduce Server!\r\n";
 				send(client, welcomeMsg.c_str(), welcomeMsg.size() + 1, 0);
 				Sleep(2000);
-				string startMsg = "_r";
-				send(client, startMsg.c_str(), startMsg.size() + 1, 0);
+				// string startMsg = "_r";
+				send(client, stub_msg.c_str(), stub_msg.size() + 1, 0);
+
+				last_batch_processed++;
+				// We've finished doing all of the map input files
+				// and can swich to reduce
+				if (last_batch_processed > total_batches) {
+					stub_msg = "_r";
+				}
 			}
 			else // It's an inbound message
 			{
@@ -168,4 +183,23 @@ void LogBuffer(char buffer[], SOCKET socket)
 	cout << strOut;
 }
 
-
+vector<vector<string>> BatchFiles(string inputdir, int batchSize) {
+	FileManager fm;
+	vector<string> input_files;
+	fm.read_directory(inputdir, input_files);
+	vector<vector<string>> batches;
+	for (int i = 0; i < batchSize
+		; ++i) {
+		vector<string> batch;
+		batch.resize(batchSize);
+		auto start_iter = next(input_files.begin(), i * batchSize);
+		auto end_iter = input_files.end();
+		if (i * batchSize + batchSize < input_files.size()) {
+			end_iter = next(input_files.begin(), i * batchSize + batchSize);
+			batch.resize(batchSize);
+		}
+		copy(start_iter, end_iter, batch.begin());
+		batches.push_back(batch);
+	}
+	return batches;
+}
