@@ -8,9 +8,12 @@ public:
 	Stub() { 
 		tp.Init(_num_threads); 
 	};
+	~Stub() {
+		tp.Flush();
+	}
 	void dispatch_map();
-private:
 	void dispatch_reduce();
+private:
 	ThreadPool tp;
 	int _num_threads{ 5 };
 };

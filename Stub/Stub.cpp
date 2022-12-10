@@ -19,6 +19,7 @@ void cleanup(int signum);
 
 void Stub::dispatch_map() {
 	std::cout << "[STUB] - Dispatching Map" << std::endl;
+	// replace with other stuff
 	std::vector<std::string> tempfiles{ "C:\\Users\\alexa\\Source\\Repos\\project-2\\shakespeare\\TamingOfTheShrew.txt" };
 	std::string tempdir = "C:\\Users\\alexa\\Source\\Repos\\project-2\\tmp";
 	MapManager* mm = new MapManager{};
