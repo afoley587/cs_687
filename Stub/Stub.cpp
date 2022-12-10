@@ -26,6 +26,10 @@ void Stub::dispatch_map() {
  	tp.AddTask(MapFunctor(FileManager{}, mm, tempfiles, tempdir));
 }
 
+void Stub::dispatch_reduce() {
+	std::cout << "[STUB] - Dispatching Reduce" << std::endl;
+}
+
 int main()
 {
 	// HINSTANCE mapdll = LoadDll("MapManager.dll");
@@ -44,10 +48,11 @@ int main()
 		{
 
 		case startEnum::Reduce:
-			stub.dispatch_map();
+			stub.dispatch_reduce();
 			break;
 			//Start Reduce Operations
 		case startEnum::Map:
+			stub.dispatch_map();
 			break;
 			//Start Map Operations
 		}
