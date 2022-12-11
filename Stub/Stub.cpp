@@ -4,6 +4,11 @@
 #include <iostream>
 #include <signal.h>
 #include <iostream>
+#include <algorithm>
+#include <iterator>
+#include <string>
+#include "../MessageProtocolLibrary/Models.h"
+
 // #include <windows.h>
 
 #include "Stub.h"
@@ -15,15 +20,14 @@
 // Global so cleanup can call shutdown
 Stub stub{};
 
+std::vector<std::string> split(std::string input, char delimiter);
 void cleanup(int signum);
 
-void Stub::dispatch_map() {
+void Stub::dispatch_map(std::vector<std::string> files_to_map, std::string tempdir = "C:\\Users\\alexa\\Source\\Repos\\project-2\\tmp") {
 	std::cout << "[STUB] - Dispatching Map" << std::endl;
 	// replace with other stuff
-	std::vector<std::string> tempfiles{ "C:\\Users\\alexa\\Source\\Repos\\project-2\\shakespeare\\TamingOfTheShrew.txt" };
-	std::string tempdir = "C:\\Users\\alexa\\Source\\Repos\\project-2\\tmp";
 	MapManager* mm = new MapManager{};
- 	tp.AddTask(MapFunctor(FileManager{}, mm, tempfiles, tempdir));
+ 	tp.AddTask(MapFunctor(FileManager{}, mm, files_to_map, tempdir));
 }
 
 void Stub::dispatch_reduce() {
@@ -38,21 +42,28 @@ int main()
 	signal(SIGINT, cleanup);
 	while (true) {
 		std::cout << "[STUB] - Waiting For Controller" << std::endl;
-		std::promise<startEnum> commandEnumPromise;
+		std::promise<Serialized> commandEnumPromise;
 		auto commandEnumFuture = commandEnumPromise.get_future();
 		stub.ConnectToServer(commandEnumPromise);
-		startEnum commandFromServer = commandEnumFuture.get();
+		Serialized commandFromServer = commandEnumFuture.get();
 		std::cout << "[STUB] - Received From Controller" << std::endl;
 
-		switch (commandFromServer)
+		switch (commandFromServer.action)
 		{
 
 		case startEnum::Reduce:
+
 			stub.dispatch_reduce();
 			break;
 			//Start Reduce Operations
 		case startEnum::Map:
-			stub.dispatch_map();
+			std::vector<std::string> files = split(commandFromServer.data, ';');
+
+			std::cout << "DEBUG" << std::endl;
+			for (auto t : files) {
+				std::cout << t << std::endl;
+			}
+			stub.dispatch_map(files);
 			break;
 			//Start Map Operations
 		}
@@ -61,6 +72,19 @@ int main()
 
 		stub.SendString(testString);
 	}
+}
+
+std::vector<std::string> split(std::string input, char delimiter = ';') {
+	std::vector<std::string> ret;
+	std::string tok;
+	std::stringstream ss(input);
+
+
+	while (getline(ss, tok, delimiter)) {
+		ret.push_back(tok);
+	}
+
+	return ret;
 }
 
 void cleanup(int signum) {

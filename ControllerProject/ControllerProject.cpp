@@ -5,6 +5,9 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include <algorithm>
+#include <iterator>
+
 #include "../FileManagerDll/FileManager.h"
 
 #pragma comment (lib, "ws2_32.lib")
@@ -60,28 +63,44 @@ void multipleConnectionCode(int socketNum)
 
 	bool running = true;
 	string stub_msg = "_m";
+	string msg_delim{ ";" };
 
 	vector<vector<string>> files_to_process = BatchFiles("C:\\Users\\alexa\\Source\\Repos\\project-2\\shakespeare", 3/*programSettings..., numMappers...*/);
 	int last_batch_processed = 0;
 	int total_batches = files_to_process.size();
+	stringstream files_to_process_joined;
 
 	while (running)
 	{
 
-		fd_set copy = master;
+		fd_set fdcopy = master;
 
 		// See who's talking to us
-		int socketCount = select(0, &copy, nullptr, nullptr, nullptr);
+		int socketCount = select(0, &fdcopy, nullptr, nullptr, nullptr);
 
 		// Loop through all the current connections / potential connect
 		for (int i = 0; i < socketCount; i++)
 		{
 			// Makes things easy for us doing this assignment
-			SOCKET sock = copy.fd_array[i];
+			SOCKET sock = fdcopy.fd_array[i];
 
 			// Is it an inbound communication?
 			if (sock == listening)
 			{
+				if (last_batch_processed >= total_batches) {
+					stub_msg = "_r";
+				}
+				else {
+					copy(
+						files_to_process[last_batch_processed].begin(),
+						files_to_process[last_batch_processed].end(),
+						ostream_iterator<string>(files_to_process_joined, msg_delim.c_str())
+					);
+
+					stub_msg = "_m;" + files_to_process_joined.str();
+				}
+
+
 				// Accept a new connection
 				SOCKET client = accept(listening, nullptr, nullptr);
 
@@ -93,14 +112,12 @@ void multipleConnectionCode(int socketNum)
 				send(client, welcomeMsg.c_str(), welcomeMsg.size() + 1, 0);
 				Sleep(2000);
 				// string startMsg = "_r";
+
 				send(client, stub_msg.c_str(), stub_msg.size() + 1, 0);
 
 				last_batch_processed++;
 				// We've finished doing all of the map input files
 				// and can swich to reduce
-				if (last_batch_processed > total_batches) {
-					stub_msg = "_r";
-				}
 			}
 			else // It's an inbound message
 			{

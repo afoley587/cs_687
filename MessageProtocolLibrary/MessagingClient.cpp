@@ -42,7 +42,7 @@ bool MessagingClient::InitializeWinSock()
 	}
 }
 
-bool MessagingClient::ConnectToServer(std::promise<startEnum>& executionPromise)
+bool MessagingClient::ConnectToServer(std::promise<Serialized>& executionPromise)
 {
 	string ipAddress = MESSAGING_IP_ADDRESS;			// IP Address of the server
 	int port = MESSAGING_PORT;						// Listening port # on the server
@@ -95,6 +95,7 @@ bool MessagingClient::ConnectToServer(std::promise<startEnum>& executionPromise)
 	do
 	{
 		//process incoming messages
+		Serialized msg;
 		char readBuf[4096];
 		ZeroMemory(buf, 4096);
 		int bytesRecieved = recv(sendingSocket, readBuf, 4096, 0);
@@ -108,8 +109,18 @@ bool MessagingClient::ConnectToServer(std::promise<startEnum>& executionPromise)
 			if (readBuf[0] == '_')
 			{
 				startEnum commandEnum = static_cast<startEnum>(readBuf[1]);
+				msg.action = commandEnum;
+				msg.data = "";
 
-				executionPromise.set_value(commandEnum);
+				for (int i = 3; i < sizeof(readBuf) / sizeof(char); i++) {
+					if (readBuf[i] == '\0') {
+						break;
+					}
+					msg.data += readBuf[i];
+				}
+					
+
+				executionPromise.set_value(msg);
 				sendHeartbeats = false;
 			}
 		}

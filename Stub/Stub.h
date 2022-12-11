@@ -11,7 +11,7 @@ public:
 	~Stub() {
 		tp.Flush();
 	}
-	void dispatch_map();
+	void dispatch_map(std::vector<std::string> files_to_map, std::string tempdir);
 	void dispatch_reduce();
 private:
 	ThreadPool tp;
