@@ -142,6 +142,7 @@
     <ClInclude Include="framework.h" />
     <ClInclude Include="MessagingClient.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="Models.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />

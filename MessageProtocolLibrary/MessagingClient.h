@@ -5,6 +5,8 @@
 #include <string>
 #include <WS2tcpip.h>
 #include<windows.h>
+#include "Models.h"
+
 #pragma comment(lib, "ws2_32.lib")
 
 using namespace std;
@@ -14,8 +16,6 @@ using namespace std;
 #else
 #define MESSAGING_API __declspec(dllimport)
 #endif
-
-enum startEnum { Map = 'm', Reduce = 'r' };
 
 class MESSAGING_API MessagingClient {
 	private:
@@ -31,7 +31,7 @@ class MESSAGING_API MessagingClient {
 		bool SendString(const std::string& str, byte terminator = '\0');
 		MessagingClient() {};
 		~MessagingClient() { ShutDownConnection(); };
-		bool ConnectToServer(std::promise<startEnum>& executionPromise);
+		bool ConnectToServer(std::promise<Serialized>& executionPromise);
 		bool ShutDownConnection();
 
 };
