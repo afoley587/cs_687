@@ -20,7 +20,7 @@ using namespace std;
 class MESSAGING_API MessagingClient {
 	private:
 		bool taskComplete = false;
-		const int MESSAGING_PORT = 54000;
+		const int MESSAGING_PORT = 54540;
 		const string MESSAGING_IP_ADDRESS = "127.0.0.1";
 		void SendHeartBeat(SOCKET socket);
 		bool InitializeWinSock();

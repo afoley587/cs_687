@@ -18,12 +18,27 @@
     <ClCompile Include="ControllerProject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="StubLedger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StubInfo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tcp_server.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="tcp_connection.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StubLedger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WorkFlow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StubInfo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

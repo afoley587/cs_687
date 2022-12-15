@@ -105,6 +105,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -134,10 +135,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ControllerProject.cpp" />
+    <ClCompile Include="StubInfo.cpp" />
+    <ClCompile Include="StubLedger.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="StubInfo.h" />
+    <ClInclude Include="StubLedger.h" />
     <ClInclude Include="tcp_connection.h" />
     <ClInclude Include="tcp_server.h" />
+    <ClInclude Include="WorkFlow.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

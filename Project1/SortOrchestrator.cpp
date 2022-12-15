@@ -42,6 +42,7 @@ ThreadSafeMap<std::string, std::vector<int>> SortOrchestrator::Sort()
 			std::vector<std::string> tempFilesVector{ reduce_temp_file_path };
 			sortThreadMetaMap.insert({ threadKey, tempFilesVector });
 		}
+
 		fileIndex++;
 	}
 
