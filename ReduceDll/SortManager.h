@@ -3,7 +3,7 @@
 #include <vector>
 #include <unordered_map>
 #include <map>
-#include "FileManager.h"
+#include "../FileManagerDll/FileManager.h"
 #include "../ThreadSafeMap/ThreadSafeMap.h"
 #ifdef REDUCEDLL_EXPORTS
 #define SORTDLL_API __declspec(dllexport)

@@ -60,13 +60,34 @@ bool MessagingClient::ConnectToServer(std::promise<Serialized>& executionPromise
 	}
 
 	// Fill in a hint structure
+
+	//sockaddr_in hint;
+	//hint.sin_family = AF_INET;
+	//hint.sin_port = htons(54000);
+	//hint.sin_addr.S_un.S_addr = INADDR_ANY;
+	string ipString = "localhost";
+	const char* pTemp = ipString.c_str();
+	auto sPort = htons(54000);
+	//auto iResult = getaddrinfo(pTemp, sPort.c_str(), &hints, &result);
 	sockaddr_in hint;
 	hint.sin_family = AF_INET;
 	hint.sin_port = htons(MESSAGING_PORT);
 	inet_pton(AF_INET, MESSAGING_IP_ADDRESS.c_str(), &hint.sin_addr);
-
-	// Connect to server
+	int numTries = 0;
 	int connResult = connect(sock, (sockaddr*)&hint, sizeof(hint));
+
+	//if (connResult == SOCKET_ERROR) {
+
+	//	// Connect to server
+	//	do {
+	//		connResult = connect(sock, (sockaddr*)&hint, sizeof(hint));
+	//		numTries++;
+	//		Sleep(2000);
+
+	//	} while (numTries < 40 || (connResult != SOCKET_ERROR));
+	//}
+
+
 	if (connResult == SOCKET_ERROR)
 	{
 		cerr << "Can't connect to server, Err #" << WSAGetLastError() << endl;
@@ -86,8 +107,8 @@ bool MessagingClient::ConnectToServer(std::promise<Serialized>& executionPromise
 		[&]()
 		{
 			while (sendHeartbeats) {
-				SendHeartBeat(sendingSocket);
 				std::this_thread::sleep_for(std::chrono::seconds(5));
+				SendHeartBeat(sendingSocket);
 			}
 		} // 50 messages 100 millisec apart
 	);
@@ -141,6 +162,6 @@ bool MessagingClient::ShutDownConnection()
 
 
 void MessagingClient::SendHeartBeat(SOCKET socket) {
-	string heartBeatText = "HeartBeat: ";
+	string heartBeatText = "HB:";
 	int sendResult = send(socket, heartBeatText.c_str(), heartBeatText.size() + 1, 0);
 }

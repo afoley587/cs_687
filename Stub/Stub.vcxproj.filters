@@ -18,9 +18,15 @@
     <ClCompile Include="Stub.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SortOrchestrator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Stub.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SortOrchestrator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

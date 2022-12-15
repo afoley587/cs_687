@@ -6,15 +6,15 @@ class Stub : public MessagingClient
 {
 public:
 	Stub() { 
-		tp.Init(_num_threads); 
+		tp.Init(1); 
 	};
 	~Stub() {
 		tp.Flush();
 	}
 	void dispatch_map(std::vector<std::string> files_to_map, std::string tempdir);
-	void dispatch_reduce();
+	stringstream dispatch_reduce(std::vector<std::string> files_to_reduce);
 private:
 	ThreadPool tp;
-	int _num_threads{ 5 };
+	int _num_threads{ 1 };
 };
 

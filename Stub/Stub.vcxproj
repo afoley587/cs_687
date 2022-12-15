@@ -109,7 +109,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>$(CoreLibraryDependencies);%(AdditionalDependencies);ThreadPool.lib;MessageProtocolLibrary.lib;MapDll.lib;FileManagerDll.lib</AdditionalDependencies>
+      <AdditionalDependencies>$(CoreLibraryDependencies);%(AdditionalDependencies);ThreadPool.lib;MessageProtocolLibrary.lib;MapDll.lib;FileManagerDll.lib;ReduceDll.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -129,9 +129,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="SortOrchestrator.cpp" />
     <ClCompile Include="Stub.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="SortOrchestrator.h" />
     <ClInclude Include="Stub.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

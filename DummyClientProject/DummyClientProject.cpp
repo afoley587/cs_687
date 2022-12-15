@@ -5,6 +5,7 @@
 #include <string>
 #include <WS2tcpip.h>
 #include "..\MessageProtocolLibrary\MessagingClient.h"
+#include "..\MessageProtocolLibrary\Models.h"
 #pragma comment(lib, "ws2_32.lib")
 
 using namespace std;
@@ -12,13 +13,13 @@ using namespace std;
 int main()
 {
 	MessagingClient messageClient = MessagingClient();
-	std::promise<startEnum> commandEnumPromise;
+	std::promise<Serialized> commandEnumPromise;
 	auto commandEnumFuture = commandEnumPromise.get_future();
 	messageClient.ConnectToServer(commandEnumPromise);
-	startEnum commandFromServer = commandEnumFuture.get();
+	Serialized commandFromServer = commandEnumFuture.get();
 
 	//Entry Point for STUB Logic to start Reduce and Map
-	switch (commandFromServer) 
+	switch (commandFromServer.action) 
 	{
 
 		case startEnum::Reduce:
